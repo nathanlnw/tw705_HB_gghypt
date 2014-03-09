@@ -1,0 +1,12 @@
+---- Recorder_write Matches (11 in 1 files) ----
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		       Save_DrvRecoder(Recorder_write, buffer, len );   
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):			   Recorder_write++; 
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):			   if(Recorder_write>=Max_RecoderNum)  
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):			   	 Recorder_write=0;
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):			   DF_Write_RecordAdd(Recorder_write,Recorder_Read,TYPE_VechRecordAdd); 	
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):			      if(Recorder_write==0)
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):			      if(Recorder_write>=(numPacket+1))		
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):			            read_addr=Recorder_write-1-numPacket;
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		Recorder_write=0;
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		DF_Write_RecordAdd(Recorder_write,Recorder_Read,TYPE_VechRecordAdd); 
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808): 		 DF_Read_RecordAdd(Recorder_write,Recorder_Read,TYPE_VechRecordAdd); 
