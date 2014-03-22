@@ -1,5 +1,30 @@
----- GPS_ANTENNA_status Matches (4 in 3 files) ----
-Application.c (bsp\stm32f407vgt6_recdrv\applications):	   // 3. GPS_ANTENNA_status 	 
-Application.c (bsp\stm32f407vgt6_recdrv\applications):		  GPS_ANTENNA_status(); 	
-Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):void  GPS_ANTENNA_status(void)     //  天线开短路状态检测 
-Gps.h (bsp\stm32f407vgt6_recdrv\app_712\gps):extern void  GPS_ANTENNA_status(void);      //  天线开短路状态检测
+---- Current_UDP_sd Matches (29 in 9 files) ----
+Application.c (bsp\stm32f407vgt6_recdrv\applications):									   Current_UDP_sd=1;	 
+Application.c (bsp\stm32f407vgt6_recdrv\applications):						Current_UDP_sd=1;    
+Application.c (bsp\stm32f407vgt6_recdrv\applications):								     Current_UDP_sd=1;	 
+App_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):						  Current_UDP_sd=1;  
+App_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):								  Current_UDP_sd=1; 
+App_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):u8     Current_UDP_sd=0;   // 及时上报 标志位
+App_gsm.h (bsp\stm32f407vgt6_recdrv\app_712\gsm):extern u8  Current_UDP_sd;   // 及时上报 标志位
+Device_485.c (bsp\stm32f407vgt6_recdrv\app_712\u4_485):				Current_UDP_sd=1;	
+Device_485.c (bsp\stm32f407vgt6_recdrv\app_712\u4_485):				Current_UDP_sd=1;	
+Flash_Oper.c (bsp\stm32f407vgt6_recdrv\app_712\dataflash):				  Current_UDP_sd=1;
+Menu_3_2_FullorEmpty.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):			Current_UDP_sd=1;
+Mma8451.c (bsp\stm32f407vgt6_recdrv\app_712\shakesensor):		                       Current_UDP_sd=1; 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				 if(PositionSD_Status()&&(DEV_Login.Operate_enable==2)&&((enable==BD_EXT.Trans_GNSS_Flag)||(DispContent==6))||(Current_UDP_sd&&PositionSD_Status()&&(DEV_Login.Operate_enable==2))||((DF_LOCK==enable)&&PositionSD_Status()))	  //首次定位再发 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):					          Current_UDP_sd=0; 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				   Current_UDP_sd=1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):					Current_UDP_sd=1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):											   Current_UDP_sd=1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):											   Current_UDP_sd=1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):											   Current_UDP_sd=1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):											   Current_UDP_sd=1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):											   Current_UDP_sd=1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):											   Current_UDP_sd=1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):							    Current_UDP_sd=1;	
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				 Current_UDP_sd=1;   
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				 Current_UDP_sd=1;   
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				Current_UDP_sd = 1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):					Current_UDP_sd = 1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):					Current_UDP_sd = 1;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):    Current_UDP_sd=1;
