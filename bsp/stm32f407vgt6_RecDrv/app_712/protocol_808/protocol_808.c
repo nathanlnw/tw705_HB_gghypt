@@ -402,7 +402,6 @@ unsigned short int Last_crc=0,crc_fcs=0;
 
 
 //---------  中心应答  -----------
-u8		 fCentre_ACK=0; 			  // ---------判断中心应答标志位－－
 u8		 ACK_timer=0;				   //---------	ACK timer 定时器--------------------- 
 u8           Send_Rdy4ok=0;
 unsigned char	Rstart_time = 0; 
@@ -453,6 +452,7 @@ void delay_ms(u16 j )
 {  	
   //unsigned short int crc_file=0;  
   u8  packet_type = 0;
+  u8  Batch_Value=0;  // 批量上传判断
   
 // 	  u8 i=0;
             if(DEV_Login.Operate_enable==1)   // !=2   
@@ -747,21 +747,25 @@ void delay_ms(u16 j )
                                                           正在接收大数据量得下载数据包,导致GSM模块处理不过来，而不是单片机处理不过来,拍照过程中不能进行*/
 
                   //  1. 判断是否是批量数据上传
-                  
-                  if( Stuff_BatchDataTrans_BD_0704H()==false) 
+                   Batch_Value=Stuff_BatchDataTrans_BD_0704H();
+                  switch(Batch_Value) 
                   	{
-		                  // 正常上报 
+                  	  case  0:  // 正常上报 
 						  if (false==Stuff_Normal_Data_0200H())        
 						 	return false;
-                  	}
-				  
-				  fCentre_ACK=1;// 判断应答
-				 //-------- change status  Ready  ACK  ------ 
-			         ReadCycle_status=RdCycle_SdOver;
-				  Send_Rdy4ok=1;  // enable
-				  //----应答次数 ----		  
-				 // if(DispContent)	
-					//  rt_kprintf("\r\n 发送 GPS --saved  OK!\r\n");    
+						  
+                      case  1: //  发送批量数据					  
+							 //-------- change status  Ready  ACK  ------ 
+						      ReadCycle_status=RdCycle_SdOver;  
+							  Send_Rdy4ok=2;  // enable
+							  //----应答次数 ----		  
+							 // if(DispContent)	
+								//  rt_kprintf("\r\n 发送 GPS --saved  OK!\r\n");    
+						      break;
+				      default:  //nothing except   waiting                
+						     break;
+					      
+				  	}
 				 return true; 
              }			 
  			//-------------------------------------------------------------
@@ -1423,23 +1427,15 @@ void  GPS_Delta_DurPro(void)    //告GPS 触发上报处理函数
 			  StatusReg_GPS_V();
 		 }	
 		
-		if((SleepState==1)&&(delta_time_seconds==(Current_SD_Duration-5)))  //  --  休眠时 先发鉴权
+		if((SleepState==1)&&(delta_time_seconds==(Current_SD_Duration-5)&&(Current_SD_Duration>5)))  //  --  休眠时 先发鉴权
 		   {
 			  SleepConfigFlag=1;  //发送前5 发送一包鉴权
 		   }            
 		
 		if((delta_time_seconds >= Current_SD_Duration))//limitSend_idle
 		  {			  
-			 if(Current_SD_Duration<=CURREN_LIM_Dur)   // 若发送间隔小于 10  则上报即时信息 
-			  {     
-			        Current_State=1;   //   使能发送标志位
-				     PositionSD_Enable();
-                     Current_UDP_sd=1;   // 使能发送操作执行
-			  }
-			 else
-			 	 Current_State=0; 
 
-			 
+			 Current_State=0;			 
 			 if (BD_ISP.ISP_running==0)
 			    PositionSD_Enable();  
 			 
@@ -1853,7 +1849,6 @@ void  Save_GPS(void)
 						 GPSsaveBuf[GPSsaveBuf_Wr++]=0x00;
 					   GPSsaveBuf[GPSsaveBuf_Wr++]=0x00;
 						 GPSsaveBuf[GPSsaveBuf_Wr++]=BD_EXT.Extent_IO_status; 
-				  #if 0   
 						 //  附加信息 5  -----------------------------		
 					   //  附加信息 ID
 					   GPSsaveBuf[GPSsaveBuf_Wr++]=0x30; //信号强度
@@ -1883,9 +1878,7 @@ void  Save_GPS(void)
 					   GPSsaveBuf[GPSsaveBuf_Wr++]=(BD_EXT.AD_0>>8);	// 模拟量 1
 					   GPSsaveBuf[GPSsaveBuf_Wr++]=BD_EXT.AD_0;
 					   GPSsaveBuf[GPSsaveBuf_Wr++]=(BD_EXT.AD_1>>8);	// 模拟量 2
-					   GPSsaveBuf[GPSsaveBuf_Wr++]=BD_EXT.AD_1;
-                    
-               #endif
+					   GPSsaveBuf[GPSsaveBuf_Wr++]=BD_EXT.AD_1;                    
 					   //------------------------------------------------
 					   GPSsaveBuf[0]=GPSsaveBuf_Wr;  
 
@@ -2338,6 +2331,35 @@ u8  Stuff_Current_Data_0200H(void)   //  发送即时数据不存储到存储器中
 	 Original_info[Original_info_Wr++]=0x00;
        Original_info[Original_info_Wr++]=BD_EXT.Extent_IO_status; 
 
+	   //  附加信息 5  -----------------------------	  
+	 //  附加信息 ID
+	 Original_info[Original_info_Wr++]=0x30; //信号强度
+	 //  附加信息长度
+	 Original_info[Original_info_Wr++]=1; 
+	 //  类型
+	 Original_info[Original_info_Wr++]= BD_EXT.FJ_SignalValue; 
+ 
+		//if(DispContent)
+		 // 	printf("\r\n---- Satelitenum: %d , CSQ:%d\r\n",Satelite_num,ModuleSQ);	
+ 
+		//	附加信息 6	-----------------------------	  
+	 //  附加信息 ID
+	 Original_info[Original_info_Wr++]=0x2A; //自定义io
+	 //  附加信息长度
+	 Original_info[Original_info_Wr++]=2; 
+	 //  类型
+	 Original_info[Original_info_Wr++]= 0x00; 
+	 Original_info[Original_info_Wr++]=0x00; 
+
+		//	附加信息 7 -----------------------------  
+	 //  附加信息 ID
+	 Original_info[Original_info_Wr++]=0x2B; //自定义模拟量上传 AD
+	 //  附加信息长度
+	 Original_info[Original_info_Wr++]=4; 
+	 Original_info[Original_info_Wr++]=(BD_EXT.AD_0>>8);	  // 模拟量 1
+	 Original_info[Original_info_Wr++]=BD_EXT.AD_0;
+	 Original_info[Original_info_Wr++]=(BD_EXT.AD_1>>8);  // 模拟量 2
+	 Original_info[Original_info_Wr++]=BD_EXT.AD_1;
  //  3. Send 
  Protocol_End(Packet_Normal ,0);
 
@@ -2375,7 +2397,7 @@ u8  Stuff_Current_Data_0201H(void)   //   位置信息查询回应
 	memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )  Gps_Gprs.Longitude, 4 );	  //经度    东经  Bit 7->0   西经 Bit 7 -> 1
 	Original_info_Wr += 4;
 	// 5.  高程
-	Original_info[Original_info_Wr++]=(u8)(GPS_Hight<<8);
+	Original_info[Original_info_Wr++]=(u8)(GPS_Hight<<8); 
 	Original_info[Original_info_Wr++]=(u8)GPS_Hight;
 	// 6.  速度    0.1 Km/h
 	Original_info[Original_info_Wr++]=(u8)(Speed_gps>>8);
@@ -2457,6 +2479,36 @@ u8  Stuff_Current_Data_0201H(void)   //   位置信息查询回应
 		   Original_info[Original_info_Wr++]=0x00;
 		 Original_info[Original_info_Wr++]=0x00;
 		   Original_info[Original_info_Wr++]=BD_EXT.Extent_IO_status; 
+		   //  附加信息 5  -----------------------------	  
+		 //  附加信息 ID
+		 Original_info[Original_info_Wr++]=0x30; //信号强度
+		 //  附加信息长度
+		 Original_info[Original_info_Wr++]=1; 
+		 //  类型
+		 Original_info[Original_info_Wr++]= BD_EXT.FJ_SignalValue; 
+	 
+			//if(DispContent)
+			 // 	printf("\r\n---- Satelitenum: %d , CSQ:%d\r\n",Satelite_num,ModuleSQ);	
+	 
+			//	附加信息 6	-----------------------------	  
+		 //  附加信息 ID
+		 Original_info[Original_info_Wr++]=0x2A; //自定义io
+		 //  附加信息长度
+		 Original_info[Original_info_Wr++]=2; 
+		 //  类型
+		 Original_info[Original_info_Wr++]= 0x00; 
+		 Original_info[Original_info_Wr++]=0x00; 
+
+			//	附加信息 7 -----------------------------  
+		 //  附加信息 ID
+		 Original_info[Original_info_Wr++]=0x2B; //自定义模拟量上传 AD
+		 //  附加信息长度
+		 Original_info[Original_info_Wr++]=4; 
+		 Original_info[Original_info_Wr++]=(BD_EXT.AD_0>>8);	  // 模拟量 1
+		 Original_info[Original_info_Wr++]=BD_EXT.AD_0;
+		 Original_info[Original_info_Wr++]=(BD_EXT.AD_1>>8);	  // 模拟量 2 
+		 Original_info[Original_info_Wr++]=BD_EXT.AD_1;
+
  //  3. Send 
 Protocol_End(Packet_Normal ,0);
  if(DispContent)
@@ -5746,26 +5798,38 @@ u8  Stuff_BatchDataTrans_BD_0704H(void)
 	u8   rd_infolen=0;
    
     //0 .  congifrm   batch  num
-        if(cycle_read<cycle_write)
-        {
-            delta_0704_rd=cycle_write-cycle_read;
-			// 判断偏差记录条数是否大于最大记录数
-            if(delta_0704_rd>=Max_PKGRecNum_0704)
-				 delta_0704_rd=Max_PKGRecNum_0704;   
-
-        }
+      // 0.1  获取存储大小      
+		if(cycle_read<cycle_write)
+		{
+			delta_0704_rd=cycle_write-cycle_read;
+		}
 		else   // write 小于 read
 		{
-		    delta_0704_rd=Max_CycleNum-cycle_read; 
+			delta_0704_rd=cycle_write+Max_CycleNum-cycle_read; 
 		}
-
-	    //  判断是不是相差为 1, 如果为 1为实时上报	    
-	       if(delta_0704_rd==1)
+		  
+      // 0.2  根据发送间隔判断每包大小
+      if (Current_SD_Duration>=120)  //  大于120  启动每包上报
+      	{
+            if(delta_0704_rd==1)
 	       	{
                 delta_0704_rd=0;
-                return  false;
+                return  false;  //  要上报正常数据
 	       	}
-		     rt_kprintf("\r\n	 delat_0704=%d\r\n",delta_0704_rd); 
+        }
+	  else	      
+      if(Current_SD_Duration>=0)	// 2 秒以上没3条上一次    
+       {
+            
+			//------------------------------------------------
+			  // 判断偏差记录条数是否大于最大记录数
+			  if(delta_0704_rd>=Max_PKGRecNum_0704)  //Max_PKGRecNum_0704   
+				   delta_0704_rd=Max_PKGRecNum_0704;   
+              else
+				  return  nothing;   // 小于5  不执行任何操作直接返回
+
+	   } 
+	  rt_kprintf("\r\n	 delat_0704=%d    read=%d\r\n",delta_0704_rd,cycle_read);  
    // 1. Head
 	if(!Protocol_Head(MSG_0x0704,Packet_Normal)) 
  	     return false; 
@@ -5776,10 +5840,11 @@ u8  Stuff_BatchDataTrans_BD_0704H(void)
 	 Original_info[Original_info_Wr++]	 = delta_0704_rd;
 	 
 	 //  2.2	数据类型	 1	盲区补报	0:	 正常位置批量汇报
-	 Original_info[Original_info_Wr++] = 1;
+	 Original_info[Original_info_Wr++] = 0;  // 这里改成批量上传
 
      //  2.3  数据项目
      
+	  mangQu_read_reg=cycle_read;   //	存储当前的记录
       for(i=0;i<delta_0704_rd;i++)
       {
 	     //   读取信息
@@ -5793,7 +5858,7 @@ u8  Stuff_BatchDataTrans_BD_0704H(void)
 	     //----------  子项信息长度 --------------------------			
 	     rd_infolen=reg_128[0];
 		 Original_info[Original_info_Wr++]   = 0;
-		 Original_info[Original_info_Wr++]   = rd_infolen; // 28+ 附件信息长度
+		 Original_info[Original_info_Wr++]   = rd_infolen-1; // 28+ 附件信息长度
 
 		 memcpy(Original_info+Original_info_Wr,reg_128+1,rd_infolen);
 		 Original_info_Wr+=rd_infolen-1;	 // 内容长度 剔除第一个长度字节  
@@ -7573,7 +7638,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 									 } 
 									  //------------------------------------  
 										rt_kprintf( "\r\nCentre ACK!\r\n");  	
-									    Api_cycle_Update();   
+									    
 									   //-------------------------------------------------------------------
 									  /* cycle_read++;   //  收到应答才递增
 									   if(cycle_read>=Max_CycleNum)
@@ -7628,7 +7693,9 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
                                                           DEV_Login.Operate_enable=2; // 鉴权完成
 					                        if(DataLink_Status())   
 							                   DataLinkOK_Process();
-											 rt_kprintf("\r\n  终端鉴权成功!  \r\n");   
+											 rt_kprintf("\r\n  终端鉴权成功!  \r\n");  
+											 //  登陆上先使能发送一包心跳
+											  JT808Conf_struct.DURATION.Heart_SDFlag=1; 
 						                }
 									   break;
                             case 0x0800:  // 多媒体事件信息上传
@@ -7675,7 +7742,16 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 							case 0x0701: 
                                            rt_kprintf("\r\n  电子运单上报---中心应答!  \r\n"); 							       
 											 
-							           break;		
+							           break;	
+							case 0x0704:
+								            rt_kprintf( "\r\n  0704H-ack  \r\n"); 
+											  //-----------------
+											if(Send_Rdy4ok==2)
+												  {
+													  Api_cycle_Update();
+													  Send_Rdy4ok=0;	  
+												  }
+								           break;
 						   case 0x0705: 	//
 															  rt_kprintf("\r\n can-ack"); 
 								   break; 
@@ -9914,7 +9990,11 @@ void  Sleep_Mode_ConfigExit(void)
 		   	}
    if(JT808Conf_struct.RT_LOCK.Lock_state!=1)
        Current_SD_Duration=JT808Conf_struct.DURATION.Default_Dur; 
-   JT808Conf_struct.DURATION.Heart_Dur=300;  
+
+   if(Current_SD_Duration>=20)
+      JT808Conf_struct.DURATION.Heart_Dur=150;
+   else
+      JT808Conf_struct.DURATION.Heart_Dur=300;   
    SleepState=0;
    SleepCounter=0;
 }

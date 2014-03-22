@@ -176,6 +176,24 @@ u8   Stop_Communicate(void)
 }
 
 
+u8   NO_ACKtimer(void)
+{  // 判断中心应答
+         //------- no  ack  process -----
+		              if((Send_Rdy4ok==2)&&( ReadCycle_status==RdCycle_SdOver))
+		              	{
+		              	  ACK_timer++;
+						  if( ACK_timer>=40)    
+						  {
+						      ACK_timer=0;
+							  cycle_read=mangQu_read_reg;   //   还原read重新发送
+							  ReadCycle_status=RdCycle_Idle; 
+							  rt_kprintf("\r\n MQ_true Noack rensend! \r\n");
+						  }
+
+		              	}
+	
+}
+
 void    GSM_SD_MsgQueue_to_APP (void) 
 {
           // 1.   Rx Process 
@@ -342,7 +360,7 @@ static void gsm_thread_entry(void* parameter)
               GSM_Module_TotalInitial();  
             // 3. Receivce & Process   Communication  Module   data ----
 	       GSM_Buffer_Read_Process(); 
-		   rt_thread_delay(8);   	
+		   rt_thread_delay(20);      	
 	       DataLink_Process();		
              //------------------------------------------------
 		    if (Send_DataFlag== 1) 
@@ -373,7 +391,7 @@ static void gsm_thread_entry(void* parameter)
 	         {
 	             if(Calling_ATA_flag==1)
 	             	{
-                        rt_thread_delay(3);  
+                        delay_ms(10);  
 		                rt_hw_gsm_output("ATA\r\n");    //检查信号强度
 					    if(DispContent)	
 					        rt_kprintf(" 接听   ATA\r\n");   
@@ -384,7 +402,6 @@ static void gsm_thread_entry(void* parameter)
 			 
 			 //   SMS  Service
 			 SMS_Process();            
-	         rt_thread_delay(10);      	      
 			   
 	}
 }
@@ -416,6 +433,8 @@ static void timeout_gsm(void *  parameter)
   #ifdef SMS_ENABLE
   //  SMS  timer
     SMS_timer();
+
+  NO_ACKtimer(); //  中心应答timer
  #endif
  //    RTC get 
     time_now=Get_RTC();     

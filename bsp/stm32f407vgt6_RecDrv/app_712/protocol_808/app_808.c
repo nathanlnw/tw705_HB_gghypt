@@ -397,16 +397,7 @@ static void timeout_app(void *  parameter)
                    //  system timer
                    App808_tick_counter(); 
 
-                  //---------------------------------- 
-           if( ReadCycle_status==RdCycle_SdOver)
-		   {	   
-			        ReadCycle_timer++;	   
-				 if(ReadCycle_timer>5)  //5s No resulat
-				 {
-				      ReadCycle_timer=0; 
-			             Api_cycle_Update();	   
-				 }		
-           }	
+
 		   //--------  多媒体时间信息上传 后处理(不判应答)-----
            //--------------  多媒体上传相关   天地通有时不给多媒体信息上传应答  --------------                                       
 	       if(MediaObj.Media_transmittingFlag==1)  // clear		 							      
@@ -556,10 +547,7 @@ static void App808_thread_entry(void* parameter)
        // 5. ---------------  顺序存储 GPS  -------------------		    
 		if(GPS_getfirst)	 //------必须搜索到经纬度
 		{
-			    if(Current_SD_Duration>CURREN_LIM_Dur)// 间隔大于10s 存储顺序上报， 小于10 不存储上报 
-			    {                                                 //  拍照中暂不操作flash
-					   Save_GPS();       
-			    } 
+		     Save_GPS();       
 		} 		 	   
 	   // 6.   ACC 状态检测
              ACC_status_Check();
