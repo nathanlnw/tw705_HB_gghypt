@@ -423,7 +423,7 @@ RTM_EXPORT(mkdir);
 
 #ifdef RT_USING_FINSH
 #include <finsh.h>
-FINSH_FUNCTION_EXPORT(mkdir, create a directory);
+//FINSH_FUNCTION_EXPORT(mkdir, create a directory);
 #endif
 
 /**

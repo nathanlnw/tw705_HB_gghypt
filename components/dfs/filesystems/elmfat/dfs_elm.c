@@ -18,6 +18,8 @@
 #include <rtthread.h>
 #include "ffconf.h"
 #include "ff.h"
+#include "rtc.h"
+
 
 /* ELM FatFs provide a DIR struct */
 #define HAVE_DIR_STRUCTURE
@@ -789,9 +791,46 @@ DRESULT disk_ioctl(BYTE drv, BYTE ctrl, void *buff)
 	return RES_OK;
 }
 
+/*  
+  Note by Nathanlnw:
+ Return Value
+Currnet time is returned with packed into a DWORD value. The bit field is as follows:
+
+bit31:25 
+Year origin from the 1980 (0..127) 
+bit24:21 
+Month (1..12) 
+bit20:16 
+Day of the month(1..31) 
+bit15:11 
+Hour (0..23) 
+bit10:5 
+Minute (0..59) 
+bit4:0 
+Second / 2 (0..29) 
+*/
 rt_time_t get_fattime(void)
 {
-	return 0;
+  
+  /* u32  res_u32=0;
+
+      year=time_now.year+2000-1980;
+	  res_u32=(year<<1); // 左移1 位 用了1位
+	  res_u32=(res_u32<<4)+(time_now.month&0x0f);//  left   4  bit
+	  res_u32=(res_u32<<5)+(time_now.day&0x1f);// left    5
+	  res_u32=(res_u32<<5)+(time_now.hour&0x1f);// left  5
+	  res_u32=(res_u32<<6)+(time_now.min&0x3f);// left  6
+	  res_u32=(res_u32<<4)+((time_now.sec/2)&0x0f);// left  4 
+	  
+	return res_u32;*/
+
+	return ((time_now.year+2000-1980) << 25) /* Year = 2010 */  
+| ((u32)time_now.month << 21) /* Month = 11 */  
+| ((u32)time_now.day<< 16) /* Day = 2 */  
+| ((u32)time_now.hour<< 11) /* Hour = 15 */  
+| ((u32)time_now.min<< 5) /* Min = 0 */  
+| ((u32)time_now.sec>> 1) /* Sec = 0 */   
+;  
 }
 
 #if _FS_REENTRANT

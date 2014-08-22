@@ -451,7 +451,7 @@ void mkfs(const char *fs_name, const char *device_name)
 {
 	dfs_mkfs(fs_name, device_name);
 }
-FINSH_FUNCTION_EXPORT(mkfs, make a file system);
+//FINSH_FUNCTION_EXPORT(mkfs, make a file system);
 
 void df(const char *path)
 {
@@ -462,7 +462,7 @@ void df(const char *path)
 		rt_kprintf("disk free: %d block[%d bytes per block]\n", buffer.f_bfree, buffer.f_bsize);
 	}
 }
-FINSH_FUNCTION_EXPORT(df, get disk free);
+//FINSH_FUNCTION_EXPORT(df, get disk free);
 #endif
 
 /* @} */

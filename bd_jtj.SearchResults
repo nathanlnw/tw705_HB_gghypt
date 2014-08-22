@@ -1,9 +1,6 @@
----- Max_CycleNum Matches (9 in 5 files) ----
-Device_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):			       if(cycle_write>=Max_CycleNum)
-Device_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):					 if(cycle_read>=Max_CycleNum)
-Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):		         if(cycle_write>=Max_CycleNum)
-Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):		        if(cycle_read>=Max_CycleNum)
-Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):		  if(cycle_read>=Max_CycleNum)
-Protocol_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):			delta_0704_rd=cycle_write+Max_CycleNum-cycle_read; 
-Sys_config.c (bsp\stm32f207vc_tw705\app_712\protocol_808):         rt_kprintf("\r\n        Max_picNum =  %d   Max_CycleNum = %d   Max_DrvRcdNum=%d \r\n",Max_PicNum,Max_CycleNum,Max_RecoderNum); 
-Sys_config.h (bsp\stm32f207vc_tw705\app_712\protocol_808):#define   Max_CycleNum                  24567 
+---- CycleStart_offset Matches (5 in 2 files) ----
+DF_Oper.h (bsp\stm32f207vc_tw705\app_712\dataflash):#define       CycleStart_offset                       8192  //1768                          // 循环存储上报存储区域(Basic 基本必备)        1 record=128 Bytes
+Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):		SST25V_SectorErase_4KByte((pageoffset+CycleStart_offset)*PageSIZE);      // erase Sector 	 	
+Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):	   DF_WriteFlashDirect(pageoffset+CycleStart_offset,InPageAddr,content,saveLen);  //   写入信息
+Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):       DF_ReadFlash(pageoffset+CycleStart_offset,InPageAddr,rd_back,saveLen);  //   读取信息
+Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):     DF_ReadFlash(pageoffset+CycleStart_offset,InPageAddr,content,ReadLen); 
