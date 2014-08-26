@@ -1,6 +1,8 @@
----- CycleStart_offset Matches (5 in 2 files) ----
-DF_Oper.h (bsp\stm32f207vc_tw705\app_712\dataflash):#define       CycleStart_offset                       8192  //1768                          // 循环存储上报存储区域(Basic 基本必备)        1 record=128 Bytes
-Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):		SST25V_SectorErase_4KByte((pageoffset+CycleStart_offset)*PageSIZE);      // erase Sector 	 	
-Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):	   DF_WriteFlashDirect(pageoffset+CycleStart_offset,InPageAddr,content,saveLen);  //   写入信息
-Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):       DF_ReadFlash(pageoffset+CycleStart_offset,InPageAddr,rd_back,saveLen);  //   读取信息
-Flash_Oper.c (bsp\stm32f207vc_tw705\app_712\dataflash):     DF_ReadFlash(pageoffset+CycleStart_offset,InPageAddr,content,ReadLen); 
+---- SMS_protocol Matches (7 in 3 files) ----
+Protocol_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):									SMS_protocol( (UDP_HEX_Rx+14)+ 5,(infolen-1)- 5 ,SMS_ACK_none);  
+SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):*函数名称:void SMS_protocol(u8 *instr,u16 len)
+SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):*函数名称:void SMS_protocol(u8 *instr,u16 len)
+SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate 
+SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):		SMS_protocol( instr + 5, len - 5 ,SMS_ACK_msg);
+SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):		SMS_protocol( pstrTemp + 5, len - 5 ,SMS_ACK_msg);
+SMS.h (bsp\stm32f207vc_tw705\app_712\gsm):extern void SMS_protocol(u8 *instr,u16 len, u8  ACKstate);
