@@ -1976,8 +1976,6 @@ void Protocol_End(u8 Packet_Type,u8 LinkNum)
     // 4.2   MsgQueue
     WatchDog_Feed();
    Gsm_rxAppData_SemRelease(GPRS_info,GPRS_infoWr_Tx,LinkNum);  
-   //--------ÏûÏ¢ÐòºÅ µÝÔö --------
-   JT808Conf_struct.Msg_Float_ID++;   
   //------------------------------ 
 } 
 //--------------------------------------------------------------------------------------

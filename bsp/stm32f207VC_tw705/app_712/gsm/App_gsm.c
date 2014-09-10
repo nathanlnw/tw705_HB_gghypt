@@ -207,7 +207,8 @@ void Gsm_rxAppData_SemRelease(u8* instr, u16 inlen, u8 link_num)
 	//gsm_rx_app_infoStruct.link_num=link_num;
 	LinkNum=link_num;
 }
-	
+
+
 //=====================================================================
 /*
           Thread   Initial    ,   Device      Related 
@@ -341,56 +342,60 @@ static void gsm_thread_entry(void* parameter)
 	 //--------------------------------------  
 	while (1)
 	{
-	
-            // 1.  after power  on    get imsi code  	 	
-              IMSIcode_Get(); 
-            //  2. after get imsi   Comm   AT  initial   start 
-              GSM_Module_TotalInitial(0);  //GSM_Module_TotalInitial(1);  
-            // 3. Receivce & Process   Communication  Module   data ----
-	       GSM_Buffer_Read_Process(); 
-		   rt_thread_delay(20);      	
-	       DataLink_Process();		
-             //------------------------------------------------
-		    if (Send_DataFlag== 1) 
-               {
-			   res=rt_device_control(&Device_GSM, query_online, NULL);
-			    if(res==RT_EOK)
-			             rt_device_write(&Device_GSM, LinkNum,( const void *)GPRS_info,(rt_size_t) GPRS_infoWr_Tx); 
-			    Send_DataFlag=0;          
-	
-	         }    
-			//监听
-			if(CallState==CallState_rdytoDialLis)
-			{
-             CallState=CallState_Dialing;
-			 memset(atd_str,0,sizeof(atd_str));
-			 memcpy(atd_str,"ATD",3);
-			 memcpy(atd_str+3,JT808Conf_struct.LISTEN_Num,strlen((const char*)JT808Conf_struct.LISTEN_Num));
-			 memcpy(atd_str+3+strlen((const char*)JT808Conf_struct.LISTEN_Num),";\r\n",3);
-			 rt_hw_gsm_output(atd_str);
-			 //rt_kprintf("\r\n拨打%s\r\n",atd_str);
-			}
-		     //---------  Step timer
-		     //  Dial_step_Single_10ms_timer();    
-		  	 //   TTS	
-             TTS_Data_Play();		 
-             //   Get  CSQ value
-	         if(GSM_CSQ_Query()==false)	 
-	         {
-	             if(Calling_ATA_flag==1)
-	             	{
-                        delay_ms(10);  
-		                rt_hw_gsm_output("ATA\r\n");    //检查信号强度
-					    if(DispContent)	
-					        rt_kprintf("ATA\r\n");   
 
-                       Calling_ATA_flag=0;
-	             	}
-			 } 
-			 
-			 //   SMS  Service
-			 SMS_Process();            
-			   
+		  if(GSM_Working_State())
+		  {
+	            // 1.  after power  on    get imsi code  	 	
+	              IMSIcode_Get(); 
+	            //  2. after get imsi   Comm   AT  initial   start 
+	           GSM_Module_TotalInitial(0);  //GSM_Module_TotalInitial(1);  
+	            // 3. Receivce & Process   Communication  Module   data ----
+		       GSM_Buffer_Read_Process(); 
+		   }
+		   rt_thread_delay(20);
+		   if(GSM_Working_State()==2)  
+		  {
+		       DataLink_Process();		
+	             //------------------------------------------------
+			    if (Send_DataFlag== 1) 
+	               {
+				   res=rt_device_control(&Device_GSM, query_online, NULL);
+				    if(res==RT_EOK)
+				             rt_device_write(&Device_GSM, LinkNum,( const void *)GPRS_info,(rt_size_t) GPRS_infoWr_Tx); 
+				    Send_DataFlag=0;          
+		
+		         }    
+				//监听
+				if(CallState==CallState_rdytoDialLis)
+				{
+	             CallState=CallState_Dialing;
+				 memset(atd_str,0,sizeof(atd_str));
+				 memcpy(atd_str,"ATD",3);
+				 memcpy(atd_str+3,JT808Conf_struct.LISTEN_Num,strlen((const char*)JT808Conf_struct.LISTEN_Num));
+				 memcpy(atd_str+3+strlen((const char*)JT808Conf_struct.LISTEN_Num),";\r\n",3);
+				 rt_hw_gsm_output(atd_str);
+				 //rt_kprintf("\r\n拨打%s\r\n",atd_str);
+				}
+			     //---------  Step timer
+			     //  Dial_step_Single_10ms_timer();    
+			  	 //   TTS	
+	             TTS_Data_Play();		 
+	             //   Get  CSQ value
+		         if(GSM_CSQ_Query()==false)	 
+		         {
+		             if(Calling_ATA_flag==1)
+		             	{
+	                        delay_ms(10);  
+			                rt_hw_gsm_output("ATA\r\n");    //检查信号强度
+						    if(DispContent)	
+						        rt_kprintf("ATA\r\n");   
+
+	                       Calling_ATA_flag=0;
+		             	}
+				 }  				 
+				 //   SMS  Service
+				 SMS_Process();            
+		   	}  
 	}
 }
  
@@ -400,7 +405,7 @@ static void timeout_gsm(void *  parameter)
 {     //  1 second 
   //   init  Module related
    GPRS_GSM_PowerON(); 
-  //   Comm AT related 
+    //   Comm AT related 
    //if((CommAT.Total_initial==1)) 
    	   //   CommAT.Execute_enable=1;      //  enable send   periodic  
 
@@ -418,6 +423,8 @@ static void timeout_gsm(void *  parameter)
     DialLink_TimeOut_Process();
  //  CSQ
      GSM_CSQ_timeout();
+ //  AT cmd timeout
+      AT_cmd_send_TimeOUT();   
   #ifdef SMS_ENABLE
   //  SMS  timer
     SMS_timer();

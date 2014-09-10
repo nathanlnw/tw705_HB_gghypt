@@ -1,8 +1,15 @@
----- SMS_protocol Matches (7 in 3 files) ----
-Protocol_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):									SMS_protocol( (UDP_HEX_Rx+14)+ 5,(infolen-1)- 5 ,SMS_ACK_none);  
-SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):*函数名称:void SMS_protocol(u8 *instr,u16 len)
-SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):*函数名称:void SMS_protocol(u8 *instr,u16 len)
-SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate 
-SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):		SMS_protocol( instr + 5, len - 5 ,SMS_ACK_msg);
-SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):		SMS_protocol( pstrTemp + 5, len - 5 ,SMS_ACK_msg);
-SMS.h (bsp\stm32f207vc_tw705\app_712\gsm):extern void SMS_protocol(u8 *instr,u16 len, u8  ACKstate);
+---- GSM_PWR.GSM_power_over Matches (16 in 2 files) ----
+Device_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):				 if((GSM_PWR.GSM_power_over)&&(DF_initOver)&&(Login_Menu_Flag))    // power ok than check ic 
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):  GSM_PWR.GSM_power_over=3;    // enable  GSM reset
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):      if((GSM_PWR.GSM_power_over>0)&&(GSM_PWR.GSM_power_over<=2)) 
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):     GSM_PWR.GSM_power_over=0;  
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):      if(GSM_PWR.GSM_power_over) 
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):				GSM_PWR.GSM_power_over=1;  
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):    if(GSM_PWR.GSM_power_over!=3) 
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):			GSM_PWR.GSM_power_over=0;
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):		GSM_PWR.GSM_power_over=1;   
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):					  GSM_PWR.GSM_power_over=0;;
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):	  GSM_PWR.GSM_power_over=2;     //  get imsi
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):        if(GSM_PWR.GSM_power_over==1) 
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):    if((GSM_PWR.GSM_power_over==1)||(GSM_PWR.GSM_power_over==2))
+Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):             return  GSM_PWR.GSM_power_over;
