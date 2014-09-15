@@ -328,9 +328,7 @@ u8 GSM_CSQ_Query(void)
 			        rt_kprintf("AT+CSQ\r\n");  
 			  return true;	
 		   } 
-		   return false;
 		  }
-       else
 	      return false;   
 }
 

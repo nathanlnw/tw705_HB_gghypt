@@ -1,15 +1,5 @@
----- GSM_PWR.GSM_power_over Matches (16 in 2 files) ----
-Device_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):				 if((GSM_PWR.GSM_power_over)&&(DF_initOver)&&(Login_Menu_Flag))    // power ok than check ic 
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):  GSM_PWR.GSM_power_over=3;    // enable  GSM reset
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):      if((GSM_PWR.GSM_power_over>0)&&(GSM_PWR.GSM_power_over<=2)) 
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):     GSM_PWR.GSM_power_over=0;  
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):      if(GSM_PWR.GSM_power_over) 
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):				GSM_PWR.GSM_power_over=1;  
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):    if(GSM_PWR.GSM_power_over!=3) 
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):			GSM_PWR.GSM_power_over=0;
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):		GSM_PWR.GSM_power_over=1;   
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):					  GSM_PWR.GSM_power_over=0;;
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):	  GSM_PWR.GSM_power_over=2;     //  get imsi
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):        if(GSM_PWR.GSM_power_over==1) 
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):    if((GSM_PWR.GSM_power_over==1)||(GSM_PWR.GSM_power_over==2))
-Device_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):             return  GSM_PWR.GSM_power_over;
+---- SMS_Process Matches (4 in 3 files) ----
+App_gsm.c (bsp\stm32f207vc_tw705\app_712\gsm):				 SMS_Process();            
+SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):*功能描述:短信处理函数，这个函数需要在一个1秒的定时器里面调用，用于函数"SMS_Process"的定时处理等
+SMS.c (bsp\stm32f207vc_tw705\app_712\gsm):void SMS_Process(void) 
+SMS.h (bsp\stm32f207vc_tw705\app_712\gsm):extern void SMS_Process(void);

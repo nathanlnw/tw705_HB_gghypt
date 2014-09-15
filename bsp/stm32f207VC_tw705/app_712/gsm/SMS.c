@@ -308,7 +308,7 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 	/*************************处理信息****************************/
 	p_Instr=(char *)instr;
 	for(i=0;i<len;i++)
-		{
+	{
 		pstrTemp=strchr(p_Instr,'#');					///查找命令是否存在
 		//instr++;
 		if(pstrTemp)
@@ -906,20 +906,21 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 			else
 	         if(strncmp(pstrTemp,"PLAYSET",7)==0)				///3. 修改发送间隔
 				{
-				j=sscanf(sms_content,"%u",&u16Temp);
-				if(j)
-					{
-						Warn_Play_controlBit=j;
-						DF_WriteFlashSector(DF_WARN_PLAY_Page,0,&Warn_Play_controlBit,1); 
-					    Add_SMS_Ack_Content(sms_ack_data,ACKstate);
-					} 
+					j=sscanf(sms_content,"%u",&u16Temp);
+					if(j)
+						{
+							Warn_Play_controlBit=j;
+							DF_WriteFlashSector(DF_WARN_PLAY_Page,0,&Warn_Play_controlBit,1); 
+						    Add_SMS_Ack_Content(sms_ack_data,ACKstate);
+						} 
 				}
+			//----------------------------------------------------------------------------------- 
+		}			 
 		else
 			{
 			break;
 			}
 		
-		}	     
 	}
 }
 

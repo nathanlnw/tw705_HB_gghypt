@@ -352,7 +352,7 @@ static void gsm_thread_entry(void* parameter)
 	            // 3. Receivce & Process   Communication  Module   data ----
 		       GSM_Buffer_Read_Process(); 
 		   }
-		   rt_thread_delay(20);
+		   rt_thread_delay(20); 
 		   if(GSM_Working_State()==2)  
 		  {
 		       DataLink_Process();		
@@ -394,8 +394,8 @@ static void gsm_thread_entry(void* parameter)
 		             	}
 				 }  				 
 				 //   SMS  Service
-				 SMS_Process();            
-		   	}  
+				 SMS_Process();    
+		   	}		   
 	}
 }
  
