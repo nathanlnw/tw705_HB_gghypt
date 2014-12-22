@@ -97,7 +97,7 @@ void rtthread_startup(void)
  
 	 
     #endif 	 
-   rt_kprintf("\n\r   河北天地通 北斗车载终端 GGHYPT  TW705-BD--14-11-19 chip:STM32F207  Version 1.5   \r\n ");          
+   rt_kprintf("\n\r   河北天地通 北斗车载终端 GGHYPT  TW705-BD--14-12-22 chip:STM32F207  Version 1.6 .1 去掉显示速度异常 tw705 \r\n ");           
 	/* show version */
 	rt_show_version(); 
 

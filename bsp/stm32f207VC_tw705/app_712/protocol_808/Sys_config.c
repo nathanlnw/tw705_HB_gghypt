@@ -312,7 +312,7 @@ void  Vehicleinfo_Init(void)
 	memcpy(Vechicle_Info.Vech_VIN,"00000000000000000",17);
 	memcpy(Vechicle_Info.Vech_Num,"未知车牌",8);        
 	memcpy(Vechicle_Info.Vech_Type,"未知型",6);       
-    memcpy(Vechicle_Info.ProType,"TW703",5);  
+    memcpy(Vechicle_Info.ProType,"TW705",5);    
 	Vechicle_Info.Dev_ProvinceID=13;  // 默认省ID   0      13  河北省
 	Vechicle_Info.Dev_CityID=101;      // 默认市ID   0		 石家庄 
 	Vechicle_Info.Dev_Color=1;       // 默认颜色    // JT415    1  蓝 2 黄 3 黑 4 白 9其他     

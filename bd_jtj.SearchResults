@@ -1,5 +1,5 @@
----- Illeagle_Data_kickOUT Matches (4 in 1 files) ----
-Protocol_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):u8      Illeagle_Data_kickOUT=0;  //  剔除非法数据状态
-Protocol_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):                    Illeagle_Data_kickOUT=1;  // 速度大于150  剔除 
-Protocol_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):   if(Illeagle_Data_kickOUT==0)
-Protocol_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):	   Illeagle_Data_kickOUT=0;  // clear 
+---- Vechicle_Info.ProType Matches (4 in 2 files) ----
+Protocol_808.c (bsp\stm32f207vc_tw705\app_712\protocol_808):	memcpy(Original_info+Original_info_Wr,Vechicle_Info.ProType,5);   //ZD-V01H  HVT100BD1   CM-10A-BD  YW3000-YM/MGB
+Sys_config.c (bsp\stm32f207vc_tw705\app_712\protocol_808):    memcpy(Vechicle_Info.ProType,"TW703",5);  
+Sys_config.c (bsp\stm32f207vc_tw705\app_712\protocol_808):	  memcpy(Vechicle_Info.ProType,instr,5);  
+Sys_config.c (bsp\stm32f207vc_tw705\app_712\protocol_808):	  rt_kprintf("\r\n 设置车台终端: %s\r\n",Vechicle_Info.ProType); 
