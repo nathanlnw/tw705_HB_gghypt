@@ -1,7 +1,7 @@
 #ifndef _H_MENU_H_
 #define _H_MENU_H_
 
-//#include "sed1520.h"
+//#include "LCD_Driver.h"
 #include <stdio.h>
 #include<./App_moduleConfig.h> 
 

@@ -42,7 +42,7 @@
 #include <./lcd/Include.h>
 #include <./lcd/SLE4442.h>
 #include <./lcd/bmp.h>
-#include <./lcd/SED1520.h>
+#include <./lcd/LCD_Driver.h>
 #include <./lcd/Fonts.h>    
 
 #include <./printer/Device_printer.h> 
@@ -81,7 +81,7 @@
 //#include "Include.h"
 //#include "SLE4442.h"
 #include "bmp.h"
-#include "SED1520.h"
+#include "LCD_Driver.h"
 //#include "Fonts.h"   
 //#include "Device_printer.h"
 #include "spi_sd.h"

@@ -1,7 +1,7 @@
 #ifndef LCDDis_H_
 #define LCDDis_H_
 
-#include "sed1520.h"
+#include "LCD_Driver.h"
 #include <stdio.h>
 
 

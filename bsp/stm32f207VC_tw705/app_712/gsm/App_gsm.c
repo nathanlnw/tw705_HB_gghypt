@@ -328,11 +328,8 @@ static void gsm_thread_entry(void* parameter)
 	u32 value_15=0,value_realtime=0;
         //     finsh_init(&shell->parser);
 	 //	  	 
-		//	step 1:  Init Dataflash
-	  // DF_init();  
-	   APP_IOpinInit();	
-	   HardWareVerion=HardWareGet(); 
-	   
+		//	step 1:  Init Dataflash	   
+
 	   //  step 2:	 process config data   
       #ifdef HMI  
 		  HMI_app_init();	   

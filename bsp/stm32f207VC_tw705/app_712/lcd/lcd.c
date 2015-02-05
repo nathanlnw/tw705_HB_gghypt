@@ -1,8 +1,8 @@
 /**************************************************************************
  *                                                                         
- *   sed1520.c                                                             
+ *   LCD_Driver.c                                                             
  *   LCD display controller interface routines for graphics modules        
- *   with onboard SED1520 controller(s) in "write-only" setup              
+ *   with onboard LCD_Driver controller(s) in "write-only" setup              
  *                                                                         
  *   Version 1.02 (20051031)                                               
  *                                                                         
@@ -35,7 +35,7 @@
 /* 
    An Emerging Display EW12A03LY 122x32 Graphics module has been used
    for testing. This module only supports "write". There is no option
-   to read data from the SED1520 RAM. The SED1520 R/W line on the 
+   to read data from the LCD_Driver RAM. The LCD_Driver R/W line on the 
    module is bound to GND according to the datasheet. Because of this 
    Read-Modify-Write using the LCD-RAM is not possible with the 12A03 
    LCD-Module. So this library uses a "framebuffer" which needs 
@@ -49,7 +49,7 @@
 //#include <includes.h>
 
 #include <stdint.h>
-#include "sed1520.h"
+#include "LCD_Driver.h"
 #include "bmp.h"
 #include "stm32f2xx.h"
 

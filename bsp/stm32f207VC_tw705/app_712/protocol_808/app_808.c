@@ -405,6 +405,10 @@ static void timeout_app(void *  parameter)
 		     SpeedWarnJudge();	// ËÙ¶È±¨¾¯ÅÐ¶Ï    
 			  //------ add later  -----------	 
 	          CAN_send_timer();  	
+
+              //  LCD  
+              Lcd_hardInit_timer();
+			
        }	 
 	 
  

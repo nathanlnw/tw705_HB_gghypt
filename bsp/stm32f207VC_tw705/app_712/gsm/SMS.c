@@ -698,6 +698,8 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 							       sprintf(SMS_Service.SMS_sd_Content+strlen(SMS_Service.SMS_sd_Content),"%d)",Vechicle_Info.Dev_CityID); 
 								   strcat(SMS_Service.SMS_sd_Content,"#Online(");// 分隔符号								   
 							       sprintf(SMS_Service.SMS_sd_Content+strlen(SMS_Service.SMS_sd_Content),"%d)",DataLink_Status());
+								   strcat(SMS_Service.SMS_sd_Content,"#HWver(");// 分隔符号	
+								   sprintf(SMS_Service.SMS_sd_Content+strlen(SMS_Service.SMS_sd_Content),"%d)",HardWareVerion);  
 								   break;
 						   case '4': 		 //速度 传感器   
 								   strcat(SMS_Service.SMS_sd_Content,"#SpdType(");// 分隔符号						   	       

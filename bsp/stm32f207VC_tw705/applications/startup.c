@@ -97,7 +97,7 @@ void rtthread_startup(void)
  
 	 
     #endif 	 
-   rt_kprintf("\n\r   河北天地通 北斗车载终端 GGHYPT  TW705-BD--14-12-22 chip:STM32F207  Version 1.6 .1 去掉显示速度异常 tw705 \r\n ");           
+   rt_kprintf("\n\r   河北天地通 北斗车载终端 GGHYPT  TW705-BD--15-2-5 Version 2.0 兼容2硬件版本个版本 \r\n ");           
 	/* show version */
 	rt_show_version(); 
 
@@ -129,11 +129,17 @@ void rtthread_startup(void)
 #endif
 
     
-     //---------------App Thread	 -----------------------	     
-     Init_lcdkey(); //  提前初始化LCD  pins	
-     delay_ms(1000); // 屏rst 拉低    维持一段时间 
-     lcd_init();
+   
+//---------------App Thread 	----------------------- 		
 
+// hard pins   init
+APP_IOpinInit(); 
+HardWareVerion=HardWareGet(); 
+Init_lcdkey(); //  提前初始化LCD  pins 
+delay_ms(1000); // 屏rst 拉低	 维持一段时间 
+lcd_init();
+
+   
 // #ifdef  GSM_UART
 		_gsm_startup();
  //#endif
