@@ -346,6 +346,11 @@ static void timeout_app(void   *parameter)
         //  Camera power	on
         Camera_powerOn_timer();
 
+        //  停车前15 分钟平均速度记录
+#ifdef AVRG15MIN
+        Averg15_min_timer_1s();
+#endif
+
 
         //车辆信号线状态指示  //刹车线//左转//右转//远光//近光//雾灯//车门//null
         SensorFlag = 0x80;

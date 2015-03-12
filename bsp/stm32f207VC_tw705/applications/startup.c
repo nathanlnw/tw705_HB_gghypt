@@ -97,7 +97,7 @@ void rtthread_startup(void)
 
 
 #endif
-    rt_kprintf("\n\r   河北天地通 北斗车载终端 GGHYPT  TW705-BD--15-3-12 Version 2.0 兼容2硬件版本个版本 \r\n ");
+    rt_kprintf("\n\r   河北天地通 北斗车载终端 GGHYPT  TW705-BD--15-3-12 Version 2.0 兼容2硬件版本个版本 M50 print \r\n ");
     /* show version */
     rt_show_version();
 

@@ -174,14 +174,6 @@ extern   u8       Api_CHK_ReadCycle_status(void);
 extern   u8    Api_Config_write(u8 *name, u16 ID, u8 *buffer, u16 wr_len);
 
 //  3.  ÆäËû
-#ifdef AVRG15MIN
-extern u8  Api_avrg15minSpd_Content_write(u8 *buffer, u16 wr_len);
-extern u8  Api_avrg15minSpd_Content_read(u8 *dest);
-extern u8  Avrg15_min_generate(u8 spd);
-extern u8  Avrg15_min_save(void);
-
-
-#endif
 
 extern   void   Api_MediaIndex_Init(void);
 extern   u32  Api_DFdirectory_Query(u8 *name, u8  returnType);

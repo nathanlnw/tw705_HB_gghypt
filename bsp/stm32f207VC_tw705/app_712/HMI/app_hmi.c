@@ -154,9 +154,24 @@ void Dayin_Fun(u8 dayin_par)
                 for(i = 0; i < 15; i++)
                 {
                     memset(print_buf, 0, sizeof(print_buf));
-                    sprintf(print_buf, "\r\n  20%2d-%d%d-%d%d %d%d:%d%d  %d km/h", drive_illegalstr[i * 7], \
-                            drive_illegalstr[i * 7 + 1] / 10, drive_illegalstr[i * 7 + 1] % 10, drive_illegalstr[i * 7 + 2] / 10, drive_illegalstr[i * 7 + 2] % 10, \
-                            drive_illegalstr[i * 7 + 3] / 10, drive_illegalstr[i * 7 + 3] % 10, drive_illegalstr[i * 7 + 4] / 10, drive_illegalstr[i * 7 + 4] % 10, \
+                    if((drive_illegalstr[i * 7 + 0] == 0) && (drive_illegalstr[i * 7 + 1] == 0) &&
+                            (drive_illegalstr[i * 7 + 2] == 0) && (drive_illegalstr[i * 7 + 3] == 0) &&
+                            (drive_illegalstr[i * 7 + 4] == 0) && (drive_illegalstr[i * 7 + 5] == 0))
+                    {
+                        //U3_PutStr("\r\n   NULL");
+                        continue;
+                    }
+
+                    if((drive_illegalstr[i * 7 + 0] == 0xFF) && (drive_illegalstr[i * 7 + 1] == 0xFF) &&
+                            (drive_illegalstr[i * 7 + 2] == 0xFF) && (drive_illegalstr[i * 7 + 3] == 0xFF) &&
+                            (drive_illegalstr[i * 7 + 4] == 0xFF) && (drive_illegalstr[i * 7 + 5] == 0xFF))
+                    {
+                        //U3_PutStr("\r\n   NULL");
+                        continue;
+                    }
+
+                    sprintf(print_buf, "\r\n  20%02d-%02d-%02d %02d:%02d  %d km/h", drive_illegalstr[i * 7], \
+                            drive_illegalstr[i * 7 + 1], drive_illegalstr[i * 7 + 2], drive_illegalstr[i * 7 + 3], drive_illegalstr[i * 7 + 4], \
                             drive_illegalstr[i * 7 + 6]);
                     printer(print_buf);
                 }

@@ -1278,117 +1278,227 @@ u8   Api_CHK_ReadCycle_status(void)
 
 // 2. Config
 #ifdef AVRG15MIN
-u8  Api_avrg15minSpd_Content_write(u8 *buffer, u16 wr_len)
+
+//   new  come  -------------------
+u8  Api_15min_read_1_record(u32 indexNum, u8 *dest)
 {
-    u8  fcs_in = 0, i = 0;
-    u8  regist_str[128];
+    u8  fcs_in = 0, i = 0, counter = 0;
+    u8  regist_str[8];
     u32  addr = (Avrg15minSpeedt_offset << 9); // 起始地址
-    //  每分钟记录 	7 byte	   6(datatime)+1 spd		15 分钟是15*7= 105 个字节 ,这里占用128 个字节每条记录
-    // 1 个扇区  4096 bytes 能存储 32	 条记录
-    DF_TAKE;
-    // 1. caculate   FCS
-    memset(regist_str, 0, sizeof(regist_str));
-    memcpy(regist_str, buffer, wr_len);
+
+
+    SST25V_BufferRead(regist_str, addr + 8 * indexNum, 8);
     fcs_in = 0;
-    for(i = 0; i < 105; i++)
+    for(i = 0; i < 7; i++)
     {
         fcs_in ^= regist_str[i];
     }
-    regist_str[i] = fcs_in;
-    //  2.  Check  wehter  need  to earase  sector
-    if(Avrg_15minSpd.write >= 32)
-        Avrg_15minSpd.write = 0;
-    if(Avrg_15minSpd.write == 0)
-        SST25V_SectorErase_4KByte(addr);
-    //  3. save
-    // save content
-    SST25V_BufferWrite( regist_str, addr + Avrg_15minSpd.write * 128, 128);
-    Avrg_15minSpd.write++;
-    // save wr pos
-    DF_Write_RecordAdd(Avrg_15minSpd.write, Avrg_15minSpd.read, TYPE_15minSpd);
-    DF_RELEASE;
-    return true;
+
+    if(regist_str[7] != fcs_in)
+    {
+        // OutPrint_HEX("read s",regist_str,8);
+        //printf("\r\n 读取1 record: 校验错误\r\n");
+        return 0;
+    }
+    else
+    {
+        counter = 0;
+        for(i = 0; i < 7; i++)
+        {
+            if(0xFF == regist_str[i])
+                counter++;
+            else
+                break;
+        }
+        if(counter == 7)
+        {
+            rt_kprintf("\r\n counter=%d,全FF\r\n", counter);
+            return 0;
+        }
+        // OutPrint_HEX("校验正确", regist_str,8);
+        memcpy(dest, regist_str, 7);
+    }
+
+    // OutPrint_HEX("record",regist_str,7);
+    return 7;
 }
 
 
 u8  Api_avrg15minSpd_Content_read(u8 *dest)
 {
-    u8  fcs_in = 0, i = 0;
-    u8  regist_str[128];
+    u8	fcs_in = 0, i = 0, limit = 0; //rx_timer=15;
+    u8	reg[8];
+    u8	regist_str[128];
+    u32  read_index = 0;
     u32  addr = (Avrg15minSpeedt_offset << 9); // 起始地址
 
-    DF_TAKE;
-    if(Avrg_15minSpd.write == 0)
+
+    memset(regist_str, 0, sizeof(regist_str));	 //  clear
+    if((Avrg_15minSpd.write == 0) && (Avrg_15minSpd.read == 0))
     {
         // rt_kprintf("\r\n 无15分钟最新记录1\r\n");
-        DF_RELEASE;
         return 0;
-
     }
 
-    SST25V_BufferRead(regist_str, addr + 128 * (Avrg_15minSpd.write - 1), 128);
-    fcs_in = 0;
-    for(i = 0; i < 105; i++)
+    if((Avrg_15minSpd.read == 1) && (Avrg_15minSpd.write < 15))
     {
-        fcs_in ^= regist_str[i];
-    }
-    if(regist_str[i] != fcs_in)
-    {
-        //rt_kprintf("\r\n 无15分钟最新记录: 校验错误\r\n");
+
+        if(Avrg_15minSpd.write == 0)
+            read_index = MAX_PERmin_NUM - 1;
+        else
+            read_index = Avrg_15minSpd.write - 1;
+
+
+        DF_TAKE;
+        for(i = 0; i < 15; i++)
+        {
+            if(Api_15min_read_1_record(read_index, reg) == 7)
+                memcpy(regist_str + i * 7, reg, 7);
+            // else
+            // return 0;
+            //-------------------------------
+            if(read_index == 0)
+                read_index = MAX_PERmin_NUM - 1;
+
+            read_index--;
+        }
         DF_RELEASE;
-        return 0;
     }
     else
-        memcpy(dest, regist_str, 105);
+    {
+        read_index = Avrg_15minSpd.write - 1;
 
-    // OutPrint_HEX("读取15分钟平均速度记录",regist_str,105);
-    DF_RELEASE;
+        if((Avrg_15minSpd.read == 0) && (Avrg_15minSpd.write < 15))
+            limit = Avrg_15minSpd.write;
+        else if((Avrg_15minSpd.write >= 15))
+            limit = 15;
+
+        DF_TAKE;
+        for(i = 0; i < limit; i++)
+        {
+            if(Api_15min_read_1_record(read_index, reg) == 7)
+                memcpy(regist_str + i * 7, reg, 7)	 ;
+            //else
+            // return 0;
+            read_index--;
+        }
+        DF_RELEASE;
+    }
+    memcpy(dest, regist_str, 105);
+    //OutPrint_HEX("读取15分钟平均速度记录",dest,105);
+
     return 105;
 }
-u8  Avrg15_min_generate(u8 spd)
+u8  Api_15min_save_1_record(void)
 {
-    if(Avrg_15minSpd.Ram_counter >= 15)
+    u8 read_index_num = 0; // 读取flash的下标
+    u8 avrg_spd = 0, value = 0;
+    u8 reg[8];
+    u32	addr = (Avrg15minSpeedt_offset << 9); // 起始地址
+
+
+    //rt_kprintf("\r\n spd_accumlate=%d",Avrg_15minSpd.spd_accumlate);
+    DF_TAKE;
+    if(Avrg_15minSpd.seconds_counter)
     {
-        Avrg_15minSpd.Ram_counter = 0;
-        Avrg_15minSpd.savefull_state = 1;
+        avrg_spd = (Avrg_15minSpd.spd_accumlate / Avrg_15minSpd.seconds_counter); // 当前平均速度为0
     }
-    Avrg_15minSpd.content[Avrg_15minSpd.Ram_counter * 7 + 0] = time_now.year;
-    Avrg_15minSpd.content[Avrg_15minSpd.Ram_counter * 7 + 1] = time_now.month;
-    Avrg_15minSpd.content[Avrg_15minSpd.Ram_counter * 7 + 2] = time_now.day;
-    Avrg_15minSpd.content[Avrg_15minSpd.Ram_counter * 7 + 3] = time_now.hour;
-    Avrg_15minSpd.content[Avrg_15minSpd.Ram_counter * 7 + 4] = time_now.min;
-    Avrg_15minSpd.content[Avrg_15minSpd.Ram_counter * 7 + 5] = 0;
-    Avrg_15minSpd.content[Avrg_15minSpd.Ram_counter * 7 + 6] = spd;
-    Avrg_15minSpd.Ram_counter++;
+    else
+        avrg_spd = 0;	// 存储为0	  平均速度为0
+
+    //rt_kprintf("\r\n avrg_spd=%d",avrg_spd);
+    // 准备存储	  0. 查看有没有以前的记录
+    if((Avrg_15minSpd.write > 0) || (Avrg_15minSpd.read == 1))
+    {
+        // 读取前一条记录，做时间比对   read 为1 表示存储超过一个大循环，否则为0
+        if((Avrg_15minSpd.read) && (Avrg_15minSpd.write == 0))
+        {
+            read_index_num = MAX_PERmin_NUM - 1;
+        }
+        else
+            read_index_num = Avrg_15minSpd.write - 1;
+
+        memset(reg, 0, sizeof(reg));
+        if(7 == Api_15min_read_1_record(read_index_num, reg))
+        {
+            // 当前时间和最后一次存储时间是否一致，否则不存储。
+            Avrg15_min_generate(avrg_spd);
+            if((Avrg_15minSpd.content[0] == reg[0]) && (Avrg_15minSpd.content[1] == reg[1]) &&
+                    (Avrg_15minSpd.content[2] == reg[2]) && (Avrg_15minSpd.content[3] == reg[3]) &&
+                    (Avrg_15minSpd.content[4] == reg[4]) && (Avrg_15minSpd.content[5] == reg[5]) &&
+                    (Avrg_15minSpd.content[6] == reg[6]))
+            {
+                DF_RELEASE;
+                return 0;
+            }
+        }
+
+    }
+
+    //  save
+
+    //  2.  Check	wehter	need  to earase  sector
+    if(Avrg_15minSpd.write >= MAX_PERmin_NUM)
+    {
+        Avrg_15minSpd.write = 0;
+        Avrg_15minSpd.read = 1; // 表示存储过一个大循环
+    }
+    if(Avrg_15minSpd.write % 512 == 0) // 64  record ==512 bytes 	 4K=  8*64 =512
+        SST25V_SectorErase_4KByte(addr + Avrg_15minSpd.write * 8);
+    //  3. save
+    // save content
+    SST25V_BufferWrite( Avrg_15minSpd.content, addr + Avrg_15minSpd.write * 8, 8);
+    Avrg_15minSpd.write++;
+    // save wr pos
+    DF_Write_RecordAdd(Avrg_15minSpd.write, Avrg_15minSpd.read, TYPE_15minSpd);
+    // OutPrint_HEX("写1min spd",Avrg_15minSpd.content,8);
+    DF_RELEASE;
+    return 1;
+}
+
+u8	Avrg15_min_generate(u8 spd)
+{
+    u8  fcs_in = 0, i = 0;
+
+    Avrg_15minSpd.content[0] = time_now.year;
+    Avrg_15minSpd.content[1] = time_now.month;
+    Avrg_15minSpd.content[2] = time_now.day;
+    Avrg_15minSpd.content[3] = time_now.hour;
+    Avrg_15minSpd.content[4] = time_now.min;
+    Avrg_15minSpd.content[5] = 0;
+    Avrg_15minSpd.content[6] = spd;
+
+    fcs_in = 0;
+    for(i = 0; i < 7; i++)
+    {
+        fcs_in ^= Avrg_15minSpd.content[i];
+    }
+    Avrg_15minSpd.content[7] = fcs_in;
+
     return true;
 }
 
-u8 Avrg15_min_save(void)
+
+void Averg15_min_timer_1s(void)
 {
-    u8  regist_save[128];
-    u8  i = 0;
-    s8 reg_wr = Avrg_15minSpd.Ram_counter;
+    u8 spd_reg = 0, i = 0, spd_usefull_counter = 0, pos_V = 0, avrg_spd = 0;
+    u8 reg8[6];
 
 
-    if(reg_wr == 0)
-        reg_wr = 14;
-    else
-        reg_wr--;
-
-    memset(regist_save, 0, sizeof(regist_save));
-
-    for(i = 0; i < 15; i++)
+    //  停车前15 分钟平均速度记录
+    if(Avrg_15minSpd.seconds_counter == 59)
     {
-        memcpy(regist_save + (14 - i) * 7, Avrg_15minSpd.content + reg_wr * 7, 7);
-        if(reg_wr == 0)
-            reg_wr = 14;
-        else
-            reg_wr--;
+        Api_15min_save_1_record();
     }
-
-    Api_avrg15minSpd_Content_write(regist_save, 105);
-    //  OutPrint_HEX("存储15分钟平均速度记录",regist_save,105);
-    return true;
+    //---------09  tick --------------
+    Avrg_15minSpd.seconds_counter++;
+    if(Avrg_15minSpd.seconds_counter >= 60)
+    {
+        Avrg_15minSpd.seconds_counter = 0;
+        Avrg_15minSpd.spd_accumlate = 0;
+    }
+    //  upadate  per second	 it's  very  important
+    Avrg_15minSpd.spd_accumlate += Spd_Using / 10;
 }
 
 #endif

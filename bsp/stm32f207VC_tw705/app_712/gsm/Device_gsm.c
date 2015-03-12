@@ -48,7 +48,7 @@ flash char  M50_CommAT_Str8[] = "AT+CRSL=80\r\n"; //;来电音量
 flash char  M50_CommAT_Str9[] = "ATL2\r\n"; // 设置监听扬声器音量
 flash char  M50_CommAT_Str11[] = "AT+QMEDVL=80\r\n"; //"AT%RECFDEL\r\n";//"AT\r\n"; //
 flash char  M50_CommAT_Str12[] = "AT+CMGF=0\r\n"; // PDU 模式
-flash char  M50_CommAT_Str13[] = "AT+CPMS=\"SM\",\"SM\",\"SM\"\r\n";    
+flash char  M50_CommAT_Str13[] = "AT+CPMS=\"SM\",\"SM\",\"SM\"\r\n";
 flash char  M50_CommAT_Str14[] = "AT+CNMI=2,1\r\n";
 
 
@@ -168,9 +168,9 @@ DATA_DIAL             DataDial;
 ALIGN(RT_ALIGN_SIZE)
 u8     GSM_rx[GSMRX_SIZE];
 u16     GSM_rx_Wr = 0;
-u16     gsm_rx_infolen=0;  
-u8      gsm_rx_linknum=0; 
-u8      gsm_rdy_2_rxEnable=0;   // 等待接收
+u16     gsm_rx_infolen = 0;
+u8      gsm_rx_linknum = 0;
+u8      gsm_rdy_2_rxEnable = 0; // 等待接收
 
 
 
@@ -242,20 +242,20 @@ u8    TTS_Get_Data(u8 *Instr, u16 LEN)    //  return   0   : OK     return   1 :
     }
     //  2.   HEX to  ASCII convert
     memset(TTS_Var.ASCII_BUF, 0, sizeof((const char *)TTS_Var.ASCII_BUF));
-	
-#ifdef M50_GSM	
-	 if(Module_Type)
-	 {
-		 memcpy(TTS_Var.ASCII_BUF,Instr, LEN); 
-		 TTS_Var.ASCII_Len =LEN ; // 长度
-	 }
-	 else	
-#endif 
-		{
-    TTS_Var.ASCII_Len = GSM_HextoAscii_Convert(Instr, LEN, TTS_Var.ASCII_BUF);
-    TTS_Var.ASCII_Len = (LEN << 1); // 长度乘以 2
-		}
-	
+
+#ifdef M50_GSM
+    if(Module_Type)
+    {
+        memcpy(TTS_Var.ASCII_BUF, Instr, LEN);
+        TTS_Var.ASCII_Len = LEN ; // 长度
+    }
+    else
+#endif
+    {
+        TTS_Var.ASCII_Len = GSM_HextoAscii_Convert(Instr, LEN, TTS_Var.ASCII_BUF);
+        TTS_Var.ASCII_Len = (LEN << 1); // 长度乘以 2
+    }
+
     //  3. cacu  timeout value
     TTS_Var.TimeOut_limt = LEN / 3 + 3; // 3个字每秒+ 3  秒保护时间
     TTS_Var.TimeCounter = 0;
@@ -274,18 +274,18 @@ u8    TTS_Data_Play(void)
         TTS_Var.Save = 0;
         //  3. HEX to  ASCII
         memset(TTS_Var.ASCII_BUF, 0, sizeof((const char *)TTS_Var.ASCII_BUF));
-		#ifdef M50_GSM	
-		 if(Module_Type)
-		 {
-			 memcpy(TTS_Var.ASCII_BUF,TTS_Var.HEX_BUF, TTS_Var.HEX_len); 
-			 TTS_Var.ASCII_Len =TTS_Var.HEX_len ; // 长度
-		 }
-		 else	
-		#endif 
-			{
-		        TTS_Var.ASCII_Len = GSM_HextoAscii_Convert(TTS_Var.HEX_BUF, TTS_Var.HEX_len, TTS_Var.ASCII_BUF);
-		        TTS_Var.ASCII_Len = (TTS_Var.HEX_len << 1); // 长度乘以 2
-			}
+#ifdef M50_GSM
+        if(Module_Type)
+        {
+            memcpy(TTS_Var.ASCII_BUF, TTS_Var.HEX_BUF, TTS_Var.HEX_len);
+            TTS_Var.ASCII_Len = TTS_Var.HEX_len ; // 长度
+        }
+        else
+#endif
+        {
+            TTS_Var.ASCII_Len = GSM_HextoAscii_Convert(TTS_Var.HEX_BUF, TTS_Var.HEX_len, TTS_Var.ASCII_BUF);
+            TTS_Var.ASCII_Len = (TTS_Var.HEX_len << 1); // 长度乘以 2
+        }
         //  4. cacu  timeout value
         TTS_Var.TimeOut_limt = TTS_Var.HEX_len / 3 + 3; // 3个字每秒+ 3  秒保护时间
         TTS_Var.TimeCounter = 0;
@@ -300,29 +300,29 @@ u8    TTS_Data_Play(void)
         TTS_Var.Playing = 1;
         //  head
         memset(AT_TTS, 0, sizeof(AT_TTS));
-	    #ifdef M50_GSM	
-		 if(Module_Type)
-		 strcat(AT_TTS, "AT+QTTS=2,\"");  
-		 else	
-		#endif 	
-           strcat(AT_TTS, "AT%TTS=2,3,6,\"");
+#ifdef M50_GSM
+        if(Module_Type)
+            strcat(AT_TTS, "AT+QTTS=2,\"");
+        else
+#endif
+            strcat(AT_TTS, "AT%TTS=2,3,6,\"");
         TTS_Len = strlen(AT_TTS)	;
         //  info
         memcpy(AT_TTS + TTS_Len, TTS_Var.ASCII_BUF, TTS_Var.ASCII_Len);
         TTS_Len += TTS_Var.ASCII_Len;
         //  tail
-        #ifdef M50_GSM	
-		 if(Module_Type)
-		  {
-		    memcpy((char *)AT_TTS + TTS_Len, "\",4\r\n", 5); // tail  
-		    TTS_Len += 5;
-		  }  
-		 else	
-		#endif 	
+#ifdef M50_GSM
+        if(Module_Type)
         {
-	         memcpy((char *)AT_TTS + TTS_Len, "\"\r\n", 3); // tail  
-	        TTS_Len += 3;
-		}
+            memcpy((char *)AT_TTS + TTS_Len, "\",4\r\n", 5); // tail
+            TTS_Len += 5;
+        }
+        else
+#endif
+        {
+            memcpy((char *)AT_TTS + TTS_Len, "\"\r\n", 3); // tail
+            TTS_Len += 3;
+        }
         if( GB19056.workstate == 0)
         {
             for(i = 0; i < TTS_Len; i++)
@@ -445,95 +445,95 @@ void  DataLink_MainSocket_set(u8 *IP, u16  PORT, u8 DebugOUT)
 {
 #ifdef M50_GSM
 
- if(Module_Type)
- 	{
-         memset((char *)M50_DialStr_Link1,0,sizeof(M50_DialStr_Link1)); // clear	  
-	  sprintf((char*)M50_DialStr_Link1,M50_DialStr_Link1_demo,1,"TCP",IP[0],IP[1],IP[2],IP[3],PORT);	
-
-	     if(DebugOUT)
-	     	{
-		  rt_kprintf("		   Main Initial  Str:");  
-		  rt_kprintf((char*)M50_DialStr_Link1);
-	     	} 
- 	}
- else
-#endif 	
- {
-    memset((char *)DialStr_Link1 + 20, 0, sizeof(DialStr_Link1) - 20);
-    IP_Str((char *)DialStr_Link1 + 20, *( u32 * ) IP);
-
-    strcat((char *) DialStr_Link1, "\"," );
-    sprintf((char *)DialStr_Link1 + strlen((char const *)DialStr_Link1), "%u\r\n", PORT);
-
-    if(DebugOUT)
+    if(Module_Type)
     {
-        rt_kprintf("		   Main Initial  Str:");
-        rt_kprintf((char *)DialStr_Link1);
+        memset((char *)M50_DialStr_Link1, 0, sizeof(M50_DialStr_Link1)); // clear
+        sprintf((char *)M50_DialStr_Link1, M50_DialStr_Link1_demo, 1, "TCP", IP[0], IP[1], IP[2], IP[3], PORT);
+
+        if(DebugOUT)
+        {
+            rt_kprintf("		   Main Initial  Str:");
+            rt_kprintf((char *)M50_DialStr_Link1);
+        }
     }
- }
+    else
+#endif
+    {
+        memset((char *)DialStr_Link1 + 20, 0, sizeof(DialStr_Link1) - 20);
+        IP_Str((char *)DialStr_Link1 + 20, *( u32 * ) IP);
+
+        strcat((char *) DialStr_Link1, "\"," );
+        sprintf((char *)DialStr_Link1 + strlen((char const *)DialStr_Link1), "%u\r\n", PORT);
+
+        if(DebugOUT)
+        {
+            rt_kprintf("		   Main Initial  Str:");
+            rt_kprintf((char *)DialStr_Link1);
+        }
+    }
 }
 
 void  DataLink_AuxSocket_set(u8 *IP, u16  PORT, u8 DebugOUT)
 {
 #ifdef M50_GSM
 
- if(Module_Type)
- {
-	 memset((char *)M50_DialStr_LinkAux,0,sizeof(M50_DialStr_LinkAux)); // clear	 
-	 sprintf((char*)M50_DialStr_LinkAux,M50_DialStr_LinkAux_demo,1,"TCP",IP[0],IP[1],IP[2],IP[3],PORT);
-	 
-		if(DebugOUT)
-	{
-	  rt_kprintf("\r\n	辅IP   DialString : "); 
-	  rt_kprintf((char*)M50_DialStr_LinkAux);		   
-	} 
-
-}
- else
-#endif
- {
-    memset((char *)DialStr_LinkAux + 20, 0, sizeof(DialStr_LinkAux) - 20);
-    IP_Str((char *)DialStr_LinkAux + 20, *( u32 * ) IP);
-
-    strcat((char *) DialStr_LinkAux, "\"," );
-    sprintf((char *)DialStr_LinkAux + strlen((char const *)DialStr_LinkAux), "%u\r\n", PORT);
-
-    if(DebugOUT)
+    if(Module_Type)
     {
-        rt_kprintf("\r\n  辅IP   DialString : ");
-        rt_kprintf((char *)DialStr_LinkAux);
+        memset((char *)M50_DialStr_LinkAux, 0, sizeof(M50_DialStr_LinkAux)); // clear
+        sprintf((char *)M50_DialStr_LinkAux, M50_DialStr_LinkAux_demo, 1, "TCP", IP[0], IP[1], IP[2], IP[3], PORT);
+
+        if(DebugOUT)
+        {
+            rt_kprintf("\r\n	辅IP   DialString : ");
+            rt_kprintf((char *)M50_DialStr_LinkAux);
+        }
+
     }
- }
+    else
+#endif
+    {
+        memset((char *)DialStr_LinkAux + 20, 0, sizeof(DialStr_LinkAux) - 20);
+        IP_Str((char *)DialStr_LinkAux + 20, *( u32 * ) IP);
+
+        strcat((char *) DialStr_LinkAux, "\"," );
+        sprintf((char *)DialStr_LinkAux + strlen((char const *)DialStr_LinkAux), "%u\r\n", PORT);
+
+        if(DebugOUT)
+        {
+            rt_kprintf("\r\n  辅IP   DialString : ");
+            rt_kprintf((char *)DialStr_LinkAux);
+        }
+    }
 }
 void  DataLink_IC_Socket_set(u8 *IP, u16  PORT, u8 DebugOUT)
 {
- #ifdef M50_GSM
-  if(Module_Type)
-  {    
-	     memset((char *)M50_DialStr_IC_card,0,sizeof(M50_DialStr_IC_card)); // clear	  
-		  sprintf((char*)M50_DialStr_IC_card,M50_DialStr_IC_card_demo,2,"TCP",IP[0],IP[1],IP[2],IP[3],PORT); 
-		 if(DebugOUT)
-		 {
-			 rt_kprintf("\r\n IC  DialString : "); 
-			 rt_kprintf((char*)M50_DialStr_IC_card);		 
-		 }	 
-
-  }
-  else
-  #endif	
-  {
-    memset((char *)DialStr_IC_card + 20, 0, sizeof(DialStr_IC_card) - 20);
-    IP_Str((char *)DialStr_IC_card + 20, *( u32 * ) IP);
-
-    strcat((char *) DialStr_IC_card, "\"," );
-    sprintf((char *)DialStr_IC_card + strlen((char const *)DialStr_IC_card), "%u\r\n", PORT);
-
-    if(DebugOUT)
+#ifdef M50_GSM
+    if(Module_Type)
     {
-        rt_kprintf("\r\n IC  DialString : ");
-        rt_kprintf((char *)DialStr_IC_card);
+        memset((char *)M50_DialStr_IC_card, 0, sizeof(M50_DialStr_IC_card)); // clear
+        sprintf((char *)M50_DialStr_IC_card, M50_DialStr_IC_card_demo, 2, "TCP", IP[0], IP[1], IP[2], IP[3], PORT);
+        if(DebugOUT)
+        {
+            rt_kprintf("\r\n IC  DialString : ");
+            rt_kprintf((char *)M50_DialStr_IC_card);
+        }
+
     }
-  }
+    else
+#endif
+    {
+        memset((char *)DialStr_IC_card + 20, 0, sizeof(DialStr_IC_card) - 20);
+        IP_Str((char *)DialStr_IC_card + 20, *( u32 * ) IP);
+
+        strcat((char *) DialStr_IC_card, "\"," );
+        sprintf((char *)DialStr_IC_card + strlen((char const *)DialStr_IC_card), "%u\r\n", PORT);
+
+        if(DebugOUT)
+        {
+            rt_kprintf("\r\n IC  DialString : ");
+            rt_kprintf((char *)DialStr_IC_card);
+        }
+    }
 }
 
 void  DataLink_IspSocket_set(u8 *IP, u16  PORT, u8 DebugOUT)
@@ -551,7 +551,7 @@ void  DataLink_IspSocket_set(u8 *IP, u16  PORT, u8 DebugOUT)
 
 void  DataLink_APN_Set(u8 *apn_str, u8 DebugOUT)
 {
- 
+
     memset(Dialinit_APN + APN_initSTR_LEN, 0, sizeof(Dialinit_APN) - APN_initSTR_LEN);
     memcpy(Dialinit_APN + APN_initSTR_LEN, apn_str, strlen((char const *)apn_str));
     strcat( (char *)Dialinit_APN, "\"\r\n" );
@@ -561,18 +561,18 @@ void  DataLink_APN_Set(u8 *apn_str, u8 DebugOUT)
         rt_kprintf("\r\n APN 设置 :  ");
         rt_kprintf((const char *)Dialinit_APN);
     }
-  
+
 }
 
 
 void  DataLink_DNSR_Set(u8 *Dns_str, u8 DebugOUT)
 {
-   #ifdef M50_GSM
-        memset(M50_Dialinit_DNSR+13,0,sizeof(M50_Dialinit_DNSR)-13); 
-	  memcpy(M50_Dialinit_DNSR+13,Dns_str,strlen((char const*)Dns_str));  
-	  strcat( M50_Dialinit_DNSR,"\"\r\n" );  
-   #endif  	  	
-	  	
+#ifdef M50_GSM
+    memset(M50_Dialinit_DNSR + 13, 0, sizeof(M50_Dialinit_DNSR) - 13);
+    memcpy(M50_Dialinit_DNSR + 13, Dns_str, strlen((char const *)Dns_str));
+    strcat( M50_Dialinit_DNSR, "\"\r\n" );
+#endif
+
     memset(Dialinit_DNSR + 9, 0, sizeof(Dialinit_DNSR) - 9);
     memcpy(Dialinit_DNSR + 9, Dns_str, strlen((char const *)Dns_str));
     strcat( Dialinit_DNSR, "\"\r\n" );
@@ -587,12 +587,12 @@ void  DataLink_DNSR_Set(u8 *Dns_str, u8 DebugOUT)
 
 void  DataLink_DNSR2_Set(u8 *Dns_str, u8 DebugOUT)
 {
-   #ifdef M50_GSM
-     memset(M50_Dialinit_DNSR2+13,0,sizeof(M50_Dialinit_DNSR2)-13); 
-	  memcpy(M50_Dialinit_DNSR2+13,Dns_str,strlen((char const*)Dns_str));  
-	  strcat( M50_Dialinit_DNSR2,"\"\r\n" ); 
-#endif	  	
-	
+#ifdef M50_GSM
+    memset(M50_Dialinit_DNSR2 + 13, 0, sizeof(M50_Dialinit_DNSR2) - 13);
+    memcpy(M50_Dialinit_DNSR2 + 13, Dns_str, strlen((char const *)Dns_str));
+    strcat( M50_Dialinit_DNSR2, "\"\r\n" );
+#endif
+
     memset(Dialinit_DNSR2 + 9, 0, sizeof(Dialinit_DNSR2) - 9);
     memcpy(Dialinit_DNSR2 + 9, Dns_str, strlen((char const *)Dns_str));
     strcat( Dialinit_DNSR2, "\"\r\n" );
@@ -630,7 +630,7 @@ void Gsm_RegisterInit(void)
     DataLink_MainSocket_set(RemoteIP_main, RemotePort_main, 1);
 
     //  DataLink_AuxSocket_set(RemoteIP_aux, RemotePort_aux,1);
-     Dial_Stage(Dial_Idle); 
+    Dial_Stage(Dial_Idle);
 }
 
 
@@ -699,92 +699,92 @@ void Dial_Stage(T_Dial_Stage  Stage)
     DataDial.Dial_step_Retry = 0;
 }
 void  GSM_RxHandler(u8 data)
-{ 
- static  u16  i=0;
- 
-    rt_interrupt_enter( );
-	#ifdef M50_GSM  
-	if(gsm_rx_infolen)
-	{
-	   if(gsm_rdy_2_rxEnable==1)   // first  rx 
-		{ 
-		  GSM_INT_BUFF.gsm_wr = 0; // clear first
-		  gsm_rdy_2_rxEnable=0;
-		}
-	   gsm_rx_infolen--;
-	   
-	   GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr++] = data;
-	   
-	   if(gsm_rx_infolen==0)	// rx end 
-		{	  
-	
-				switch(gsm_rx_linknum)
-					{
-					   case  1:  // mainlink								
-							 memcpy(GSM_HEX, GSM_INT_BUFF.gsm_content,GSM_INT_BUFF.gsm_wr); 
-							 GSM_HEX_len=GSM_INT_BUFF.gsm_wr; 
-							 Receive_DataFlag = 1;
-							 gsm_rx_linknum=0;
-							 break;
-					   case  2:  // aux link
-							  memcpy(GSM_HEX, GSM_INT_BUFF.gsm_content,GSM_INT_BUFF.gsm_wr); 
-							 GSM_HEX_len=GSM_INT_BUFF.gsm_wr; 
-							 Receive_DataFlag = 1;
-							 gsm_rx_linknum=0; 
-							 break; 
-					}								
-			GSM_INT_BUFF.gsm_wr = 0; 
-		}
-	   else   //  rx  not  end	
-		{
-		  //---------------------------------------------------------
-			 if( GSM_INT_BUFF.gsm_wr == GSM_TYPEBUF_SIZE )
-			{
-				GSM_INT_BUFF.gsm_wr = 0;
-			}
-			GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr ]=0;  
-		  //--------------------------------------------------------	
-		}
-		 
-	}
-	else
-	#endif	
-    if( ( data == 0x0a) && (former_byte == 0x0d ) ) /*遇到0d 0a 表明结束*/
-    {
-        GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr++] = data;
-        if( GSM_INT_BUFF.gsm_wr < 1400 )
-        {
-           
-			  /* 在中断里判断并处理*/  
-           #ifdef M50_GSM
-			 if( strncmp( GSM_INT_BUFF.gsm_content, "+RECEIVE:", 9 ) == 0 ) //+RECEIVE: 1, 29 
-			 {
-				 /*解析出净信息,编译器会优化掉pdst*/
-				 i = sscanf(GSM_INT_BUFF.gsm_content, "+RECEIVE: %d, %d", &gsm_rx_linknum, &gsm_rx_infolen );
-				 if( i != 2 )
-				 {
-					 gsm_rx_linknum  = 0;  
-					 gsm_rx_infolen= 0;
-				 }
-				 gsm_rdy_2_rxEnable=1;	 
-		   
-			 }
-			else
-          #endif
-             rt_mq_send( &mq_GSM, (void *)&GSM_INT_BUFF, GSM_INT_BUFF.gsm_wr + 2 );
-        }
+{
+    static  u16  i = 0;
 
-        GSM_INT_BUFF.gsm_wr = 0;
-    }
-    else
+    rt_interrupt_enter( );
+#ifdef M50_GSM
+    if(gsm_rx_infolen)
     {
-        GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr++] = data;
-        if( GSM_INT_BUFF.gsm_wr == GSM_TYPEBUF_SIZE )
+        if(gsm_rdy_2_rxEnable == 1) // first  rx
         {
+            GSM_INT_BUFF.gsm_wr = 0; // clear first
+            gsm_rdy_2_rxEnable = 0;
+        }
+        gsm_rx_infolen--;
+
+        GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr++] = data;
+
+        if(gsm_rx_infolen == 0)	// rx end
+        {
+
+            switch(gsm_rx_linknum)
+            {
+            case  1:  // mainlink
+                memcpy(GSM_HEX, GSM_INT_BUFF.gsm_content, GSM_INT_BUFF.gsm_wr);
+                GSM_HEX_len = GSM_INT_BUFF.gsm_wr;
+                Receive_DataFlag = 1;
+                gsm_rx_linknum = 0;
+                break;
+            case  2:  // aux link
+                memcpy(GSM_HEX, GSM_INT_BUFF.gsm_content, GSM_INT_BUFF.gsm_wr);
+                GSM_HEX_len = GSM_INT_BUFF.gsm_wr;
+                Receive_DataFlag = 1;
+                gsm_rx_linknum = 0;
+                break;
+            }
             GSM_INT_BUFF.gsm_wr = 0;
         }
-        GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr] = 0;
+        else   //  rx  not  end
+        {
+            //---------------------------------------------------------
+            if( GSM_INT_BUFF.gsm_wr == GSM_TYPEBUF_SIZE )
+            {
+                GSM_INT_BUFF.gsm_wr = 0;
+            }
+            GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr ] = 0;
+            //--------------------------------------------------------
+        }
+
     }
+    else
+#endif
+        if( ( data == 0x0a) && (former_byte == 0x0d ) ) /*遇到0d 0a 表明结束*/
+        {
+            GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr++] = data;
+            if( GSM_INT_BUFF.gsm_wr < 1400 )
+            {
+
+                /* 在中断里判断并处理*/
+#ifdef M50_GSM
+                if( strncmp( GSM_INT_BUFF.gsm_content, "+RECEIVE:", 9 ) == 0 ) //+RECEIVE: 1, 29
+                {
+                    /*解析出净信息,编译器会优化掉pdst*/
+                    i = sscanf(GSM_INT_BUFF.gsm_content, "+RECEIVE: %d, %d", &gsm_rx_linknum, &gsm_rx_infolen );
+                    if( i != 2 )
+                    {
+                        gsm_rx_linknum  = 0;
+                        gsm_rx_infolen = 0;
+                    }
+                    gsm_rdy_2_rxEnable = 1;
+
+                }
+                else
+#endif
+                    rt_mq_send( &mq_GSM, (void *)&GSM_INT_BUFF, GSM_INT_BUFF.gsm_wr + 2 );
+            }
+
+            GSM_INT_BUFF.gsm_wr = 0;
+        }
+        else
+        {
+            GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr++] = data;
+            if( GSM_INT_BUFF.gsm_wr == GSM_TYPEBUF_SIZE )
+            {
+                GSM_INT_BUFF.gsm_wr = 0;
+            }
+            GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr] = 0;
+        }
     former_byte = data;
     rt_interrupt_leave( );
 
@@ -926,72 +926,72 @@ u16  GSM_AsciitoHEX_Convert(u8 *Src_str, u16 Src_infolen, u8 *Out_Str)
 
 void  Data_Send(u8 *DataStr, u16  Datalen, u8  Link_Num)
 {
-    u16  i = 0, packet_len = 0;	
-	u8   AT_send_str[20];  
+    u16  i = 0, packet_len = 0;
+    u8   AT_send_str[20];
     //  4. Send
-     #ifdef M50_GSM  
-   if(Module_Type)
-   	{
-		 memset(AT_send_str,0,sizeof(AT_send_str));
-		
-		   if(Link_Num==0)
-		   {
-			  sprintf((char*)AT_send_str,(char*)M50_Send_TCP, GPRS_infoWr_Tx);
-			  M50_Mainlink_send_over=1; // 主链路发送信息
-		   }
-		 else
-		   {		   
-			  sprintf((char*)AT_send_str,(char*)M50_Send_ISP, GPRS_infoWr_Tx); 
-		   } 
-		 
-		
-		 rt_hw_gsm_output(AT_send_str);  
-		 delay_ms(100);// 给模块返回输出时间   
-	   
-	    if((Photo_sdState.photo_sending == 0) && (GB19056.workstate == 0)) // 拍照时不输出相关信息
-		{
-		   rt_kprintf(AT_send_str);
-		   OutPrint_HEX("GsmSend",DataStr,GPRS_infoWr_Tx);	  
-	    }
-		rt_hw_gsm_output_Data(DataStr,GPRS_infoWr_Tx);	
-	   // rt_hw_gsm_putc (0x1A);  
-		WatchDog_Feed();
-		rt_thread_delay(RT_TICK_PER_SECOND/10);//DF_delay_ms(100);	   
-
-   	}
-   else
-   	#endif
-   {
-    //  4.1  发送要发送的信息长度
-    memset(GSM_AsciiTx, 0, sizeof(GSM_AsciiTx));
-    if(Link_Num == 0)
+#ifdef M50_GSM
+    if(Module_Type)
     {
-        strcat((char *)GSM_AsciiTx, Send_TCP);      // head
-        packet_len = strlen((const char *)Send_TCP);
+        memset(AT_send_str, 0, sizeof(AT_send_str));
+
+        if(Link_Num == 0)
+        {
+            sprintf((char *)AT_send_str, (char *)M50_Send_TCP, GPRS_infoWr_Tx);
+            M50_Mainlink_send_over = 1; // 主链路发送信息
+        }
+        else
+        {
+            sprintf((char *)AT_send_str, (char *)M50_Send_ISP, GPRS_infoWr_Tx);
+        }
+
+
+        rt_hw_gsm_output(AT_send_str);
+        delay_ms(100);// 给模块返回输出时间
+
+        if((Photo_sdState.photo_sending == 0) && (GB19056.workstate == 0)) // 拍照时不输出相关信息
+        {
+            rt_kprintf(AT_send_str);
+            OutPrint_HEX("GsmSend", DataStr, GPRS_infoWr_Tx);
+        }
+        rt_hw_gsm_output_Data(DataStr, GPRS_infoWr_Tx);
+        // rt_hw_gsm_putc (0x1A);
+        WatchDog_Feed();
+        rt_thread_delay(RT_TICK_PER_SECOND / 10); //DF_delay_ms(100);
+
     }
     else
+#endif
     {
-        strcat((char *)GSM_AsciiTx, Send_ISP);      // head
-        packet_len = strlen((const char *)Send_ISP);
-    }
-    //  infomation
-    WatchDog_Feed();
-    GSM_AsciiTx_len = GSM_HextoAscii_Convert( DataStr, Datalen, GSM_AsciiTx + packet_len);
-    packet_len += GSM_AsciiTx_len;
-    strcat((char *)GSM_AsciiTx, "\"\r\n");  // tail
-    WatchDog_Feed();
-    packet_len += 3;
+        //  4.1  发送要发送的信息长度
+        memset(GSM_AsciiTx, 0, sizeof(GSM_AsciiTx));
+        if(Link_Num == 0)
+        {
+            strcat((char *)GSM_AsciiTx, Send_TCP);      // head
+            packet_len = strlen((const char *)Send_TCP);
+        }
+        else
+        {
+            strcat((char *)GSM_AsciiTx, Send_ISP);      // head
+            packet_len = strlen((const char *)Send_ISP);
+        }
+        //  infomation
+        WatchDog_Feed();
+        GSM_AsciiTx_len = GSM_HextoAscii_Convert( DataStr, Datalen, GSM_AsciiTx + packet_len);
+        packet_len += GSM_AsciiTx_len;
+        strcat((char *)GSM_AsciiTx, "\"\r\n");  // tail
+        WatchDog_Feed();
+        packet_len += 3;
 
-    // 4.2 发送信息内容1
-    //   if(DispContent==2)
-    if((Photo_sdState.photo_sending == 0) && (GB19056.workstate == 0)) // 拍照时不输出相关信息
-    {
-        for(i = 0; i < packet_len; i++)
-            rt_kprintf("%c", GSM_AsciiTx[i]);
-    }
-    rt_hw_gsm_output_Data(GSM_AsciiTx, packet_len);
-    WatchDog_Feed();
-    rt_thread_delay(RT_TICK_PER_SECOND / 10); //DF_delay_ms(100);
+        // 4.2 发送信息内容1
+        //   if(DispContent==2)
+        if((Photo_sdState.photo_sending == 0) && (GB19056.workstate == 0)) // 拍照时不输出相关信息
+        {
+            for(i = 0; i < packet_len; i++)
+                rt_kprintf("%c", GSM_AsciiTx[i]);
+        }
+        rt_hw_gsm_output_Data(GSM_AsciiTx, packet_len);
+        WatchDog_Feed();
+        rt_thread_delay(RT_TICK_PER_SECOND / 10); //DF_delay_ms(100);
     }
 }
 
@@ -1006,11 +1006,11 @@ void End_Datalink(void)
         if(DataLink_EndCounter == 2)
         {
             //rt_kprintf(" Ready to escape gprs \r\n");
-               #ifdef M50_GSM
+#ifdef M50_GSM
             if(Module_Type)
                 rt_hw_gsm_output(M50_CutDataLnk_str2);
             else
-				#endif
+#endif
                 rt_hw_gsm_output(CutDataLnk_str2);
             if(GB19056.workstate == 0)
                 rt_kprintf(CutDataLnk_str2);
@@ -1019,11 +1019,11 @@ void End_Datalink(void)
         }
         else if(DataLink_EndCounter == 3)
         {
-              #ifdef M50_GSM 
+#ifdef M50_GSM
             if(Module_Type)
                 rt_hw_gsm_output("AT+QICLOSE=2\r\n");
             else
-			  #endif
+#endif
                 rt_hw_gsm_output(CutDataLnk_str3);	// 关闭掉Internet
             //  rt_kprintf(CutDataLnk_str3);	// 关闭掉Internet
             DataDial.Dial_step_Retry = 0;
@@ -1032,11 +1032,11 @@ void End_Datalink(void)
         }
         else if(DataLink_EndCounter == 5)
         {
-             #ifdef M50_GSM
+#ifdef M50_GSM
             if(Module_Type)
                 rt_hw_gsm_output("AT+QICLOSE=5\r\n");
             else
-				#endif
+#endif
                 rt_hw_gsm_output(CutDataLnk_str4);
             //rt_kprintf(CutDataLnk_str4);
             DataDial.Dial_step_Retry = 0;
@@ -1179,15 +1179,15 @@ u8  GPRS_GSM_PowerON(void)
     return   0;
 }
 
-void Moudule_Init_Select(u8* dest,flash char*M50,flash char *M69)
+void Moudule_Init_Select(u8 *dest, flash char *M50, flash char *M69)
 {
-           #ifdef M50_GSM
-			 if(Module_Type)
-				 memcpy(dest, M50, strlen(M50));
-			 else
-			#endif	 
-				 memcpy(dest, M69, strlen(M69));
-		  rt_hw_gsm_output((const char*)dest);	
+#ifdef M50_GSM
+    if(Module_Type)
+        memcpy(dest, M50, strlen(M50));
+    else
+#endif
+        memcpy(dest, M69, strlen(M69));
+    rt_hw_gsm_output((const char *)dest);
 }
 
 void GPRS_GSM_PowerOFF_Working(void)
@@ -1233,116 +1233,116 @@ void GSM_Module_TotalInitial(u8 Invalue)
             memset(cmd_str, 0, sizeof(cmd_str));
             switch(CommAT.Initial_step)
             {
-            case 0:			
-                Moudule_Init_Select(cmd_str,M50_CommAT_Str1,CommAT_Str1);
+            case 0:
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str1, CommAT_Str1);
                 //rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 1:
-			    Moudule_Init_Select(cmd_str,M50_CommAT_Str2,CommAT_Str2);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str2, CommAT_Str2);
                 //rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
 
             case 2:/* Query Operator */
-       
+
                 memcpy(cmd_str, CommAT_Str3, strlen(CommAT_Str3));  //  通用命令
-                rt_hw_gsm_output((const char*)cmd_str);
+                rt_hw_gsm_output((const char *)cmd_str);
                 //CommAT.Initial_step++;
                 break;
             case 3:
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str4,CommAT_Str4);	
-               // rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str4, CommAT_Str4);
+                // rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 4:
-              	Moudule_Init_Select(cmd_str,M50_CommAT_Str5,CommAT_Str5);	
-               // rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str5, CommAT_Str5);
+                // rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 5:
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str8,CommAT_Str8);	
-                rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str8, CommAT_Str8);
+                rt_hw_gsm_output((const char *)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 6:
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str7,CommAT_Str7);	
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str7, CommAT_Str7);
                 //rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 7:
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str11,CommAT_Str11);	
-               // rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str11, CommAT_Str11);
+                // rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 8:
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str9,CommAT_Str9);	
-               // rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str9, CommAT_Str9);
+                // rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 9:
-				Moudule_Init_Select(cmd_str,CommAT_Str16,CommAT_Str10);	
-              //  rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, CommAT_Str16, CommAT_Str10);
+                //  rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 10:
-                //  配置语音录音参数              
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str6,VoiceRec_config);		
-               // rt_hw_gsm_output((const char*)cmd_str);
+                //  配置语音录音参数
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str6, VoiceRec_config);
+                // rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 11:
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str12,CommAT_Str12);			
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str12, CommAT_Str12);
                 //rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 12:
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str13,CommAT_Str13);			
-               // rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str13, CommAT_Str13);
+                // rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 13:
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str14,CommAT_Str14);			
-               // rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str14, CommAT_Str14);
+                // rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 14:
-		        memcpy(cmd_str, CommAT_Str15, strlen(CommAT_Str15));
-               /// rt_hw_gsm_output((const char*)cmd_str);
+                memcpy(cmd_str, CommAT_Str15, strlen(CommAT_Str15));
+                /// rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 15:
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str1,CommAT_Str16);			
-              //  rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str1, CommAT_Str16);
+                //  rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 16:
                 memcpy(cmd_str, Signal_Intensity_str, strlen(Signal_Intensity_str));
-                 rt_hw_gsm_output((const char*)cmd_str);
-                break; 
+                rt_hw_gsm_output((const char *)cmd_str);
+                break;
             case 17://  CCID /
-              	Moudule_Init_Select(cmd_str,M50_CommAT_Str1,CommAT_Str17);		
-               // rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str1, CommAT_Str17);
+                // rt_hw_gsm_output((const char*)cmd_str);
 
                 if(Login_Menu_Flag == 1)     // 先初始化然后再执行拨号。保证短息OK
-                    CommAT.Initial_step++; 
+                    CommAT.Initial_step++;
                 break;
-            case 18://  信号强度 /		
-   
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str1,CommAT_Str16);		
-               // rt_hw_gsm_output((const char*)cmd_str);
+            case 18://  信号强度 /
+
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str1, CommAT_Str16);
+                // rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
             case 19:
-				Moudule_Init_Select(cmd_str,M50_CommAT_Str1,CommAT_Str18);		
-              //  rt_hw_gsm_output((const char*)cmd_str);
+                Moudule_Init_Select(cmd_str, M50_CommAT_Str1, CommAT_Str18);
+                //  rt_hw_gsm_output((const char*)cmd_str);
                 CommAT.Initial_step++;
                 break;
-			case 20:
-			case 21:
-			case 22: 	
-                      CommAT.Initial_step++; 
-					 break;
+            case 20:
+            case 21:
+            case 22:
+                CommAT.Initial_step++;
+                break;
             case 23:/*开始能拨号*/
                 if((DispContent) && (GB19056.workstate == 0))
                     rt_kprintf("AT_Start\r\n");
@@ -1372,7 +1372,7 @@ void Redial_Init(void)
     DataDial.start_dial_stateFLAG = 1; //important
     DataDial.Dial_ON = enable; //  进入  Data   状态
     DataDial.Pre_Dial_flag = 1;  // Convert to  DataDial State
-    Dial_Stage(Dial_DialInit0);    
+    Dial_Stage(Dial_DialInit0);
 }
 
 void  Dial_step_Single_10ms_timer(void)
@@ -1395,20 +1395,20 @@ void  Get_GSM_HexData(u8  *Src_str, u16 Src_infolen, u8 link_num)
     //  2 .  Realse   sem
     Receive_DataFlag = 1;
 }
-void Moudule_DialStr_Select(u8* dest,flash char*M50,flash char *M69)
+void Moudule_DialStr_Select(u8 *dest, flash char *M50, flash char *M69)
 {
-           #ifdef M50_GSM
-			 if(Module_Type)
-				 memcpy(dest, M50, strlen(M50));
-			 else
-			#endif	 
-				 memcpy(dest, M69, strlen(M69));
+#ifdef M50_GSM
+    if(Module_Type)
+        memcpy(dest, M50, strlen(M50));
+    else
+#endif
+        memcpy(dest, M69, strlen(M69));
 }
 
 void DataLink_Process(void)
 {
-    u8  len = 0, i = 0;   
-	u8  cmd_str[50];
+    u8  len = 0, i = 0;
+    u8  cmd_str[50];
 
     // state  filter  1:   没在数据状态下，和 成功登陆上后不进行处理
     if( (DataDial.Dial_ON == 0) || (DataDial.Dial_step == Dial_Idle) )
@@ -1419,23 +1419,23 @@ void DataLink_Process(void)
     // state  filter  3:
     if (DataDial.Dial_step_Retry >= Dial_Step_MAXRetries)
     {
-      
-	  if((DataDial.Dial_step==Dial_DNSR1)||(DataDial.Dial_step==Dial_DNSR2))
-	  	{
+
+        if((DataDial.Dial_step == Dial_DNSR1) || (DataDial.Dial_step == Dial_DNSR2))
+        {
             DataDial.Dial_step++;
-	  	}
-	  else
-	  	{
-		  //---------------------------------------
-	        DataDial.Connect_counter++;
-	        if( DataDial.Connect_counter > 4)
-	        {
-	            DataDial.Pre_Dial_flag = 1; 	 //--- 重新拨号
-	            DataDial.Pre_dial_counter = 0;
-	            //rt_kprintf("\r\n  RetryDialcounter>=4 重新拨号\r\n");
-	        }
-	        Dial_Stage(Dial_DialInit0);    // Clear   from  Dial  start
-	  	}
+        }
+        else
+        {
+            //---------------------------------------
+            DataDial.Connect_counter++;
+            if( DataDial.Connect_counter > 4)
+            {
+                DataDial.Pre_Dial_flag = 1; 	 //--- 重新拨号
+                DataDial.Pre_dial_counter = 0;
+                //rt_kprintf("\r\n  RetryDialcounter>=4 重新拨号\r\n");
+            }
+            Dial_Stage(Dial_DialInit0);    // Clear   from  Dial  start
+        }
         DataDial.Dial_step_Retry = 0;
         DataDial.Dial_step_RetryTimer = 0;
         //  rt_kprintf("\r\nDataDial.Dial_step_Retry>= Dial_Step_MAXRetries ,redial \r\n");
@@ -1448,11 +1448,11 @@ void DataLink_Process(void)
         if(Dnsr_state == 0)
         {
             // rt_thread_delay(10);
-              #ifdef M50_GSM 
+#ifdef M50_GSM
             if(Module_Type)
                 rt_hw_gsm_output(M50_CutDataLnk_str2);
             else
-				#endif
+#endif
                 rt_hw_gsm_output("AT%IPCLOSE=1\r\n");
             WatchDog_Feed();
             delay_ms(100);//rt_thread_delay(10);
@@ -1470,40 +1470,40 @@ void DataLink_Process(void)
         switch(DataDial.Dial_step)
         {
         case Dial_DialInit0:
-			   #ifdef M50_GSM
-			 if(Module_Type)
-                rt_hw_gsm_output(M50_DialInit4);  
-			 else
-			 	#endif
-            rt_hw_gsm_output(DialInit1);
+#ifdef M50_GSM
+            if(Module_Type)
+                rt_hw_gsm_output(M50_DialInit4);
+            else
+#endif
+                rt_hw_gsm_output(DialInit1);
             //-----------------------------------------
             DataDial.start_dial_stateFLAG = 1;
             //-----------------------------------------
             DataDial.Dial_step_RetryTimer = Dial_Dial_Retry_Time;
             DataDial.Dial_step_Retry++;
             //  Debug
-            
-            memset(cmd_str,0,sizeof(cmd_str));
-			Moudule_DialStr_Select(cmd_str,M50_DialInit4,DialInit1);
+
+            memset(cmd_str, 0, sizeof(cmd_str));
+            Moudule_DialStr_Select(cmd_str, M50_DialInit4, DialInit1);
             len = strlen((const char *)cmd_str);
             if(GB19056.workstate == 0)
             {
                 for(i = 0; i < len; i++)
                     rt_kprintf("%c", cmd_str[i]);
             }
-			break;
+            break;
         case Dial_DialInit1:
-			   #ifdef M50_GSM
-		   	 if(Module_Type)
-                 rt_hw_gsm_output(M50_DialInit1);  
-			 else
-			 	#endif
-            rt_hw_gsm_output((const char *)Dialinit_APN);
+#ifdef M50_GSM
+            if(Module_Type)
+                rt_hw_gsm_output(M50_DialInit1);
+            else
+#endif
+                rt_hw_gsm_output((const char *)Dialinit_APN);
             DataDial.Dial_step_RetryTimer = Dial_max_Timeout;
             DataDial.Dial_step_Retry++;
 
-            memset(cmd_str,0,sizeof(cmd_str));
-		    Moudule_DialStr_Select(cmd_str,M50_DialInit1,Dialinit_APN); 	
+            memset(cmd_str, 0, sizeof(cmd_str));
+            Moudule_DialStr_Select(cmd_str, M50_DialInit1, Dialinit_APN);
             len = strlen((const char *)cmd_str);
             if(GB19056.workstate == 0)
             {
@@ -1512,18 +1512,18 @@ void DataLink_Process(void)
             }
             break;
         case Dial_DialInit2:
-			   #ifdef M50_GSM
-			 if(Module_Type)
-                 rt_hw_gsm_output(Dialinit_APN);
-			 else
-			 	#endif
-                 rt_hw_gsm_output(DialInit2);
+#ifdef M50_GSM
+            if(Module_Type)
+                rt_hw_gsm_output(Dialinit_APN);
+            else
+#endif
+                rt_hw_gsm_output(DialInit2);
             DataDial.Dial_step_RetryTimer = Dial_Timeout;
             DataDial.Dial_step_Retry++;
 
-			memset(cmd_str,0,sizeof(cmd_str));
-		
-			Moudule_DialStr_Select(cmd_str,Dialinit_APN,DialInit2); 
+            memset(cmd_str, 0, sizeof(cmd_str));
+
+            Moudule_DialStr_Select(cmd_str, Dialinit_APN, DialInit2);
             len = strlen((const char *)cmd_str);
             if(GB19056.workstate == 0)
             {
@@ -1532,18 +1532,18 @@ void DataLink_Process(void)
             }
             break;
         case  Dial_DialInit3:
-			   #ifdef M50_GSM
-			if(Module_Type)
-                 rt_hw_gsm_output(M50_DialInit2);
-			 else
-			 	#endif
-                 rt_hw_gsm_output(DialInit3);
+#ifdef M50_GSM
+            if(Module_Type)
+                rt_hw_gsm_output(M50_DialInit2);
+            else
+#endif
+                rt_hw_gsm_output(DialInit3);
             DataDial.Dial_step_RetryTimer = Dial_max_Timeout;
             DataDial.Dial_step_Retry++;
 
-			memset(cmd_str,0,sizeof(cmd_str));
-		
-			Moudule_DialStr_Select(cmd_str,M50_DialInit2,DialInit3); 	
+            memset(cmd_str, 0, sizeof(cmd_str));
+
+            Moudule_DialStr_Select(cmd_str, M50_DialInit2, DialInit3);
             len = strlen((const char *)cmd_str);
             if(GB19056.workstate == 0)
             {
@@ -1553,18 +1553,18 @@ void DataLink_Process(void)
 
             break;
         case Dial_DialInit4:
-			   #ifdef M50_GSM
-			if(Module_Type)
-                  rt_hw_gsm_output(M50_DialInit3);
-			 else
-			 	#endif
-            rt_hw_gsm_output(DialInit6); // AT
+#ifdef M50_GSM
+            if(Module_Type)
+                rt_hw_gsm_output(M50_DialInit3);
+            else
+#endif
+                rt_hw_gsm_output(DialInit6); // AT
             DataDial.Dial_step_RetryTimer = Dial_Dial_Retry_Time;
             DataDial.Dial_step_Retry++;
 
-			memset(cmd_str,0,sizeof(cmd_str));
-		
-			Moudule_DialStr_Select(cmd_str,M50_DialInit3,DialInit6); 
+            memset(cmd_str, 0, sizeof(cmd_str));
+
+            Moudule_DialStr_Select(cmd_str, M50_DialInit3, DialInit6);
             len = strlen((const char *)cmd_str);
 
             if(GB19056.workstate == 0)
@@ -1575,36 +1575,36 @@ void DataLink_Process(void)
             break;
 
         case Dial_DialInit5:
-			   #ifdef M50_GSM
-			if(Module_Type)
-                 rt_hw_gsm_output(DialInit1);
-			 else
-			 	#endif
+#ifdef M50_GSM
+            if(Module_Type)
+                rt_hw_gsm_output(DialInit1);
+            else
+#endif
                 rt_hw_gsm_output(DialInit4);
             DataDial.Dial_step_RetryTimer = Dial_Dial_Retry_Time;
             DataDial.Dial_step_Retry++;
-			memset(cmd_str,0,sizeof(cmd_str));
-			Moudule_DialStr_Select(cmd_str,DialInit1,DialInit4); 
+            memset(cmd_str, 0, sizeof(cmd_str));
+            Moudule_DialStr_Select(cmd_str, DialInit1, DialInit4);
             len = strlen((const char *)cmd_str);
             if(GB19056.workstate == 0)
             {
                 for(i = 0; i < len; i++)
-                    rt_kprintf("%c", cmd_str[i]); 
+                    rt_kprintf("%c", cmd_str[i]);
             }
 
             break;
         case Dial_DialInit6:
-			   #ifdef M50_GSM
-			if(Module_Type)
-                 rt_hw_gsm_output(M50_CommAT_Str1);
-			 else
-			 	#endif
-            rt_hw_gsm_output(DialInit8);  // Query  IP
+#ifdef M50_GSM
+            if(Module_Type)
+                rt_hw_gsm_output(M50_CommAT_Str1);
+            else
+#endif
+                rt_hw_gsm_output(DialInit8);  // Query  IP
             DataDial.Dial_step_RetryTimer = Dial_Dial_Retry_Time;
             DataDial.Dial_step_Retry++;
-			memset(cmd_str,0,sizeof(cmd_str));
-			 
-			Moudule_DialStr_Select(cmd_str,M50_CommAT_Str1,DialInit8); 
+            memset(cmd_str, 0, sizeof(cmd_str));
+
+            Moudule_DialStr_Select(cmd_str, M50_CommAT_Str1, DialInit8);
             len = strlen((const char *)cmd_str);
             if(GB19056.workstate == 0)
             {
@@ -1613,20 +1613,20 @@ void DataLink_Process(void)
             }
             break;
         case Dial_DNSR1:
-			   #ifdef M50_GSM
-			 if(Module_Type)
-               rt_hw_gsm_output(M50_Dialinit_DNSR);
-			 else
-			 	#endif
-            rt_hw_gsm_output(Dialinit_DNSR);  // main DNSR 
+#ifdef M50_GSM
+            if(Module_Type)
+                rt_hw_gsm_output(M50_Dialinit_DNSR);
+            else
+#endif
+                rt_hw_gsm_output(Dialinit_DNSR);  // main DNSR
             KorH_check();
             DataDial.Dial_step_RetryTimer = Dial_max_Timeout;
             DataDial.Dial_step_Retry++;
             if(GB19056.workstate == 0)
                 rt_kprintf("\r\n   ----- Link  main  DNSR ----\r\n");
-			memset(cmd_str,0,sizeof(cmd_str));
-		
-			Moudule_DialStr_Select(cmd_str,M50_Dialinit_DNSR,Dialinit_DNSR); 
+            memset(cmd_str, 0, sizeof(cmd_str));
+
+            Moudule_DialStr_Select(cmd_str, M50_Dialinit_DNSR, Dialinit_DNSR);
             len = strlen((const char *)cmd_str);
             if(GB19056.workstate == 0)
             {
@@ -1637,18 +1637,18 @@ void DataLink_Process(void)
             Dnsr_state = 1; //表示DNSR 状态下拨号
             break;
         case Dial_DNSR2:
-			   #ifdef M50_GSM
-			if(Module_Type)
-                 rt_hw_gsm_output(M50_Dialinit_DNSR2);
-			 else
-			 	#endif
-            rt_hw_gsm_output(Dialinit_DNSR2);  // Aux DNSR
+#ifdef M50_GSM
+            if(Module_Type)
+                rt_hw_gsm_output(M50_Dialinit_DNSR2);
+            else
+#endif
+                rt_hw_gsm_output(Dialinit_DNSR2);  // Aux DNSR
             DataDial.Dial_step_RetryTimer = Dial_max_Timeout;
             DataDial.Dial_step_Retry++;
             if(GB19056.workstate == 0)
                 rt_kprintf("\r\n   ----- Link  Aux  DNSR ----\r\n");
-			memset(cmd_str,0,sizeof(cmd_str));
-			Moudule_DialStr_Select(cmd_str,M50_Dialinit_DNSR2,Dialinit_DNSR2); 	
+            memset(cmd_str, 0, sizeof(cmd_str));
+            Moudule_DialStr_Select(cmd_str, M50_Dialinit_DNSR2, Dialinit_DNSR2);
             len = strlen((const char *)cmd_str);
             if(GB19056.workstate == 0)
             {
@@ -1659,17 +1659,17 @@ void DataLink_Process(void)
             Dnsr_state = 1; //表示DNSR 状态下拨号
             break;
         case Dial_DialInit7:
-			   #ifdef M50_GSM
-			if(Module_Type)
-                 rt_hw_gsm_output(M50_CommAT_Str1);
-			 else
-			 	#endif
-            rt_hw_gsm_output(DialInit8);  // Query  IP
+#ifdef M50_GSM
+            if(Module_Type)
+                rt_hw_gsm_output(M50_CommAT_Str1);
+            else
+#endif
+                rt_hw_gsm_output(DialInit8);  // Query  IP
             DataDial.Dial_step_RetryTimer = Dial_Dial_Retry_Time;
             DataDial.Dial_step_Retry++;
-			memset(cmd_str,0,sizeof(cmd_str));
-			
-			Moudule_DialStr_Select(cmd_str,M50_CommAT_Str1,DialInit8); 		
+            memset(cmd_str, 0, sizeof(cmd_str));
+
+            Moudule_DialStr_Select(cmd_str, M50_CommAT_Str1, DialInit8);
             len = strlen((const char *)cmd_str);
             if(GB19056.workstate == 0)
             {
@@ -1688,10 +1688,10 @@ void DataLink_Process(void)
             DataDial.Dial_step_RetryTimer = 800;
             DataDial.Dial_step_Retry++;
 
-			
-			memset(cmd_str,0,sizeof(cmd_str));
-		
-			Moudule_DialStr_Select(cmd_str,M50_DialStr_Link1,DialStr_Link1); 		
+
+            memset(cmd_str, 0, sizeof(cmd_str));
+
+            Moudule_DialStr_Select(cmd_str, M50_DialStr_Link1, DialStr_Link1);
             len = strlen((const char *)cmd_str);
             for(i = 0; i < len; i++)
             {
@@ -1708,14 +1708,14 @@ void DataLink_Process(void)
         case Dial_AuxLnk:   // rt_hw_gsm_output(DialStr_IC_card);
             DataDial.Dial_step_RetryTimer = 1000;
             DataDial.Dial_step_Retry++;
-			
-			memset(cmd_str,0,sizeof(cmd_str));
 
-			Moudule_DialStr_Select(cmd_str,M50_DialStr_LinkAux,DialStr_LinkAux); 	
+            memset(cmd_str, 0, sizeof(cmd_str));
+
+            Moudule_DialStr_Select(cmd_str, M50_DialStr_LinkAux, DialStr_LinkAux);
             len = strlen((const char *)cmd_str);
             for(i = 0; i < len; i++)
             {
-                rt_hw_gsm_putc (cmd_str[i]); 
+                rt_hw_gsm_putc (cmd_str[i]);
             }
             if(GB19056.workstate == 0)
             {
@@ -1728,10 +1728,10 @@ void DataLink_Process(void)
         case   Dial_ISP:
             DataDial.Dial_step_RetryTimer = Dial_max_Timeout;
             DataDial.Dial_step_Retry++;
-			
-			memset(cmd_str,0,sizeof(cmd_str));
-			
-			Moudule_DialStr_Select(cmd_str,M50_DialStr_IC_card,DialStr_IC_card); 		
+
+            memset(cmd_str, 0, sizeof(cmd_str));
+
+            Moudule_DialStr_Select(cmd_str, M50_DialStr_IC_card, DialStr_IC_card);
             len = strlen((const char *)cmd_str);
             for(i = 0; i < len; i++)
             {
@@ -1755,10 +1755,10 @@ void DataLink_Process(void)
 
 static void GSM_Process(u8 *instr, u16 len)
 {
-    u8	ok = false,dnsrok=false;
+    u8	ok = false, dnsrok = false;
     u8	error = false;
     u8	failed = false;
-	u8	connect = false,connect_2 = false;			
+    u8	connect = false, connect_2 = false;
     u16  i = 0, j = 0, q = 0; //,len=0;//j=0;
     u8 reg_str[80];
     //----------------------  Debug -------------------------
@@ -1778,9 +1778,9 @@ static void GSM_Process(u8 *instr, u16 len)
     CommAT.AT_cmd_sendState = 0;
 
     //-------------------------------------------------------------------------------------------------------------------
-    
-    #ifdef M50_GSM
-	if (strncmp((char *)GSM_rx, "Quectel_M50", 11) == 0)
+
+#ifdef M50_GSM
+    if (strncmp((char *)GSM_rx, "Quectel_M50", 11) == 0)
     {
         /*
         	 模块重新启动了，有些状态要还原到相应状态 ，-- 需要做处理
@@ -1790,27 +1790,27 @@ static void GSM_Process(u8 *instr, u16 len)
         GSM_PWR.GSM_powerCounter = 0;
         GSM_PWR.GSM_power_over = 1;
 
-        
-		DataLink_APN_Set(APN_String, 1);  // apn
-		DataLink_DNSR_Set(DomainNameStr, 0);   // DNSR	MG323  没有
-		DataLink_DNSR2_Set(DomainNameStr_aux, 0);
-		DataLink_MainSocket_set(RemoteIP_main, RemotePort_main, 1);
-		
+
+        DataLink_APN_Set(APN_String, 1);  // apn
+        DataLink_DNSR_Set(DomainNameStr, 0);   // DNSR	MG323  没有
+        DataLink_DNSR2_Set(DomainNameStr_aux, 0);
+        DataLink_MainSocket_set(RemoteIP_main, RemotePort_main, 1);
+
         if(GB19056.workstate == 0)
             rt_kprintf("\r\n   模块类型是: Quectel_M50\r\n");
     }
-	#endif
+#endif
     if (strncmp((char *)GSM_rx, "M69", 2) == 0)
     {
         Module_Type = M69_GSM;
         GSM_PWR.GSM_PowerEnable = 0;
         GSM_PWR.GSM_powerCounter = 0;
         GSM_PWR.GSM_power_over = 1;
-		
-		DataLink_APN_Set(APN_String, 1);  // apn
-		DataLink_DNSR_Set(DomainNameStr, 0);   // DNSR	MG323  没有
-		DataLink_DNSR2_Set(DomainNameStr_aux, 0);
-		DataLink_MainSocket_set(RemoteIP_main, RemotePort_main, 1);
+
+        DataLink_APN_Set(APN_String, 1);  // apn
+        DataLink_DNSR_Set(DomainNameStr, 0);   // DNSR	MG323  没有
+        DataLink_DNSR2_Set(DomainNameStr_aux, 0);
+        DataLink_MainSocket_set(RemoteIP_main, RemotePort_main, 1);
         if(GB19056.workstate == 0)
             rt_kprintf("\r\n   模块类型是: M69 \r\n");
     }
@@ -1827,25 +1827,25 @@ static void GSM_Process(u8 *instr, u16 len)
         Get_GSM_HexData(GSM_rx + i + 1, info_len, 0);
         goto RXOVER;
     }
-    if((strncmp((char *)GSM_rx, "%TTS: 0", 7) == 0)||(strncmp((char *)GSM_rx,"+QTTS:0", 7) == 0))
-    {                                                                      // M50
-    
+    if((strncmp((char *)GSM_rx, "%TTS: 0", 7) == 0) || (strncmp((char *)GSM_rx, "+QTTS:0", 7) == 0))
+    {
+        // M50
+
         TTS_Play_End();
         if(GB19056.workstate == 0)
             rt_kprintf("\r\n   TTS  播放完毕\r\n");
         Speak_OFF;
     }
-	#ifdef M50_GSM  
-	else
-	if(strncmp((char*)GSM_rx, "SEND OK",7)==0)	 // 链路 1  TCP 发送OK    
-	{												  
-	   if(M50_Mainlink_send_over)
-          {
-              M50_Mainlink_send_over=0;     
-	   	  }
-       // Recorder_JudgeOK();	   
-	}  
-	#endif
+#ifdef M50_GSM
+    else if(strncmp((char *)GSM_rx, "SEND OK", 7) == 0)	 // 链路 1  TCP 发送OK
+    {
+        if(M50_Mainlink_send_over)
+        {
+            M50_Mainlink_send_over = 0;
+        }
+        // Recorder_JudgeOK();
+    }
+#endif
 #ifdef  SMS_ENABLE
     //--------      SMS  service  related Start  -------------------------------------------
     //+CMTI: "SM",1            +CMTI: "SM",1
@@ -1899,8 +1899,8 @@ static void GSM_Process(u8 *instr, u16 len)
             }
         }
 
-    } 
-	
+    }
+
 #ifdef SMS_TYPE_PDU
     else if( strncmp( (char *)GSM_rx, "+CMGR:", 6 ) == 0 )
     {
@@ -1966,7 +1966,7 @@ static void GSM_Process(u8 *instr, u16 len)
         // rt_kprintf("\r\nclose  all!\r\n");
         DataDial.Pre_Dial_flag = 1;
     }
-    else if((strncmp((char *)GSM_rx, "%IPCLOSE:", 9) == 0)||(strncmp((char *)GSM_rx, "1, CLOSED", 9) == 0))   //1, CLOSED
+    else if((strncmp((char *)GSM_rx, "%IPCLOSE:", 9) == 0) || (strncmp((char *)GSM_rx, "1, CLOSED", 9) == 0)) //1, CLOSED
     {
         DataLink_Online = 0;
         ModuleStatus &= ~Status_GPRS;
@@ -1980,35 +1980,35 @@ static void GSM_Process(u8 *instr, u16 len)
         }
 
     }
-	#ifdef M50_GSM
-	if(((DataDial.Dial_step==Dial_DNSR1)||(DataDial.Dial_step==Dial_DNSR2))&&(len>8))
-	{
-	  /*
-		if(sscanf(psrc,"%d.%d.%d.%d",ip[0],ip[1],ip[2],ip[3]) == 4)
-			{
-			memset( pcurr_socket->ip_addr, 0, 15 );
-			memcpy( pcurr_socket->ip_addr, psrc, len );
+#ifdef M50_GSM
+    if(((DataDial.Dial_step == Dial_DNSR1) || (DataDial.Dial_step == Dial_DNSR2)) && (len > 8))
+    {
+        /*
+        if(sscanf(psrc,"%d.%d.%d.%d",ip[0],ip[1],ip[2],ip[3]) == 4)
+        	{
+        	memset( pcurr_socket->ip_addr, 0, 15 );
+        	memcpy( pcurr_socket->ip_addr, psrc, len );
 
-			rt_kprintf( "\ndns ip=%s", pcurr_socket->ip_addr );
-		    }
-		   */
-		   i = str2ip((char *)GSM_rx, RemoteIP_Dnsr);
-           if (i <= 3) 
-		   	 failed = true; 
-		   else
-		   {
-	            //memcpy((char*)SysConf_struct.IP_Main,RemoteIP_main,4);
-	            // SysConf_struct.Port_main=RemotePort_main;
-	            //Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
-	            DataLink_MainSocket_set(RemoteIP_Dnsr, RemotePort_main, 1);
-				dnsrok=true;
-	            if(GB19056.workstate == 0)
-	                rt_kprintf("\r\n   域名解析成功:%s\r\n",GSM_rx);  
+        	rt_kprintf( "\ndns ip=%s", pcurr_socket->ip_addr );
+            }
+           */
+        i = str2ip((char *)GSM_rx, RemoteIP_Dnsr);
+        if (i <= 3)
+            failed = true;
+        else
+        {
+            //memcpy((char*)SysConf_struct.IP_Main,RemoteIP_main,4);
+            // SysConf_struct.Port_main=RemotePort_main;
+            //Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+            DataLink_MainSocket_set(RemoteIP_Dnsr, RemotePort_main, 1);
+            dnsrok = true;
+            if(GB19056.workstate == 0)
+                rt_kprintf("\r\n   域名解析成功:%s\r\n", GSM_rx);
 
-	            Dial_Stage(Dial_MainLnk);  //--   切换到拨号 
-           	}
-	}
-	#endif
+            Dial_Stage(Dial_MainLnk);  //--   切换到拨号
+        }
+    }
+#endif
     if(strncmp((char *)GSM_rx, "%DNSR:", 6) == 0)
     {
         //%DNSR:113.31.28.100
@@ -2038,15 +2038,15 @@ static void GSM_Process(u8 *instr, u16 len)
         }
     }
     if(strncmp((char *)GSM_rx, "+COPS: 0,0,", 11) == 0)
-    {   
-     // M50    移动卡 +COPS: 0,0,"CHINA MOBILE"
-     // M50   联通卡  +COPS: 0,0,"CHINA UNICOM GSM"
-       // 联通卡	      +COPS: 0,0,"CHINA UNICOM",0
+    {
+        // M50    移动卡 +COPS: 0,0,"CHINA MOBILE"
+        // M50   联通卡  +COPS: 0,0,"CHINA UNICOM GSM"
+        // 联通卡	      +COPS: 0,0,"CHINA UNICOM",0
         //移动卡	     +COPS: 0,0,"CHINA MOBILE",0
         //注销的卡	  +COPS: 0
         if(strncmp((char *)GSM_rx + 12, "CHINA UNICOM", 12) == 0)
         {
-            memset(APN_String,0,sizeof(APN_String)); 
+            memset(APN_String, 0, sizeof(APN_String));
             memcpy(APN_String, "UNINET", 6);
             memset((u8 *)SysConf_struct.APN_str, 0 , sizeof(SysConf_struct.APN_str));
             memcpy(SysConf_struct.APN_str, (u8 *)APN_String, strlen((const char *)APN_String));
@@ -2054,11 +2054,11 @@ static void GSM_Process(u8 *instr, u16 len)
 
             //联通的
             memset((char *)Dialinit_APN, 0, sizeof(Dialinit_APN));
-            strcat((char *)Dialinit_APN, "AT+CGDCONT=1,\"IP\",\"UNINET\"\r\n"); 
+            strcat((char *)Dialinit_APN, "AT+CGDCONT=1,\"IP\",\"UNINET\"\r\n");
         }
         else if(strncmp((char *)GSM_rx + 12, "CHINA MOBILE", 12) == 0)
         {
-            memset(APN_String,0,sizeof(APN_String)); 
+            memset(APN_String, 0, sizeof(APN_String));
             memcpy(APN_String, "CMNET", 5);
             memset((u8 *)SysConf_struct.APN_str, 0 , sizeof(SysConf_struct.APN_str));
             memcpy(SysConf_struct.APN_str, (u8 *)APN_String, strlen((const char *)APN_String));
@@ -2173,19 +2173,19 @@ static void GSM_Process(u8 *instr, u16 len)
         }
     }
 
-	
-	if (strncmp((char*)GSM_rx, "89860",5) == 0)	 //-----  %TSIM 1 %TSIM 1
-	{
-	     // M50 	     
-		 ok = 0; // 借用做下标
-		 for(i = 0; i < 10; i++)
-		 {
-			 ProductAttribute._5_Sim_ICCID[ok] = ((GSM_rx[2 * i] - 0x30) << 4) + (GSM_rx[1 + 2 * i] - 0x30);
-			 ok++;
-		 }
-			IMSIGet.Get_state=1;
-			rt_kprintf("\r\n  检测到SIM卡\r\n"); 
-	}	  
+
+    if (strncmp((char *)GSM_rx, "89860", 5) == 0)	 //-----  %TSIM 1 %TSIM 1
+    {
+        // M50
+        ok = 0; // 借用做下标
+        for(i = 0; i < 10; i++)
+        {
+            ProductAttribute._5_Sim_ICCID[ok] = ((GSM_rx[2 * i] - 0x30) << 4) + (GSM_rx[1 + 2 * i] - 0x30);
+            ok++;
+        }
+        IMSIGet.Get_state = 1;
+        rt_kprintf("\r\n  检测到SIM卡\r\n");
+    }
     else if (strncmp((char *)GSM_rx, "460", 3) == 0)	//----- Nathan Add
     {
 
@@ -2198,7 +2198,7 @@ static void GSM_Process(u8 *instr, u16 len)
         IMSIGet.Get_state = 1;
         GSM_PWR.GSM_power_over = 2;   //  get imsi
         IMSIGet.Get_state = 0;
-        CommAT.Total_initial = 1;	// 进行参数配置 
+        CommAT.Total_initial = 1;	// 进行参数配置
     }
     if (strncmp((char *)GSM_rx, "+CCID: \"", 8) == 0)
     {
@@ -2234,17 +2234,16 @@ static void GSM_Process(u8 *instr, u16 len)
     {
         connect = true;
     }
-	
-                 //1, CONNECT OK
-    if ((strncmp((char*)GSM_rx, "1, CONNECT OK", 13) == 0))
-	{
-	      connect=true;
-	}
-	else
-	if ((strncmp((char*)GSM_rx, "2, CONNECT OK", 13) == 0))
-	{
-	      connect_2=true;
-	}	
+
+    //1, CONNECT OK
+    if ((strncmp((char *)GSM_rx, "1, CONNECT OK", 13) == 0))
+    {
+        connect = true;
+    }
+    else if ((strncmp((char *)GSM_rx, "2, CONNECT OK", 13) == 0))
+    {
+        connect_2 = true;
+    }
     if((strncmp((char *)GSM_rx, "ERROR: 13", 9) == 0) || (strncmp((char *)GSM_rx, "ERROR:13", 8) == 0) || (strncmp((char *)GSM_rx, "ERROR:35", 8) == 0)) //ERROR:13
     {
         Online_error_counter++;
@@ -2273,12 +2272,12 @@ static void GSM_Process(u8 *instr, u16 len)
         {
             if (Dial_jump_State == 7)
             {
-               #ifdef M50_GSM
-               if(Module_Type)
-                rt_hw_gsm_output(M50_CutDataLnk_str2);
-			   else
-			   	#endif
-                rt_hw_gsm_output("AT%IPCLOSE=1\r\n");
+#ifdef M50_GSM
+                if(Module_Type)
+                    rt_hw_gsm_output(M50_CutDataLnk_str2);
+                else
+#endif
+                    rt_hw_gsm_output("AT%IPCLOSE=1\r\n");
                 rt_thread_delay(10);
                 Dial_Stage(Dial_DNSR1);  // 后边跳跃到ready to  connect aux DNS
                 // rt_kprintf("\r\n   DNSR1  解析 成功-->连接失败\r\n");
@@ -2290,12 +2289,12 @@ static void GSM_Process(u8 *instr, u16 len)
             }
             else if(Dial_jump_State == 8)
             {
-               #ifdef M50_GSM
-               if(Module_Type)
-                rt_hw_gsm_output(M50_CutDataLnk_str2);
-			   else
-			   	#endif
-                rt_hw_gsm_output("AT%IPCLOSE=1\r\n");
+#ifdef M50_GSM
+                if(Module_Type)
+                    rt_hw_gsm_output(M50_CutDataLnk_str2);
+                else
+#endif
+                    rt_hw_gsm_output("AT%IPCLOSE=1\r\n");
                 rt_thread_delay(10);
                 Dial_Stage(Dial_MainLnk);  // ready to  connect mainlink
                 // rt_kprintf("\r\n   DNSR2  解析 成功-->连接失败\r\n");
@@ -2394,7 +2393,7 @@ RXOVER:
             /*
                                           初始化完成后，选择首次连接的方式
                           */
-            if(Vechicle_Info.Link_Frist_Mode == 1) 
+            if(Vechicle_Info.Link_Frist_Mode == 1)
                 Dial_Stage(Dial_MainLnk);
             else
                 Dial_Stage(Dial_DNSR1);
@@ -2411,14 +2410,14 @@ RXOVER:
         if (dnsrok)
         {
             //Dial_Stage(Dial_DNSR2);
-             rt_kprintf("\r\n DNSR1 SEND over\r\n");  
-			 goto LIANJIE;  
+            rt_kprintf("\r\n DNSR1 SEND over\r\n");
+            goto LIANJIE;
         }
         break;
     case Dial_DNSR2	:
         if (dnsrok)
         {
-			goto LIANJIE;  
+            goto LIANJIE;
         }
         break;
     case Dial_MainLnk		:
@@ -2430,7 +2429,7 @@ RXOVER:
         }
         if (connect)
         {
-    LIANJIE:        //  below  run once  since  online
+LIANJIE:        //  below  run once  since  online
             if(DataDial.Dial_step == Dial_MainLnk)   //mainlink
                 rt_kprintf("\r\n连接成功TCP---\r\n");
             if(DataDial.Dial_step == Dial_AuxLnk)   //auxlink
@@ -2490,7 +2489,7 @@ RXOVER:
         }
         break;
     default 			:
-        Dial_Stage(Dial_Idle); 
+        Dial_Stage(Dial_Idle);
         DataDial.Dial_step_Retry = 0;
         break;
     }
@@ -2510,29 +2509,29 @@ void  IMSIcode_Get(void)
             IMSIGet.Checkcounter = 0;
             if(IMSIGet.Get_state == 1)
             {
-       
+
                 rt_hw_gsm_output(IMSI_Check_str);    // 查询 IMSI_CODE 号码
                 if(GB19056.workstate == 0)
                     rt_kprintf(IMSI_Check_str);
             }
             else
             {
-               #ifdef M50_GSM
+#ifdef M50_GSM
                 if(Module_Type)
-               	{
-                   rt_hw_gsm_output(M50_SIM_Check_Str);    // 先检查 SIM 卡的存在
-                if(GB19056.workstate == 0)
-                    rt_kprintf(M50_SIM_Check_Str);
+                {
+                    rt_hw_gsm_output(M50_SIM_Check_Str);    // 先检查 SIM 卡的存在
+                    if(GB19056.workstate == 0)
+                        rt_kprintf(M50_SIM_Check_Str);
 
 
-               	}
-               else
-			   	#endif
-               	{
-                rt_hw_gsm_output(SIM_Check_Str);    // 先检查 SIM 卡的存在
-                if(GB19056.workstate == 0)
-                    rt_kprintf(SIM_Check_Str);
-            	}
+                }
+                else
+#endif
+                {
+                    rt_hw_gsm_output(SIM_Check_Str);    // 先检查 SIM 卡的存在
+                    if(GB19056.workstate == 0)
+                        rt_kprintf(SIM_Check_Str);
+                }
             }
         }
     }

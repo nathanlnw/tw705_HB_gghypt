@@ -535,24 +535,6 @@ void  VDR_product_08H_09H_10H(void)
             VdrData.H_09[6 + time_now.min * 11 + 9] = GPS_Hight;
             //  当前分钟的平均速度	 从AvrgSpd_MintProcess()  引用的变量
             VdrData.H_09[6 + time_now.min * 11 + 10] = VdrData.H_09_spd_accumlate / 60;
-
-            //  停车前15 分钟平均速度记录
-            if(VdrData.H_09_seconds_counter == 58)
-            {
-                avrg_spd = VdrData.H_09_spd_accumlate / 58;
-                if(avrg_spd > 5)
-                    Avrg15_min_generate(VdrData.H_09_spd_accumlate / 58);
-                else
-                {
-                    if(Avrg_15minSpd.savefull_state == 1)
-                    {
-                        Avrg15_min_save();
-                    }
-                    Avrg_15minSpd.Ram_counter = 0;
-                    Avrg_15minSpd.savefull_state = 0;
-                }
-            }
-
         }
         //   提前几秒存否则就跨小时了
         if((time_now.min == 59) && (VdrData.H_09_seconds_counter == 57))

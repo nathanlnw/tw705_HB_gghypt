@@ -935,15 +935,20 @@ typedef struct _CAN_TRAN
 #ifdef AVRG15MIN
 
 //  停车前15 分钟 ，每分钟的平均速度
+#define   MAX_PERmin_NUM  25600     //  400 Page    1page=64    64*400=25600
+
+//  停车前15 分钟 ，每分钟的平均速度
 typedef struct  _Avrg15_SPD
 {
-	u8 write;
-	u8 read; // 停车前15 分钟平均速度记录
-	u8 content[105]; // 停车前15分钟平均速度
-	u8 Ram_counter;
-	u8 savefull_state; // 在ram 中存储的计数器   
-}AVRG15_SPD;
-//   停车前15  分钟，每分钟的平均速度  
+    u32 write;
+    u32 read; // 停车前15 分钟平均速度记录
+    u8  content[8]; // 停车前15分钟平均速度
+    u8  savefull_state; // 在ram 中存储的计数器
+    u8  seconds_counter; //  计时器
+    u32 spd_accumlate;  //  60 s  内的速度和
+    u8  reset_save;// 重启前存储平均速度
+} AVRG15_SPD;
+//   停车前15  分钟，每分钟的平均速度
 extern AVRG15_SPD  Avrg_15minSpd;
 #endif
 
@@ -1389,6 +1394,11 @@ extern void  Spd_Exp_Wr(void);
 
 
 
-
+#ifdef AVRG15MIN
+extern u8  Api_avrg15minSpd_Content_read(u8 *dest);
+extern u8  Avrg15_min_generate(u8 spd);
+extern void Averg15_min_timer_1s(void);
+extern u8  Api_15min_save_1_record(void);
+#endif
 
 #endif

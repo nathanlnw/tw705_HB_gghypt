@@ -263,57 +263,57 @@ static rt_size_t Device_GSM_write( rt_device_t dev, rt_off_t pos, const void *bu
 */
 static rt_err_t Device_GSM_control( rt_device_t dev, rt_uint8_t cmd, void *arg )
 {
-  /*
-    SOCKET    *socket = (SOCKET *)arg;
-    SOCKET   reg_socket;
+    /*
+      SOCKET    *socket = (SOCKET *)arg;
+      SOCKET   reg_socket;
 
-    reg_socket = *socket;
+      reg_socket = *socket;
 
-    switch(cmd)
-    {
-    case  APN ://                        0x01
-        DataLink_APN_Set((u8 *)arg, 1);
-        break;
-    case  main_socket://             0x02
-        //SOCKET type arg
-        DataLink_MainSocket_set(reg_socket.ip, reg_socket.port, 1);
-        break;
-    case  aux_socket://             0x03
-        DataLink_AuxSocket_set(reg_socket.ip, reg_socket.port, 1);
-        break;
-    case isp_socket://               0x04
-        DataLink_IspSocket_set(reg_socket.ip, reg_socket.port, 1);
-        break;
-    case DNSR1 ://                   0x05
-        DataLink_DNSR_Set((u8 *)arg, 1);
-        break;
-    case DNSR2 ://                   0x06
-        DataLink_DNSR2_Set((u8 *)arg, 1);
-        break;
-    case power_on ://               0x11
-        if(GPRS_GSM_PowerON())
-            return 	RT_EOK;    // GSM 模块开启完毕
-        else
-            return	RT_EBUSY;  //正在上电过程中
-    case at_init://                     0x12
-        CommAT.Total_initial = 1;
-        CommAT.Initial_step = 0;
-        break;
-    case dial_gprs ://                0x13
-        // rt_kprintf("AT_Start\r\n");
-        CommAT.Initial_step = 0;
-        CommAT.Total_initial = 0;
+      switch(cmd)
+      {
+      case  APN ://                        0x01
+          DataLink_APN_Set((u8 *)arg, 1);
+          break;
+      case  main_socket://             0x02
+          //SOCKET type arg
+          DataLink_MainSocket_set(reg_socket.ip, reg_socket.port, 1);
+          break;
+      case  aux_socket://             0x03
+          DataLink_AuxSocket_set(reg_socket.ip, reg_socket.port, 1);
+          break;
+      case isp_socket://               0x04
+          DataLink_IspSocket_set(reg_socket.ip, reg_socket.port, 1);
+          break;
+      case DNSR1 ://                   0x05
+          DataLink_DNSR_Set((u8 *)arg, 1);
+          break;
+      case DNSR2 ://                   0x06
+          DataLink_DNSR2_Set((u8 *)arg, 1);
+          break;
+      case power_on ://               0x11
+          if(GPRS_GSM_PowerON())
+              return 	RT_EOK;    // GSM 模块开启完毕
+          else
+              return	RT_EBUSY;  //正在上电过程中
+      case at_init://                     0x12
+          CommAT.Total_initial = 1;
+          CommAT.Initial_step = 0;
+          break;
+      case dial_gprs ://                0x13
+          // rt_kprintf("AT_Start\r\n");
+          CommAT.Initial_step = 0;
+          CommAT.Total_initial = 0;
 
-        DataDial.Dial_ON = enable; //  进入  Data   状态
-        DataDial.Pre_Dial_flag = 1;  // Convert to  DataDial State
-        break;
-    case query_online://            0x21
-        if(DataLink_Status())
-            return RT_EOK;
-        else
-            return RT_ERROR;
-    }
-*/
+          DataDial.Dial_ON = enable; //  进入  Data   状态
+          DataDial.Pre_Dial_flag = 1;  // Convert to  DataDial State
+          break;
+      case query_online://            0x21
+          if(DataLink_Status())
+              return RT_EOK;
+          else
+              return RT_ERROR;
+      }
+    */
     return RT_EOK;
 }
 
