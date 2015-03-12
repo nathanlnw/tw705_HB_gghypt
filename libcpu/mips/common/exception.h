@@ -146,15 +146,15 @@
  */
 typedef struct pt_regs_s
 {
-	/* Saved main processor registers. */
-	rt_base_t regs[32];
-	/* Saved special registers. */
-	rt_base_t cp0_status;
-	rt_base_t hi;
-	rt_base_t lo;
-	rt_base_t cp0_badvaddr;
-	rt_base_t cp0_cause;
-	rt_base_t cp0_epc;
+    /* Saved main processor registers. */
+    rt_base_t regs[32];
+    /* Saved special registers. */
+    rt_base_t cp0_status;
+    rt_base_t hi;
+    rt_base_t lo;
+    rt_base_t cp0_badvaddr;
+    rt_base_t cp0_cause;
+    rt_base_t cp0_epc;
 } pt_regs_t;
 
 typedef void (* exception_func_t)(pt_regs_t *regs);

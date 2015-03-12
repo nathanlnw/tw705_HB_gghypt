@@ -20,29 +20,29 @@
 extern "C" {
 #endif
 
-/**
- * @addtogroup S3C44B0
- */
-/*@{*/
+    /**
+     * @addtogroup S3C44B0
+     */
+    /*@{*/
 
-/*------------------------------------------------------------------------
- *	  ASIC Address Definition
- *----------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------
+     *	  ASIC Address Definition
+     *----------------------------------------------------------------------*/
 #define S3C_REG		*(volatile unsigned int *)
 #define S3C_REGW	*(volatile unsigned short *)
 #define S3C_REGB	*(volatile unsigned char *)
 
-/* System */
+    /* System */
 #define SYSCFG		(S3C_REG(0x1c00000))
 
-/* Cache */
+    /* Cache */
 #define NCACHBE0	(S3C_REG(0x1c00004))
 #define NCACHBE1	(S3C_REG(0x1c00008))
 
-/* Bus control */
+    /* Bus control */
 #define SBUSCON		(S3C_REG(0x1c40000))
 
-/* Memory control */
+    /* Memory control */
 #define BWSCON		(S3C_REG(0x1c80000))
 #define BANKCON0	(S3C_REG(0x1c80004))
 #define BANKCON1	(S3C_REG(0x1c80008))
@@ -57,7 +57,7 @@ extern "C" {
 #define MRSRB6		(S3C_REG(0x1c8002c))
 #define MRSRB7		(S3C_REG(0x1c80030))
 
-/* UART */
+    /* UART */
 #define ULCON0		(S3C_REG(0x1d00000))
 #define ULCON1		(S3C_REG(0x1d04000))
 #define UCON0		(S3C_REG(0x1d00004))
@@ -82,14 +82,14 @@ extern "C" {
 #define URXH0		(S3C_REGB(0x1d00024))
 #define URXH1		(S3C_REGB(0x1d04024))
 
-/* SIO */
+    /* SIO */
 #define SIOCON		(S3C_REG(0x1d14000))
 #define SIODAT		(S3C_REG(0x1d14004))
 #define SBRDR		(S3C_REG(0x1d14008))
 #define IVTCNT		(S3C_REG(0x1d1400c))
 #define DCNTZ		(S3C_REG(0x1d14010))
 
-/* IIS */
+    /* IIS */
 #define IISCON		(S3C_REG(0x1d18000))
 #define IISMOD		(S3C_REG(0x1d18004))
 #define IISPSR		(S3C_REG(0x1d18008))
@@ -97,7 +97,7 @@ extern "C" {
 
 #define IISFIF		(S3C_REQW(0x1d18010))
 
-/* I/O Port */
+    /* I/O Port */
 #define PCONA		(S3C_REG(0x1d20000))
 #define PDATA		(S3C_REG(0x1d20004))
 
@@ -128,17 +128,17 @@ extern "C" {
 #define EXTINT		(S3C_REG(0x1d20050))
 #define EXTINTPND	(S3C_REG(0x1d20054))
 
-/* Watchdog */
+    /* Watchdog */
 #define WTCON		(S3C_REG(0x1d30000))
 #define WTDAT		(S3C_REG(0x1d30004))
 #define WTCNT		(S3C_REG(0x1d30008))
 
-/* ADC */
+    /* ADC */
 #define ADCCON		(S3C_REG(0x1d40000))
 #define ADCPSR		(S3C_REG(0x1d40004))
 #define ADCDAT		(S3C_REG(0x1d40008))
 
-/* Timer */
+    /* Timer */
 #define TCFG0		(S3C_REG(0x1d50000))
 #define TCFG1		(S3C_REG(0x1d50004))
 #define TCON		(S3C_REG(0x1d50008))
@@ -166,13 +166,13 @@ extern "C" {
 #define TCNTB5		(S3C_REG(0x1d50048))
 #define TCNTO5		(S3C_REG(0x1d5004c))
 
-/* IIC */
+    /* IIC */
 #define IICCON		(S3C_REG(0x1d60000))
 #define IICSTAT    	(S3C_REG(0x1d60004))
 #define IICADD     	(S3C_REG(0x1d60008))
 #define IICDS		(S3C_REG(0x1d6000c))
 
-/* RTC */
+    /* RTC */
 #define RTCCON		(S3C_REGB(0x1d70040)
 #define RTCALM		(S3C_REGB(0x1d70050)
 #define ALMSEC		(S3C_REGB(0x1d70054)
@@ -191,13 +191,13 @@ extern "C" {
 #define BCDYEAR		(S3C_REGB(0x1d70088)
 #define TICINT		(S3C_REGB(0x1d7008c)
 
-/* Clock & Power management */
+    /* Clock & Power management */
 #define PLLCON		(S3C_REG(0x1d80000))
 #define CLKCON		(S3C_REG(0x1d80004))
 #define CLKSLOW		(S3C_REG(0x1d80008))
 #define LOCKTIME	(S3C_REG(0x1d8000c))
 
-/* Interrupt */
+    /* Interrupt */
 #define INTCON		(S3C_REG(0x1e00000))
 #define INTPND		(S3C_REG(0x1e00004))
 #define INTMOD		(S3C_REG(0x1e00008))
@@ -213,29 +213,50 @@ extern "C" {
 #define F_ISPR		(S3C_REG(0x1e00038))
 #define F_ISPC		(S3C_REG(0x1e0003c))
 
-/********************************/
-/* LCD Controller Registers     */
-/********************************/
+    /********************************/
+
+    /* LCD Controller Registers     */
+
+    /********************************/
+
 #define LCDCON1		(S3C_REG(0x300000))
+
 #define LCDCON2		(S3C_REG(0x300004))
+
 #define LCDSADDR1	(S3C_REG(0x300008))
+
 #define LCDSADDR2	(S3C_REG(0x30000c))
+
 #define LCDSADDR3	(S3C_REG(0x300010))
+
 #define REDLUT		(S3C_REG(0x300014))
+
 #define GREENLUT	(S3C_REG(0x300018))
+
 #define BLUELUT		(S3C_REG(0x30001c))
+
 #define DP1_2		(S3C_REG(0x300020))
+
 #define DP4_7		(S3C_REG(0x300024))
+
 #define DP3_5		(S3C_REG(0x300028))
+
 #define DP2_3		(S3C_REG(0x30002c))
+
 #define DP5_7		(S3C_REG(0x300030))
+
 #define DP3_4		(S3C_REG(0x300034))
+
 #define DP4_5		(S3C_REG(0x300038))
+
 #define DP6_7		(S3C_REG(0x30003c))
+
 #define LCDCON3		(S3C_REG(0x300040))
+
 #define DITHMODE	(S3C_REG(0x300044))
 
-/* ZDMA0 */
+
+    /* ZDMA0 */
 #define ZDCON0		(S3C_REG(0x1e80000))
 #define ZDISRC0		(S3C_REG(0x1e80004))
 #define ZDIDES0		(S3C_REG(0x1e80008))
@@ -244,7 +265,7 @@ extern "C" {
 #define ZDCDES0		(S3C_REG(0x1e80014))
 #define ZDCCNT0		(S3C_REG(0x1e80018))
 
-/* ZDMA1 */
+    /* ZDMA1 */
 #define ZDCON1		(S3C_REG(0x1e80020))
 #define ZDISRC1		(S3C_REG(0x1e80024))
 #define ZDIDES1		(S3C_REG(0x1e80028))
@@ -253,7 +274,7 @@ extern "C" {
 #define ZDCDES1		(S3C_REG(0x1e80034))
 #define ZDCCNT1		(S3C_REG(0x1e80038))
 
-/* BDMA0 */
+    /* BDMA0 */
 #define BDCON0		(S3C_REG(0x1f80000))
 #define BDISRC0		(S3C_REG(0x1f80004))
 #define BDIDES0		(S3C_REG(0x1f80008))
@@ -262,7 +283,7 @@ extern "C" {
 #define BDCDES0		(S3C_REG(0x1f80014))
 #define BDCCNT0		(S3C_REG(0x1f80018))
 
-/* BDMA1 */
+    /* BDMA1 */
 #define BDCON1		(S3C_REG(0x1f80020))
 #define BDISRC1		(S3C_REG(0x1f80024))
 #define BDIDES1		(S3C_REG(0x1f80028))
@@ -271,9 +292,9 @@ extern "C" {
 #define BDCDES1		(S3C_REG(0x1f80034))
 #define BDCCNT1		(S3C_REG(0x1f80038))
 
-/*****************************/
-/* CPU Mode                  */
-/*****************************/
+    /*****************************/
+    /* CPU Mode                  */
+    /*****************************/
 #define USERMODE	0x10		/* User Mode(USR) */
 #define FIQMODE		0x11		/* Fast Interrupt Mode (FIQ) */
 #define IRQMODE		0x12		/* Interrupt Mode (IRQ) */
@@ -283,9 +304,9 @@ extern "C" {
 #define MODEMASK	0x1f		/* Processor Mode Mask */
 #define NOINT		0xc0
 
-/*****************************/
-/* INT Define                */
-/*****************************/
+    /*****************************/
+    /* INT Define                */
+    /*****************************/
 #define INT_ADC		0x00
 #define INT_RTC		0x01
 #define INT_UTXD1	0x02
@@ -315,29 +336,29 @@ extern "C" {
 
 #define INT_GLOBAL	26
 
-struct rt_hw_register
-{
-	unsigned long r0;
-	unsigned long r1;
-	unsigned long r2;
-	unsigned long r3;
-	unsigned long r4;
-	unsigned long r5;
-	unsigned long r6;
-	unsigned long r7;
-	unsigned long r8;
-	unsigned long r9;
-	unsigned long r10;
-	unsigned long fp;
-	unsigned long ip;
-	unsigned long sp;
-	unsigned long lr;
-	unsigned long pc;
-	unsigned long cpsr;
-	unsigned long ORIG_r0;
-};
+    struct rt_hw_register
+    {
+        unsigned long r0;
+        unsigned long r1;
+        unsigned long r2;
+        unsigned long r3;
+        unsigned long r4;
+        unsigned long r5;
+        unsigned long r6;
+        unsigned long r7;
+        unsigned long r8;
+        unsigned long r9;
+        unsigned long r10;
+        unsigned long fp;
+        unsigned long ip;
+        unsigned long sp;
+        unsigned long lr;
+        unsigned long pc;
+        unsigned long cpsr;
+        unsigned long ORIG_r0;
+    };
 
-/*@}*/
+    /*@}*/
 
 #ifdef __cplusplus
 }

@@ -154,67 +154,67 @@ the TagLo register.
 
 static inline void flush_icache_line_indexed(rt_ubase_t addr)
 {
-	cache_op(Index_Invalidate_I, addr);
+    cache_op(Index_Invalidate_I, addr);
 }
 
 static inline void flush_dcache_line_indexed(rt_ubase_t addr)
 {
-	cache_op(Index_Writeback_Inv_D, addr);
+    cache_op(Index_Writeback_Inv_D, addr);
 }
 
 static inline void flush_icache_line(rt_ubase_t addr)
 {
-	cache_op(Hit_Invalidate_I, addr);
+    cache_op(Hit_Invalidate_I, addr);
 }
 
 static inline void lock_icache_line(rt_ubase_t addr)
 {
-	cache_op(Fetch_And_Lock_I, addr);
+    cache_op(Fetch_And_Lock_I, addr);
 }
 
 static inline void lock_dcache_line(rt_ubase_t addr)
 {
-	cache_op(Fetch_And_Lock_D, addr);
+    cache_op(Fetch_And_Lock_D, addr);
 }
 
 static inline void flush_dcache_line(rt_ubase_t addr)
 {
-	cache_op(Hit_Writeback_Inv_D, addr);
+    cache_op(Hit_Writeback_Inv_D, addr);
 }
 
 static inline void invalidate_dcache_line(rt_ubase_t addr)
 {
-	cache_op(Hit_Invalidate_D, addr);
+    cache_op(Hit_Invalidate_D, addr);
 }
 
 static inline void blast_dcache16(void)
 {
-	rt_ubase_t start = KSEG0;
-	rt_ubase_t end = start + dcache_size;
-	rt_ubase_t addr;
+    rt_ubase_t start = KSEG0;
+    rt_ubase_t end = start + dcache_size;
+    rt_ubase_t addr;
 
-	for (addr = start; addr < end; addr += 0x200)
-		cache16_unroll32(addr, Index_Writeback_Inv_D);
+    for (addr = start; addr < end; addr += 0x200)
+        cache16_unroll32(addr, Index_Writeback_Inv_D);
 }
 
 static inline void inv_dcache16(void)
 {
-	rt_ubase_t start = KSEG0;
-	rt_ubase_t end = start + dcache_size;
-	rt_ubase_t addr;
+    rt_ubase_t start = KSEG0;
+    rt_ubase_t end = start + dcache_size;
+    rt_ubase_t addr;
 
-	for (addr = start; addr < end; addr += 0x200)
-		cache16_unroll32(addr, Hit_Invalidate_D);
+    for (addr = start; addr < end; addr += 0x200)
+        cache16_unroll32(addr, Hit_Invalidate_D);
 }
 
 static inline void blast_icache16(void)
 {
-	rt_ubase_t start = KSEG0;
-	rt_ubase_t end = start + icache_size;
-	rt_ubase_t addr;
+    rt_ubase_t start = KSEG0;
+    rt_ubase_t end = start + icache_size;
+    rt_ubase_t addr;
 
-	for (addr = start; addr < end; addr += 0x200)
-		cache16_unroll32(addr, Index_Invalidate_I);
+    for (addr = start; addr < end; addr += 0x200)
+        cache16_unroll32(addr, Index_Invalidate_I);
 }
 
 

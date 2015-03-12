@@ -41,7 +41,8 @@ void print_backtrace(unsigned long *sp)
     unsigned long i;
 
     rt_kprintf("Call backtrace: ");
-    while (sp) {
+    while (sp)
+    {
         if ((rt_uint32_t)sp > END_OF_MEM)
             break;
 
@@ -55,26 +56,29 @@ void print_backtrace(unsigned long *sp)
     rt_kprintf("\n");
 }
 
-void show_regs(struct pt_regs * regs)
+void show_regs(struct pt_regs *regs)
 {
     int i;
 
     rt_kprintf("NIP: %08lX XER: %08lX LR: %08lX REGS: %p TRAP: %04lx DEAR: %08lX\n",
-           regs->nip, regs->xer, regs->link, regs, regs->trap, regs->dar);
+               regs->nip, regs->xer, regs->link, regs, regs->trap, regs->dar);
     rt_kprintf("MSR: %08lx EE: %01x PR: %01x FP: %01x ME: %01x IR/DR: %01x%01x\n",
-           regs->msr, regs->msr&MSR_EE ? 1 : 0, regs->msr&MSR_PR ? 1 : 0,
-           regs->msr & MSR_FP ? 1 : 0,regs->msr&MSR_ME ? 1 : 0,
-           regs->msr&MSR_IR ? 1 : 0,
-           regs->msr&MSR_DR ? 1 : 0);
+               regs->msr, regs->msr & MSR_EE ? 1 : 0, regs->msr & MSR_PR ? 1 : 0,
+               regs->msr & MSR_FP ? 1 : 0, regs->msr & MSR_ME ? 1 : 0,
+               regs->msr & MSR_IR ? 1 : 0,
+               regs->msr & MSR_DR ? 1 : 0);
 
     rt_kprintf("\n");
-    for (i = 0;  i < 32;  i++) {
-        if ((i % 8) == 0) {
+    for (i = 0;  i < 32;  i++)
+    {
+        if ((i % 8) == 0)
+        {
             rt_kprintf("GPR%02d: ", i);
         }
 
         rt_kprintf("%08lX ", regs->gpr[i]);
-        if ((i % 8) == 7) {
+        if ((i % 8) == 7)
+        {
             rt_kprintf("\n");
         }
     }
@@ -96,14 +100,14 @@ _exception(int signr, struct pt_regs *regs)
 unsigned long
 search_exception_table(unsigned long addr)
 {
-        unsigned long ret = 0;
+    unsigned long ret = 0;
 
-        /* There is only the kernel to search.  */
-        // ret = search_one_table(__start___ex_table, __stop___ex_table-1, addr);
-        /* if the serial port does not hang in exception, rt_kprintf can be used */
-        if (ret) return ret;
+    /* There is only the kernel to search.  */
+    // ret = search_one_table(__start___ex_table, __stop___ex_table-1, addr);
+    /* if the serial port does not hang in exception, rt_kprintf can be used */
+    if (ret) return ret;
 
-        return 0;
+    return 0;
 }
 
 /*
@@ -132,7 +136,8 @@ void MachineCheckException(struct pt_regs *regs)
 {
     unsigned long fixup, val;
 
-    if ((fixup = search_exception_table(regs->nip)) != 0) {
+    if ((fixup = search_exception_table(regs->nip)) != 0)
+    {
         regs->nip = fixup;
         val = mfspr(MCSR);
         /* Clear MCSR */
@@ -146,10 +151,13 @@ void MachineCheckException(struct pt_regs *regs)
 
     val = get_esr();
 
-    if (val& ESR_IMCP) {
+    if (val & ESR_IMCP)
+    {
         rt_kprintf("Instruction");
         mtspr(ESR, val & ~ESR_IMCP);
-    } else {
+    }
+    else
+    {
         rt_kprintf("Data");
     }
     rt_kprintf(" machine check.\n");
@@ -197,7 +205,7 @@ void UnknownException(struct pt_regs *regs)
 {
 
     rt_kprintf("Bad trap at PC: %lx, SR: %lx, vector=%lx\n",
-           regs->nip, regs->msr, regs->trap);
+               regs->nip, regs->msr, regs->trap);
     _exception(0, regs);
 }
 

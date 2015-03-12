@@ -65,23 +65,23 @@
 #define DECOMP_DCR_BASE 0x14
 #define kiar  (DECOMP_DCR_BASE+0x0)  /* Decompression controller addr reg    */
 #define kidr  (DECOMP_DCR_BASE+0x1)  /* Decompression controller data reg    */
-  /* values for kiar register - indirect addressing of these regs */
-  #define kitor0      0x00    /* index table origin register 0	      */
-  #define kitor1      0x01    /* index table origin register 1	      */
-  #define kitor2      0x02    /* index table origin register 2	      */
-  #define kitor3      0x03    /* index table origin register 3	      */
-  #define kaddr0      0x04    /* address decode definition regsiter 0 */
-  #define kaddr1      0x05    /* address decode definition regsiter 1 */
-  #define kconf       0x40    /* decompression core config register   */
-  #define kid	      0x41    /* decompression core ID	   register   */
-  #define kver	      0x42    /* decompression core version # reg     */
-  #define kpear       0x50    /* bus error addr reg (PLB addr)	      */
-  #define kbear       0x51    /* bus error addr reg (DCP to EBIU addr)*/
-  #define kesr0       0x52    /* bus error status reg 0  (R/clear)    */
-  #define kesr0s      0x53    /* bus error status reg 0  (set)	      */
-  /* There are 0x400 of the following registers, from krom0 to krom3ff*/
-  /* Only the first one is given here.				      */
-  #define krom0      0x400    /* SRAM/ROM read/write		      */
+/* values for kiar register - indirect addressing of these regs */
+#define kitor0      0x00    /* index table origin register 0	      */
+#define kitor1      0x01    /* index table origin register 1	      */
+#define kitor2      0x02    /* index table origin register 2	      */
+#define kitor3      0x03    /* index table origin register 3	      */
+#define kaddr0      0x04    /* address decode definition regsiter 0 */
+#define kaddr1      0x05    /* address decode definition regsiter 1 */
+#define kconf       0x40    /* decompression core config register   */
+#define kid	      0x41    /* decompression core ID	   register   */
+#define kver	      0x42    /* decompression core version # reg     */
+#define kpear       0x50    /* bus error addr reg (PLB addr)	      */
+#define kbear       0x51    /* bus error addr reg (DCP to EBIU addr)*/
+#define kesr0       0x52    /* bus error status reg 0  (R/clear)    */
+#define kesr0s      0x53    /* bus error status reg 0  (set)	      */
+/* There are 0x400 of the following registers, from krom0 to krom3ff*/
+/* Only the first one is given here.				      */
+#define krom0      0x400    /* SRAM/ROM read/write		      */
 #endif
 
 /******************************************************************************
@@ -99,31 +99,31 @@
 /******************************************************************************
  * Extrnal Bus Controller
  ******************************************************************************/
-  /* values for ebccfga register - indirect addressing of these regs */
-  #define pb0cr       0x00    /* periph bank 0 config reg	     */
-  #define pb1cr       0x01    /* periph bank 1 config reg	     */
-  #define pb2cr       0x02    /* periph bank 2 config reg	     */
-  #define pb3cr       0x03    /* periph bank 3 config reg	     */
-  #define pb4cr       0x04    /* periph bank 4 config reg	     */
+/* values for ebccfga register - indirect addressing of these regs */
+#define pb0cr       0x00    /* periph bank 0 config reg	     */
+#define pb1cr       0x01    /* periph bank 1 config reg	     */
+#define pb2cr       0x02    /* periph bank 2 config reg	     */
+#define pb3cr       0x03    /* periph bank 3 config reg	     */
+#define pb4cr       0x04    /* periph bank 4 config reg	     */
 #ifndef CONFIG_405EP
-  #define pb5cr       0x05    /* periph bank 5 config reg	     */
-  #define pb6cr       0x06    /* periph bank 6 config reg	     */
-  #define pb7cr       0x07    /* periph bank 7 config reg	     */
+#define pb5cr       0x05    /* periph bank 5 config reg	     */
+#define pb6cr       0x06    /* periph bank 6 config reg	     */
+#define pb7cr       0x07    /* periph bank 7 config reg	     */
 #endif
-  #define pb0ap       0x10    /* periph bank 0 access parameters     */
-  #define pb1ap       0x11    /* periph bank 1 access parameters     */
-  #define pb2ap       0x12    /* periph bank 2 access parameters     */
-  #define pb3ap       0x13    /* periph bank 3 access parameters     */
-  #define pb4ap       0x14    /* periph bank 4 access parameters     */
+#define pb0ap       0x10    /* periph bank 0 access parameters     */
+#define pb1ap       0x11    /* periph bank 1 access parameters     */
+#define pb2ap       0x12    /* periph bank 2 access parameters     */
+#define pb3ap       0x13    /* periph bank 3 access parameters     */
+#define pb4ap       0x14    /* periph bank 4 access parameters     */
 #ifndef CONFIG_405EP
-  #define pb5ap       0x15    /* periph bank 5 access parameters     */
-  #define pb6ap       0x16    /* periph bank 6 access parameters     */
-  #define pb7ap       0x17    /* periph bank 7 access parameters     */
+#define pb5ap       0x15    /* periph bank 5 access parameters     */
+#define pb6ap       0x16    /* periph bank 6 access parameters     */
+#define pb7ap       0x17    /* periph bank 7 access parameters     */
 #endif
-  #define pbear       0x20    /* periph bus error addr reg	     */
-  #define pbesr0      0x21    /* periph bus error status reg 0	     */
-  #define pbesr1      0x22    /* periph bus error status reg 1	     */
-  #define epcr	      0x23    /* external periph control reg	     */
+#define pbear       0x20    /* periph bus error addr reg	     */
+#define pbesr0      0x21    /* periph bus error status reg 0	     */
+#define pbesr1      0x22    /* periph bus error status reg 1	     */
+#define epcr	      0x23    /* external periph control reg	     */
 #define EBC0_CFG	0x23	/* external bus configuration reg	*/
 
 #ifdef CONFIG_405EP
@@ -241,7 +241,7 @@
 #define CPC0_PLLMR1_SSCS	   0x80000000
 #define PLL_RESET		   0x40000000
 #define CPC0_PLLMR1_PLLR	   0x40000000
-    /* Feedback multiplier */
+/* Feedback multiplier */
 #define PLL_FBKDIV		   0x00F00000
 #define CPC0_PLLMR1_FBDV	   0x00F00000
 #define PLL_FBKDIV_16		   0x00000000
@@ -260,7 +260,7 @@
 #define PLL_FBKDIV_13		   0x00D00000
 #define PLL_FBKDIV_14		   0x00E00000
 #define PLL_FBKDIV_15		   0x00F00000
-    /* Forward A divisor */
+/* Forward A divisor */
 #define PLL_FWDDIVA		   0x00070000
 #define CPC0_PLLMR1_FWDVA	   0x00070000
 #define PLL_FWDDIVA_8		   0x00000000
@@ -271,7 +271,7 @@
 #define PLL_FWDDIVA_3		   0x00050000
 #define PLL_FWDDIVA_2		   0x00060000
 #define PLL_FWDDIVA_1		   0x00070000
-    /* Forward B divisor */
+/* Forward B divisor */
 #define PLL_FWDDIVB		   0x00007000
 #define CPC0_PLLMR1_FWDVB	   0x00007000
 #define PLL_FWDDIVB_8		   0x00000000
@@ -282,7 +282,7 @@
 #define PLL_FWDDIVB_3		   0x00005000
 #define PLL_FWDDIVB_2		   0x00006000
 #define PLL_FWDDIVB_1		   0x00007000
-    /* PLL tune bits */
+/* PLL tune bits */
 #define PLL_TUNE_MASK		 0x000003FF
 #define PLL_TUNE_2_M_3		 0x00000133	/*  2 <= M <= 3		      */
 #define PLL_TUNE_4_M_6		 0x00000134	/*  3 <  M <= 6		      */
@@ -293,42 +293,42 @@
 #define PLL_TUNE_VCO_HI		 0x00000080	/* 800MHz <  VCO <= 1000MHz   */
 
 /* Defines for CPC0_PLLMR0 Register fields */
-    /* CPU divisor */
+/* CPU divisor */
 #define PLL_CPUDIV		   0x00300000
 #define CPC0_PLLMR0_CCDV	   0x00300000
 #define PLL_CPUDIV_1		   0x00000000
 #define PLL_CPUDIV_2		   0x00100000
 #define PLL_CPUDIV_3		   0x00200000
 #define PLL_CPUDIV_4		   0x00300000
-    /* PLB divisor */
+/* PLB divisor */
 #define PLL_PLBDIV		   0x00030000
 #define CPC0_PLLMR0_CBDV	   0x00030000
 #define PLL_PLBDIV_1		   0x00000000
 #define PLL_PLBDIV_2		   0x00010000
 #define PLL_PLBDIV_3		   0x00020000
 #define PLL_PLBDIV_4		   0x00030000
-    /* OPB divisor */
+/* OPB divisor */
 #define PLL_OPBDIV		   0x00003000
 #define CPC0_PLLMR0_OPDV	   0x00003000
 #define PLL_OPBDIV_1		   0x00000000
 #define PLL_OPBDIV_2		   0x00001000
 #define PLL_OPBDIV_3		   0x00002000
 #define PLL_OPBDIV_4		   0x00003000
-    /* EBC divisor */
+/* EBC divisor */
 #define PLL_EXTBUSDIV		   0x00000300
 #define CPC0_PLLMR0_EPDV	   0x00000300
 #define PLL_EXTBUSDIV_2		   0x00000000
 #define PLL_EXTBUSDIV_3		   0x00000100
 #define PLL_EXTBUSDIV_4		   0x00000200
 #define PLL_EXTBUSDIV_5		   0x00000300
-    /* MAL divisor */
+/* MAL divisor */
 #define PLL_MALDIV		   0x00000030
 #define CPC0_PLLMR0_MPDV	   0x00000030
 #define PLL_MALDIV_1		   0x00000000
 #define PLL_MALDIV_2		   0x00000010
 #define PLL_MALDIV_3		   0x00000020
 #define PLL_MALDIV_4		   0x00000030
-    /* PCI divisor */
+/* PCI divisor */
 #define PLL_PCIDIV		   0x00000003
 #define CPC0_PLLMR0_PPFD	   0x00000003
 #define PLL_PCIDIV_1		   0x00000000

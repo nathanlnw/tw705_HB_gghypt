@@ -42,15 +42,15 @@
  */
 void rt_hw_cpu_reset()
 {
-	/* open the watch-dog */
-	WDT_TCSR = WDT_CLK_EXTAL;
-	WDT_TCSR |= WDT_CLK_PRESCALE_CLK1024;
-	WDT_TDR  = 0x03;
-	WDT_TCNT = 0x00;
-	WDT_TCER |= WDT_ENABLE;
+    /* open the watch-dog */
+    WDT_TCSR = WDT_CLK_EXTAL;
+    WDT_TCSR |= WDT_CLK_PRESCALE_CLK1024;
+    WDT_TDR  = 0x03;
+    WDT_TCNT = 0x00;
+    WDT_TCER |= WDT_ENABLE;
 
-	rt_kprintf("reboot system...\n");
-	while (1);
+    rt_kprintf("reboot system...\n");
+    while (1);
 }
 
 /**
@@ -59,9 +59,9 @@ void rt_hw_cpu_reset()
  */
 void rt_hw_cpu_shutdown()
 {
-	rt_kprintf("shutdown...\n");
+    rt_kprintf("shutdown...\n");
 
-	while (1);
+    while (1);
 }
 
 /*@}*/

@@ -5,7 +5,7 @@
 * Version : V1.00.00
 *
 * By      : prife
-* Version : V1.00.01 
+* Version : V1.00.01
 ************************************************************************************************************************
 */
 
@@ -37,17 +37,17 @@ typedef struct
     void            (*Exit)(void);                      //Thread exit
     HANDLE          ThreadHandle;
     DWORD           ThreadID;
-}win_thread_t;
+} win_thread_t;
 
-const DWORD MS_VC_EXCEPTION=0x406D1388;
+const DWORD MS_VC_EXCEPTION = 0x406D1388;
 
 #pragma pack(push,8)
 typedef struct tagTHREADNAME_INFO
 {
-	DWORD dwType; // Must be 0x1000.
-	LPCSTR szName; // Pointer to name (in user addr space).
-	DWORD dwThreadID; // Thread ID (-1=caller thread).
-	DWORD dwFlags; // Reserved for future use, must be zero.
+    DWORD dwType; // Must be 0x1000.
+    LPCSTR szName; // Pointer to name (in user addr space).
+    DWORD dwThreadID; // Thread ID (-1=caller thread).
+    DWORD dwFlags; // Reserved for future use, must be zero.
 } THREADNAME_INFO;
 #pragma pack(pop)
 
@@ -109,21 +109,21 @@ rt_uint32_t SysTickInterruptHandle(void);
 static DWORD WINAPI ThreadforSysTickTimer(LPVOID lpParam);
 static DWORD WINAPI ThreadforKeyGet(LPVOID lpParam);
 
-static void SetThreadName(DWORD dwThreadID, char* threadName)
+static void SetThreadName(DWORD dwThreadID, char *threadName)
 {
-	THREADNAME_INFO info;
-	info.dwType = 0x1000;
-	info.szName = threadName;
-	info.dwThreadID = dwThreadID;
-	info.dwFlags = 0;
+    THREADNAME_INFO info;
+    info.dwType = 0x1000;
+    info.szName = threadName;
+    info.dwThreadID = dwThreadID;
+    info.dwFlags = 0;
 
-	__try
-	{
-		RaiseException( MS_VC_EXCEPTION, 0, sizeof(info)/sizeof(ULONG_PTR), (ULONG_PTR*)&info );
-	}
-	__except(EXCEPTION_EXECUTE_HANDLER)
-	{
-	}
+    __try
+    {
+        RaiseException( MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR *)&info );
+    }
+    __except(EXCEPTION_EXECUTE_HANDLER)
+    {
+    }
 }
 
 /*
@@ -139,18 +139,18 @@ static void SetThreadName(DWORD dwThreadID, char* threadName)
 
 static DWORD WINAPI thread_run( LPVOID lpThreadParameter )
 {
-	rt_thread_t tid = rt_thread_self();
-	win_thread_t  *pWinThread = (win_thread_t *)lpThreadParameter;
+    rt_thread_t tid = rt_thread_self();
+    win_thread_t  *pWinThread = (win_thread_t *)lpThreadParameter;
 
-	SetThreadName(GetCurrentThreadId(), tid->name);
+    SetThreadName(GetCurrentThreadId(), tid->name);
 
-	pWinThread->Entry(pWinThread->Param);
+    pWinThread->Entry(pWinThread->Param);
 
-	pWinThread->Exit();
-	return 0;	
+    pWinThread->Exit();
+    return 0;
 }
 
-rt_uint8_t* rt_hw_stack_init(void *pEntry,void *pParam,rt_uint8_t *pStackAddr,void *pExit)
+rt_uint8_t *rt_hw_stack_init(void *pEntry, void *pParam, rt_uint8_t *pStackAddr, void *pExit)
 {
     win_thread_t    *pWinThread = NULL;
 
@@ -183,7 +183,7 @@ rt_uint8_t* rt_hw_stack_init(void *pEntry,void *pParam,rt_uint8_t *pStackAddr,vo
     SetThreadPriority(pWinThread->ThreadHandle,
                       THREAD_PRIORITY_IDLE);
 
-    return (rt_uint8_t*)pWinThread;
+    return (rt_uint8_t *)pWinThread;
 } /*** rt_hw_stack_init ***/
 
 /*
@@ -200,7 +200,7 @@ rt_base_t rt_hw_interrupt_disable(void)
 {
     if(hInterruptEventMutex != NULL)
     {
-        WaitForSingleObject(hInterruptEventMutex,INFINITE);
+        WaitForSingleObject(hInterruptEventMutex, INFINITE);
     }
 
     return 0;
@@ -251,7 +251,7 @@ void rt_hw_context_switch_interrupt(rt_uint32_t from,
 
     rt_interrupt_to_thread = *((rt_uint32_t *)(to));
 
-	//trigger YIELD exception(cause context switch)
+    //trigger YIELD exception(cause context switch)
     TriggerSimulateInterrupt(CPU_INTERRUPT_YIELD);
 } /*** rt_hw_context_switch_interrupt ***/
 
@@ -289,7 +289,7 @@ void rt_hw_context_switch(rt_uint32_t from,
 */
 void rt_hw_context_switch_to(rt_uint32_t to)
 {
-	//set to thread
+    //set to thread
     rt_interrupt_to_thread = *((rt_uint32_t *)(to));
 
     //clear from thread
@@ -344,7 +344,7 @@ void TriggerSimulateInterrupt(rt_uint32_t IntIndex)
 * Note(s)     : none
 *********************************************************************************************************
 */
-void RegisterSimulateInterrupt(rt_uint32_t IntIndex,rt_uint32_t (*IntHandler)(void))
+void RegisterSimulateInterrupt(rt_uint32_t IntIndex, rt_uint32_t (*IntHandler)(void))
 {
     if(IntIndex < MAX_INTERRUPT_NUM)
     {
@@ -384,7 +384,7 @@ void RegisterSimulateInterrupt(rt_uint32_t IntIndex,rt_uint32_t (*IntHandler)(vo
 *********************************************************************************************************
 */
 #define WIN_WM_MIN_RES      (1)
- void WinThreadScheduler(void)
+void WinThreadScheduler(void)
 {
     HANDLE          hInterruptObjectList[2];
     HANDLE          hThreadHandle;
@@ -485,7 +485,7 @@ void RegisterSimulateInterrupt(rt_uint32_t IntIndex,rt_uint32_t (*IntHandler)(vo
         return;
     }
 
-    OSTick_SignalPtr = CreateEvent(NULL,TRUE,FALSE,NULL);
+    OSTick_SignalPtr = CreateEvent(NULL, TRUE, FALSE, NULL);
     if(OSTick_SignalPtr == NULL)
     {
         // disp error message
@@ -610,7 +610,7 @@ static DWORD WINAPI ThreadforSysTickTimer(LPVOID lpParam)
         /*
          * Wait until the timer expires and we can access the simulated interrupt variables.
          */
-        WaitForSingleObject(OSTick_SignalPtr,INFINITE);
+        WaitForSingleObject(OSTick_SignalPtr, INFINITE);
 
         ResetEvent(OSTick_SignalPtr);
 

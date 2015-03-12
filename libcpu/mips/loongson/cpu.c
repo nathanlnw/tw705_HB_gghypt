@@ -27,12 +27,12 @@
  */
 void rt_hw_cpu_reset(void)
 {
-	/* open the watch-dog */
-	WD_TIMER = 0x01; /* watch dog will be timeout after 1 tick */
-	WD_CTRL |= 0x01;
+    /* open the watch-dog */
+    WD_TIMER = 0x01; /* watch dog will be timeout after 1 tick */
+    WD_CTRL |= 0x01;
 
-	rt_kprintf("reboot system...\n");
-	while (1);
+    rt_kprintf("reboot system...\n");
+    while (1);
 }
 
 /**
@@ -41,9 +41,9 @@ void rt_hw_cpu_reset(void)
  */
 void rt_hw_cpu_shutdown(void)
 {
-	rt_kprintf("shutdown...\n");
+    rt_kprintf("shutdown...\n");
 
-	while (1);
+    while (1);
 }
 
 /*@}*/

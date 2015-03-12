@@ -28,106 +28,106 @@ rt_uint32_t rt_thread_switch_interrput_flag;
 
 rt_isr_handler_t rt_hw_interrupt_handle(rt_uint32_t vector)
 {
-	rt_kprintf("Unhandled interrupt %d occured!!!\n", vector);
-	return RT_NULL;
+    rt_kprintf("Unhandled interrupt %d occured!!!\n", vector);
+    return RT_NULL;
 }
 
 void uic_irq_ack(unsigned int vec)
 {
-	mtdcr(uic0sr, UIC_MASK(vec));
+    mtdcr(uic0sr, UIC_MASK(vec));
 }
 
 void  uic_int_handler (unsigned int vec)
 {
-	rt_interrupt_enter();
+    rt_interrupt_enter();
 
     /* Allow external interrupts to the CPU. */
     if (isr_table [vec] != 0)
     {
-       (*isr_table[vec])(vec);
+        (*isr_table[vec])(vec);
     }
     uic_irq_ack(vec);
-	
+
     rt_interrupt_leave();
 }
 
 /* handler for UIC interrupt */
 void uic_interrupt(rt_uint32_t uic_base, int vec_base)
 {
-	int vec;
-	rt_uint32_t uic_msr;
-	rt_uint32_t msr_shift;
+    int vec;
+    rt_uint32_t uic_msr;
+    rt_uint32_t msr_shift;
 
-	/*
-	 * Read masked interrupt status register to determine interrupt source
-	 */
-	uic_msr = get_dcr(uic_base + UIC_MSR);
-	msr_shift = uic_msr;
-	vec = vec_base;
+    /*
+     * Read masked interrupt status register to determine interrupt source
+     */
+    uic_msr = get_dcr(uic_base + UIC_MSR);
+    msr_shift = uic_msr;
+    vec = vec_base;
 
-	while (msr_shift != 0)
-	{
-		if (msr_shift & 0x80000000)
-			uic_int_handler(vec);
+    while (msr_shift != 0)
+    {
+        if (msr_shift & 0x80000000)
+            uic_int_handler(vec);
 
-		/*
-		 * Shift msr to next position and increment vector
-		 */
-		msr_shift <<= 1;
-		vec++;
-	}
+        /*
+         * Shift msr to next position and increment vector
+         */
+        msr_shift <<= 1;
+        vec++;
+    }
 }
 
 void rt_hw_interrupt_install(int vector, rt_isr_handler_t new_handler, rt_isr_handler_t *old_handler)
 {
     int	intVal;
 
-    if (((int)vector < 0)  || ((int) vector >= MAX_HANDLERS)) 
-	{
+    if (((int)vector < 0)  || ((int) vector >= MAX_HANDLERS))
+    {
         return;   /*  out of range  */
-	}
-   
+    }
+
     /* install the handler in the system interrupt table  */
     intVal = rt_hw_interrupt_disable (); /* lock interrupts to prevent races */
 
-	if (*old_handler != RT_NULL) *old_handler = isr_table[vector];
-	if (new_handler != RT_NULL) isr_table[vector] = new_handler;
+    if (*old_handler != RT_NULL) *old_handler = isr_table[vector];
+    if (new_handler != RT_NULL) isr_table[vector] = new_handler;
 
     rt_hw_interrupt_enable (intVal);
 }
 
 void rt_hw_interrupt_mask(int vector)
 {
-	mtdcr(uic0er, mfdcr(uic0er) & ~UIC_MASK(vector));
+    mtdcr(uic0er, mfdcr(uic0er) & ~UIC_MASK(vector));
 }
 
 void rt_hw_interrupt_unmask(int vector)
 {
-	mtdcr(uic0er, mfdcr(uic0er) | UIC_MASK(vector));
+    mtdcr(uic0er, mfdcr(uic0er) | UIC_MASK(vector));
 }
 
 void rt_hw_interrupt_init()
 {
-	int vector;
+    int vector;
     rt_uint32_t pit_value;
 
     pit_value = RT_TICK_PER_SECOND * (100000000 / RT_CPU_FREQ);
 
     /* enable pit */
-	mtspr(SPRN_PIT, pit_value);
-	mtspr(SPRN_TCR, 0x4400000);
+    mtspr(SPRN_PIT, pit_value);
+    mtspr(SPRN_TCR, 0x4400000);
 
-	/* set default interrupt handler */
+    /* set default interrupt handler */
     for (vector = 0; vector < MAX_HANDLERS; vector++)
     {
-	    isr_table [vector] = (rt_isr_handler_t)rt_hw_interrupt_handle;
+        isr_table [vector] = (rt_isr_handler_t)rt_hw_interrupt_handle;
     }
 
-	/* initialize interrupt nest, and context in thread sp */
-	rt_interrupt_nest = 0;
-	rt_interrupt_from_thread = 0;
-	rt_interrupt_to_thread = 0;
-	rt_thread_switch_interrput_flag = 0;
+    /* initialize interrupt nest, and context in thread sp */
+    rt_interrupt_nest = 0;
+    rt_interrupt_from_thread = 0;
+    rt_interrupt_to_thread = 0;
+    rt_thread_switch_interrput_flag = 0;
 }
 
 /*@}*/

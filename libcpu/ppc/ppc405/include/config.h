@@ -14,7 +14,7 @@
 #define CONFIG_SYS_CLK_RECFG	0	/* Config the sys clks */
 #define CONFIG_SYS_CLK_FREQ     33333333 /*3300000*//* external frequency to pll   */
 #define CONFIG_SYS_HZ           100
-#define CONFIG_SYS_PIT_RELOAD   (CONFIG_SYS_CLK_FREQ / CONFIG_SYS_HZ)  
+#define CONFIG_SYS_PIT_RELOAD   (CONFIG_SYS_CLK_FREQ / CONFIG_SYS_HZ)
 
 /*
  * UART

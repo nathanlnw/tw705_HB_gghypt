@@ -32,7 +32,7 @@ struct rt_mb_uart_lite
 {
     struct rt_device parent;
 
-    struct rt_mb_uart_lite_hw* hw_base;
+    struct rt_mb_uart_lite_hw *hw_base;
     rt_uint16_t peripheral_id;
     rt_uint32_t baudrate;
 
@@ -48,8 +48,8 @@ static void rt_hw_serial_isr(void)
 {
     unsigned int status;
     rt_base_t level;
-    struct rt_device* device;
-    struct rt_mb_uart_lite* serial = RT_NULL;
+    struct rt_device *device;
+    struct rt_mb_uart_lite *serial = RT_NULL;
 
 #ifdef RT_USING_UART1
     /* serial 1 */
@@ -95,7 +95,7 @@ static void rt_hw_serial_isr(void)
 
 static rt_err_t rt_serial_init(rt_device_t dev)
 {
-    struct rt_mb_uart_lite* serial = (struct rt_mb_uart_lite*) dev;
+    struct rt_mb_uart_lite *serial = (struct rt_mb_uart_lite *) dev;
 
     RT_ASSERT(serial != RT_NULL);
 
@@ -113,7 +113,7 @@ static rt_err_t rt_serial_init(rt_device_t dev)
 
 static rt_err_t rt_serial_open(rt_device_t dev, rt_uint16_t oflag)
 {
-    struct rt_mb_uart_lite *serial = (struct rt_mb_uart_lite*) dev;
+    struct rt_mb_uart_lite *serial = (struct rt_mb_uart_lite *) dev;
     RT_ASSERT(serial != RT_NULL);
 
     if (dev->flag & RT_DEVICE_FLAG_INT_RX)
@@ -131,7 +131,7 @@ static rt_err_t rt_serial_open(rt_device_t dev, rt_uint16_t oflag)
 
 static rt_err_t rt_serial_close(rt_device_t dev)
 {
-    struct rt_mb_uart_lite *serial = (struct rt_mb_uart_lite*) dev;
+    struct rt_mb_uart_lite *serial = (struct rt_mb_uart_lite *) dev;
     RT_ASSERT(serial != RT_NULL);
 
     if (dev->flag & RT_DEVICE_FLAG_INT_RX)
@@ -143,14 +143,14 @@ static rt_err_t rt_serial_close(rt_device_t dev)
     return RT_EOK;
 }
 
-static rt_size_t rt_serial_read(rt_device_t dev, rt_off_t pos, void* buffer, rt_size_t size)
+static rt_size_t rt_serial_read(rt_device_t dev, rt_off_t pos, void *buffer, rt_size_t size)
 {
-    rt_uint8_t* ptr;
-    struct rt_mb_uart_lite *serial = (struct rt_mb_uart_lite*) dev;
+    rt_uint8_t *ptr;
+    struct rt_mb_uart_lite *serial = (struct rt_mb_uart_lite *) dev;
     RT_ASSERT(serial != RT_NULL);
 
     /* point to buffer */
-    ptr = (rt_uint8_t*) buffer;
+    ptr = (rt_uint8_t *) buffer;
 
     if (dev->flag & RT_DEVICE_FLAG_INT_RX)
     {
@@ -168,7 +168,8 @@ static rt_size_t rt_serial_read(rt_device_t dev, rt_off_t pos, void* buffer, rt_
                 serial->read_index++;
                 if (serial->read_index >= RT_UART_RX_BUFFER_SIZE)
                     serial->read_index = 0;
-            } else
+            }
+            else
             {
                 /* no data in rx buffer */
 
@@ -185,11 +186,13 @@ static rt_size_t rt_serial_read(rt_device_t dev, rt_off_t pos, void* buffer, rt_
         }
 
         return (rt_uint32_t) ptr - (rt_uint32_t) buffer;
-    } else if (dev->flag & RT_DEVICE_FLAG_DMA_RX)
+    }
+    else if (dev->flag & RT_DEVICE_FLAG_DMA_RX)
     {
         /* not support right now */
         RT_ASSERT(0);
-    } else
+    }
+    else
     {
         /* poll mode */
         while (size)
@@ -210,13 +213,13 @@ static rt_size_t rt_serial_read(rt_device_t dev, rt_off_t pos, void* buffer, rt_
     return 0;
 }
 
-static rt_size_t rt_serial_write(rt_device_t dev, rt_off_t pos, const void* buffer, rt_size_t size)
+static rt_size_t rt_serial_write(rt_device_t dev, rt_off_t pos, const void *buffer, rt_size_t size)
 {
-    rt_uint8_t* ptr;
-    struct rt_mb_uart_lite *serial = (struct rt_mb_uart_lite*) dev;
+    rt_uint8_t *ptr;
+    struct rt_mb_uart_lite *serial = (struct rt_mb_uart_lite *) dev;
     RT_ASSERT(serial != RT_NULL);
 
-    ptr = (rt_uint8_t*) buffer;
+    ptr = (rt_uint8_t *) buffer;
     if (dev->open_flag & RT_DEVICE_OFLAG_WRONLY)
     {
         if (dev->flag & RT_DEVICE_FLAG_STREAM)
@@ -287,7 +290,7 @@ rt_err_t rt_hw_serial_init()
     device = (rt_device_t) &serial1;
 
     /* init serial device private data */
-    serial1.hw_base = (struct rt_mb_uart_lite_hw*) XPAR_USB_UART_BASEADDR;
+    serial1.hw_base = (struct rt_mb_uart_lite_hw *) XPAR_USB_UART_BASEADDR;
     serial1.peripheral_id = XPAR_INTC_0_UARTLITE_1_VEC_ID;
     serial1.baudrate = 9600;
 

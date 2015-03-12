@@ -27,26 +27,26 @@
 /* data node for Tx Mode */
 struct avr32_serial_data_node
 {
-	rt_uint8_t *data_ptr;
-	rt_size_t  data_size;
-	struct avr32_serial_data_node *next, *prev;
+    rt_uint8_t *data_ptr;
+    rt_size_t  data_size;
+    struct avr32_serial_data_node *next, *prev;
 };
 
 struct avr32_serial_int_rx
 {
-	rt_uint8_t  rx_buffer[UART_RX_BUFFER_SIZE];
-	rt_uint32_t read_index, save_index;
+    rt_uint8_t  rx_buffer[UART_RX_BUFFER_SIZE];
+    rt_uint32_t read_index, save_index;
 };
 
 struct avr32_serial_device
 {
-	avr32_usart_t *uart_device;
+    avr32_usart_t *uart_device;
 
-	/* rx structure */
-	struct avr32_serial_int_rx* int_rx;
+    /* rx structure */
+    struct avr32_serial_int_rx *int_rx;
 };
 
-rt_err_t rt_hw_serial_register(rt_device_t device, const char* name, rt_uint32_t flag, struct avr32_serial_device *serial);
+rt_err_t rt_hw_serial_register(rt_device_t device, const char *name, rt_uint32_t flag, struct avr32_serial_device *serial);
 
 void rt_hw_serial_isr();
 

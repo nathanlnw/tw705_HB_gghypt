@@ -1242,11 +1242,6 @@
               <FilePath>.\app_712\lcd\Menu_Include.h</FilePath>
             </File>
             <File>
-              <FileName>SED1520.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\app_712\lcd\SED1520.h</FilePath>
-            </File>
-            <File>
               <FileName>Menu_TXT.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\app_712\lcd\Menu_TXT.c</FilePath>

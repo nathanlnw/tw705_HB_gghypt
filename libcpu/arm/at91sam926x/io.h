@@ -30,16 +30,16 @@
 
 rt_inline unsigned int at91_sys_read(unsigned int reg_offset)
 {
-	unsigned int  addr = AT91_BASE_SYS;
+    unsigned int  addr = AT91_BASE_SYS;
 
-	return readl(addr + reg_offset);
+    return readl(addr + reg_offset);
 }
 
 rt_inline void at91_sys_write(unsigned int reg_offset, unsigned long value)
 {
-	unsigned int addr = AT91_BASE_SYS;
+    unsigned int addr = AT91_BASE_SYS;
 
-	writel(value, addr + reg_offset);
+    writel(value, addr + reg_offset);
 }
 
 

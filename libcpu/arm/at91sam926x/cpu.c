@@ -27,70 +27,70 @@
 #ifdef __GNUC__
 rt_inline rt_uint32_t cp15_rd(void)
 {
-	rt_uint32_t i;
+    rt_uint32_t i;
 
-	asm ("mrc p15, 0, %0, c1, c0, 0":"=r" (i));
-	return i;
+    asm ("mrc p15, 0, %0, c1, c0, 0":"=r" (i));
+    return i;
 }
 
 rt_inline void cache_enable(rt_uint32_t bit)
 {
-	__asm__ __volatile__(			\
-		"mrc  p15,0,r0,c1,c0,0\n\t"	\
-		"orr  r0,r0,%0\n\t"			\
-	   	"mcr  p15,0,r0,c1,c0,0"		\
-		:							\
-		:"r" (bit)					\
-		:"memory");
+    __asm__ __volatile__(			\
+                                    "mrc  p15,0,r0,c1,c0,0\n\t"	\
+                                    "orr  r0,r0,%0\n\t"			\
+                                    "mcr  p15,0,r0,c1,c0,0"		\
+                                    :							\
+                                    :"r" (bit)					\
+                                    :"memory");
 }
 
 rt_inline void cache_disable(rt_uint32_t bit)
 {
-	__asm__ __volatile__(			\
-		"mrc  p15,0,r0,c1,c0,0\n\t"	\
-		"bic  r0,r0,%0\n\t"			\
-		"mcr  p15,0,r0,c1,c0,0"		\
-		:							\
-		:"r" (bit)					\
-		:"memory");
+    __asm__ __volatile__(			\
+                                    "mrc  p15,0,r0,c1,c0,0\n\t"	\
+                                    "bic  r0,r0,%0\n\t"			\
+                                    "mcr  p15,0,r0,c1,c0,0"		\
+                                    :							\
+                                    :"r" (bit)					\
+                                    :"memory");
 }
 #endif
 
 #ifdef __CC_ARM
 rt_inline rt_uint32_t cp15_rd(void)
 {
-	rt_uint32_t i;
+    rt_uint32_t i;
 
-	__asm
-	{
-		mrc p15, 0, i, c1, c0, 0
-	}
+    __asm
+    {
+        mrc p15, 0, i, c1, c0, 0
+    }
 
-	return i;
+    return i;
 }
 
 rt_inline void cache_enable(rt_uint32_t bit)
 {
-	rt_uint32_t value;
+    rt_uint32_t value;
 
-	__asm
-	{
-		mrc p15, 0, value, c1, c0, 0
-		orr value, value, bit
-		mcr p15, 0, value, c1, c0, 0
-	}
+    __asm
+    {
+        mrc p15, 0, value, c1, c0, 0
+        orr value, value, bit
+        mcr p15, 0, value, c1, c0, 0
+    }
 }
 
 rt_inline void cache_disable(rt_uint32_t bit)
 {
-	rt_uint32_t value;
+    rt_uint32_t value;
 
-	__asm
-	{
-		mrc p15, 0, value, c1, c0, 0
-		bic value, value, bit
-		mcr p15, 0, value, c1, c0, 0
-	}
+    __asm
+    {
+        mrc p15, 0, value, c1, c0, 0
+        bic value, value, bit
+        mcr p15, 0, value, c1, c0, 0
+    }
 }
 #endif
 
@@ -100,7 +100,7 @@ rt_inline void cache_disable(rt_uint32_t bit)
  */
 void rt_hw_cpu_icache_enable()
 {
-	cache_enable(ICACHE_MASK);
+    cache_enable(ICACHE_MASK);
 }
 
 /**
@@ -109,7 +109,7 @@ void rt_hw_cpu_icache_enable()
  */
 void rt_hw_cpu_icache_disable()
 {
-	cache_disable(ICACHE_MASK);
+    cache_disable(ICACHE_MASK);
 }
 
 /**
@@ -118,7 +118,7 @@ void rt_hw_cpu_icache_disable()
  */
 rt_base_t rt_hw_cpu_icache_status()
 {
-	return (cp15_rd() & ICACHE_MASK);
+    return (cp15_rd() & ICACHE_MASK);
 }
 
 /**
@@ -127,7 +127,7 @@ rt_base_t rt_hw_cpu_icache_status()
  */
 void rt_hw_cpu_dcache_enable()
 {
-	cache_enable(DCACHE_MASK);
+    cache_enable(DCACHE_MASK);
 }
 
 /**
@@ -136,7 +136,7 @@ void rt_hw_cpu_dcache_enable()
  */
 void rt_hw_cpu_dcache_disable()
 {
-	cache_disable(DCACHE_MASK);
+    cache_disable(DCACHE_MASK);
 }
 
 /**
@@ -145,17 +145,17 @@ void rt_hw_cpu_dcache_disable()
  */
 rt_base_t rt_hw_cpu_dcache_status()
 {
-	return (cp15_rd() & DCACHE_MASK);
+    return (cp15_rd() & DCACHE_MASK);
 }
 
 static void at91sam9260_reset(void)
 {
-	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_PROCRST | AT91_RSTC_PERRST);
+    at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_PROCRST | AT91_RSTC_PERRST);
 }
 
 static void at91sam9260_poweroff(void)
 {
-	at91_sys_write(AT91_SHDW_CR, AT91_SHDW_KEY | AT91_SHDW_SHDW);
+    at91_sys_write(AT91_SHDW_CR, AT91_SHDW_KEY | AT91_SHDW_SHDW);
 }
 
 /**
@@ -164,13 +164,13 @@ static void at91sam9260_poweroff(void)
  */
 void rt_hw_cpu_reset()
 {
-	
-	rt_kprintf("Restarting system...\n");
-	at91sam9260_reset();
 
-	while(1);	/* loop forever and wait for reset to happen */
+    rt_kprintf("Restarting system...\n");
+    at91sam9260_reset();
 
-	/* NEVER REACHED */
+    while(1);	/* loop forever and wait for reset to happen */
+
+    /* NEVER REACHED */
 }
 
 /**
@@ -179,15 +179,15 @@ void rt_hw_cpu_reset()
  */
 void rt_hw_cpu_shutdown()
 {
-	rt_uint32_t level;
-	rt_kprintf("shutdown...\n");
+    rt_uint32_t level;
+    rt_kprintf("shutdown...\n");
 
-	level = rt_hw_interrupt_disable();
-	at91sam9260_poweroff();
-	while (level)
-	{
-		RT_ASSERT(0);
-	}
+    level = rt_hw_interrupt_disable();
+    at91sam9260_poweroff();
+    while (level)
+    {
+        RT_ASSERT(0);
+    }
 }
 
 /*@}*/

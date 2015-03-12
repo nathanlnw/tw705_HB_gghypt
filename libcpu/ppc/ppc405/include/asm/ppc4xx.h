@@ -54,7 +54,7 @@
 
 #define RESET_VECTOR	0xfffffffc
 #define CACHELINE_MASK	(CONFIG_SYS_CACHELINE_SIZE - 1) /* Address mask for cache
-						     line aligned data. */
+line aligned data. */
 
 #define CPR0_DCR_BASE	0x0C
 #define cprcfga		(CPR0_DCR_BASE+0x0)
@@ -91,39 +91,39 @@
 
 typedef struct
 {
-	unsigned long freqDDR;
-	unsigned long freqEBC;
-	unsigned long freqOPB;
-	unsigned long freqPCI;
-	unsigned long freqPLB;
-	unsigned long freqTmrClk;
-	unsigned long freqUART;
-	unsigned long freqProcessor;
-	unsigned long freqVCOHz;
-	unsigned long freqVCOMhz;	/* in MHz                          */
-	unsigned long pciClkSync;	/* PCI clock is synchronous        */
-	unsigned long pciIntArbEn;	/* Internal PCI arbiter is enabled */
-	unsigned long pllExtBusDiv;
-	unsigned long pllFbkDiv;
-	unsigned long pllFwdDiv;
-	unsigned long pllFwdDivA;
-	unsigned long pllFwdDivB;
-	unsigned long pllOpbDiv;
-	unsigned long pllPciDiv;
-	unsigned long pllPlbDiv;
+    unsigned long freqDDR;
+    unsigned long freqEBC;
+    unsigned long freqOPB;
+    unsigned long freqPCI;
+    unsigned long freqPLB;
+    unsigned long freqTmrClk;
+    unsigned long freqUART;
+    unsigned long freqProcessor;
+    unsigned long freqVCOHz;
+    unsigned long freqVCOMhz;	/* in MHz                          */
+    unsigned long pciClkSync;	/* PCI clock is synchronous        */
+    unsigned long pciIntArbEn;	/* Internal PCI arbiter is enabled */
+    unsigned long pllExtBusDiv;
+    unsigned long pllFbkDiv;
+    unsigned long pllFwdDiv;
+    unsigned long pllFwdDivA;
+    unsigned long pllFwdDivB;
+    unsigned long pllOpbDiv;
+    unsigned long pllPciDiv;
+    unsigned long pllPlbDiv;
 } PPC4xx_SYS_INFO;
 
 static inline rt_uint32_t get_mcsr(void)
 {
-	rt_uint32_t val;
+    rt_uint32_t val;
 
-	asm volatile("mfspr %0, 0x23c" : "=r" (val) :);
-	return val;
+    asm volatile("mfspr %0, 0x23c" : "=r" (val) :);
+    return val;
 }
 
 static inline void set_mcsr(rt_uint32_t val)
 {
-	asm volatile("mtspr 0x23c, %0" : "=r" (val) :);
+    asm volatile("mtspr 0x23c, %0" : "=r" (val) :);
 }
 
 #endif	/* __ASSEMBLY__ */

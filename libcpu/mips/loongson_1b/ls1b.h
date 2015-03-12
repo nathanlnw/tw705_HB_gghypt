@@ -70,40 +70,40 @@
 
 struct ls1b_intc_regs
 {
-	volatile unsigned int int_isr;
-	volatile unsigned int int_en;
-	volatile unsigned int int_set;
-	volatile unsigned int int_clr;		/* offset 0x10*/
-	volatile unsigned int int_pol;
-   	volatile unsigned int int_edge;		/* offset 0 */
-}; 
+    volatile unsigned int int_isr;
+    volatile unsigned int int_en;
+    volatile unsigned int int_set;
+    volatile unsigned int int_clr;		/* offset 0x10*/
+    volatile unsigned int int_pol;
+    volatile unsigned int int_edge;		/* offset 0 */
+};
 
 struct ls1b_cop_global_regs
 {
-	volatile unsigned int control;
-	volatile unsigned int rd_inten;
-	volatile unsigned int wr_inten;
-	volatile unsigned int rd_intisr;		/* offset 0x10*/
-	volatile unsigned int wr_intisr;
-	unsigned int unused[11];
-} ; 
+    volatile unsigned int control;
+    volatile unsigned int rd_inten;
+    volatile unsigned int wr_inten;
+    volatile unsigned int rd_intisr;		/* offset 0x10*/
+    volatile unsigned int wr_intisr;
+    unsigned int unused[11];
+} ;
 
 struct ls1b_cop_channel_regs
 {
-	volatile unsigned int rd_control;
-	volatile unsigned int rd_src;
-	volatile unsigned int rd_cnt;
-	volatile unsigned int rd_status;		/* offset 0x10*/
-	volatile unsigned int wr_control;
-	volatile unsigned int wr_src;
-	volatile unsigned int wr_cnt;
-	volatile unsigned int wr_status;		/* offset 0x10*/
-} ; 
+    volatile unsigned int rd_control;
+    volatile unsigned int rd_src;
+    volatile unsigned int rd_cnt;
+    volatile unsigned int rd_status;		/* offset 0x10*/
+    volatile unsigned int wr_control;
+    volatile unsigned int wr_src;
+    volatile unsigned int wr_cnt;
+    volatile unsigned int wr_status;		/* offset 0x10*/
+} ;
 
 struct ls1b_cop_regs
 {
-	struct ls1b_cop_global_regs global;
-	struct ls1b_cop_channel_regs chan[8][2];
+    struct ls1b_cop_global_regs global;
+    struct ls1b_cop_channel_regs chan[8][2];
 } ;
 
 #define __REG8(addr)		*((volatile unsigned char *)(addr))

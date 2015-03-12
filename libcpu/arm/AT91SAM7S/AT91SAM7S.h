@@ -21,7 +21,7 @@ extern "C" {
 
 #define AT91_REG *(volatile unsigned int *)		/* Hardware register definition */
 
-/* ========== Register definition for TC0 peripheral ==========  */
+    /* ========== Register definition for TC0 peripheral ==========  */
 #define AT91C_TC0_SR		(AT91_REG(0xFFFA0020)) /* TC0 Status Register */
 #define AT91C_TC0_RC		(AT91_REG(0xFFFA001C)) /* TC0 Register C */
 #define AT91C_TC0_RB		(AT91_REG(0xFFFA0018)) /* TC0 Register B */
@@ -33,7 +33,7 @@ extern "C" {
 #define AT91C_TC0_CV		(AT91_REG(0xFFFA0010)) /* TC0 Counter Value */
 #define AT91C_TC0_IMR		(AT91_REG(0xFFFA002C)) /* TC0 Interrupt Mask Register */
 
-/* ========== Register definition for TC1 peripheral ========== */
+    /* ========== Register definition for TC1 peripheral ========== */
 #define AT91C_TC1_RB		(AT91_REG(0xFFFA0058)) /* TC1 Register B */
 #define AT91C_TC1_CCR		(AT91_REG(0xFFFA0040)) /* TC1 Channel Control Register */
 #define AT91C_TC1_IER		(AT91_REG(0xFFFA0064)) /* TC1 Interrupt Enable Register */
@@ -45,7 +45,7 @@ extern "C" {
 #define AT91C_TC1_IMR		(AT91_REG(0xFFFA006C)) /* TC1 Interrupt Mask Register */
 #define AT91C_TC1_CV		(AT91_REG(0xFFFA0050)) /* TC1 Counter Value */
 
-/* ========== Register definition for TC2 peripheral ========== */
+    /* ========== Register definition for TC2 peripheral ========== */
 #define AT91C_TC2_CMR		(AT91_REG(0xFFFA0084)) /* TC2 Channel Mode Register (Capture Mode / Waveform Mode) */
 #define AT91C_TC2_CCR		(AT91_REG(0xFFFA0080)) /* TC2 Channel Control Register */
 #define AT91C_TC2_CV		(AT91_REG(0xFFFA0090)) /* TC2 Counter Value */
@@ -57,13 +57,18 @@ extern "C" {
 #define AT91C_TC2_IER		(AT91_REG(0xFFFA00A4)) /* TC2 Interrupt Enable Register */
 #define AT91C_TC2_SR		(AT91_REG(0xFFFA00A0)) /* TC2 Status Register */
 
-/* ========== Register definition for PITC peripheral ========== */
+    /* ========== Register definition for PITC peripheral ========== */
+
 #define AT91C_PITC_PIVR		(AT91_REG(0xFFFFFD38)) /* PITC Period Interval Value Register */
+
 #define AT91C_PITC_PISR		(AT91_REG(0xFFFFFD34)) /* PITC Period Interval Status Register */
+
 #define AT91C_PITC_PIIR		(AT91_REG(0xFFFFFD3C)) /* PITC Period Interval Image Register */
+
 #define AT91C_PITC_PIMR		(AT91_REG(0xFFFFFD30)) /* PITC Period Interval Mode Register */
 
-/* ========== Register definition for UDP peripheral ==========  */
+
+    /* ========== Register definition for UDP peripheral ==========  */
 #define AT91C_UDP_NUM		(AT91_REG(0xFFFB0000)) /* UDP Frame Number Register */
 #define AT91C_UDP_STAT		(AT91_REG(0xFFFB0004)) /* UDP Global State Register */
 #define AT91C_UDP_FADDR		(AT91_REG(0xFFFB0008)) /* UDP Function Address Register */
@@ -79,7 +84,7 @@ extern "C" {
 #define AT91C_UDP_FDR(n)	(*(&AT91C_UDP_FDR0 + n))
 #define AT91C_UDP_TXVC		(AT91_REG(0xFFFB0074)) /* UDP Transceiver Control Register */
 
-/* ========== Register definition for US0 peripheral ========== */
+    /* ========== Register definition for US0 peripheral ========== */
 #define AT91C_US0_CR		(AT91_REG(0xFFFC0000)) /* US0 Control Register */
 #define AT91C_US0_MR		(AT91_REG(0xFFFC0004)) /* US0 Mode Register */
 #define AT91C_US0_IER		(AT91_REG(0xFFFC0008)) /* US0 Interrupt Enable Register */
@@ -95,7 +100,7 @@ extern "C" {
 #define AT91C_US0_FIDI		(AT91_REG(0xFFFC0040)) /* US0 FI_DI_Ratio Register */
 #define AT91C_US0_IF		(AT91_REG(0xFFFC004C)) /* US0 IRDA_FILTER Register */
 
-/* ========== Register definition for AIC peripheral ==========  */
+    /* ========== Register definition for AIC peripheral ==========  */
 #define AT91C_AIC_SMR0		(AT91_REG(0xFFFFF000)) /* AIC Source Mode Register */
 #define AT91C_AIC_SMR(n)	(*(&AT91C_AIC_SMR0 + n))
 #define AT91C_AIC_SVR0		(AT91_REG(0xFFFFF080)) /* AIC Source Vector Register */
@@ -118,7 +123,7 @@ extern "C" {
 #define AT91C_AIC_FFSR		(AT91_REG(0xFFFFF148)) /* AIC Fast Forcing Status Register */
 
 
-/* ========== Register definition for DBGU peripheral ==========  */
+    /* ========== Register definition for DBGU peripheral ==========  */
 #define AT91C_DBGU_EXID		(AT91_REG(0xFFFFF244)) /* DBGU Chip ID Extension Register */
 #define AT91C_DBGU_BRGR		(AT91_REG(0xFFFFF220)) /* DBGU Baud Rate Generator Register */
 #define AT91C_DBGU_IDR		(AT91_REG(0xFFFFF20C)) /* DBGU Interrupt Disable Register */
@@ -132,7 +137,7 @@ extern "C" {
 #define AT91C_DBGU_RHR		(AT91_REG(0xFFFFF218)) /* DBGU Receiver Holding Register */
 #define AT91C_DBGU_IER		(AT91_REG(0xFFFFF208)) /* DBGU Interrupt Enable Register */
 
-/* ========== Register definition for PIO peripheral ========== */
+    /* ========== Register definition for PIO peripheral ========== */
 #define AT91C_PIO_ODR		(AT91_REG(0xFFFFF414)) /* PIOA Output Disable Registerr */
 #define AT91C_PIO_SODR		(AT91_REG(0xFFFFF430)) /* PIOA Set Output Data Register */
 #define AT91C_PIO_ISR		(AT91_REG(0xFFFFF44C)) /* PIOA Interrupt Status Register */
@@ -163,7 +168,7 @@ extern "C" {
 #define AT91C_PIO_OER		(AT91_REG(0xFFFFF410)) /* PIOA Output Enable Register */
 #define AT91C_PIO_PSR		(AT91_REG(0xFFFFF408)) /* PIOA PIO Status Register */
 
-// ========== Register definition for PIOA peripheral ==========
+    // ========== Register definition for PIOA peripheral ==========
 #define AT91C_PIOA_IMR  	(AT91_REG(0xFFFFF448)) // (PIOA) Interrupt Mask Register
 #define AT91C_PIOA_IER  	(AT91_REG(0xFFFFF440)) // (PIOA) Interrupt Enable Register
 #define AT91C_PIOA_OWDR 	(AT91_REG(0xFFFFF4A4)) // (PIOA) Output Write Disable Register
@@ -193,7 +198,7 @@ extern "C" {
 #define AT91C_PIOA_CODR 	(AT91_REG(0xFFFFF434)) // (PIOA) Clear Output Data Register
 #define AT91C_PIOA_OWSR 	(AT91_REG(0xFFFFF4A8)) // (PIOA) Output Write Status Register
 #define AT91C_PIOA_OWER 	(AT91_REG(0xFFFFF4A0)) // (PIOA) Output Write Enable Register
-// ========== Register definition for PIOB peripheral ==========
+    // ========== Register definition for PIOB peripheral ==========
 #define AT91C_PIOB_OWSR 	(AT91_REG(0xFFFFF6A8)) // (PIOB) Output Write Status Register
 #define AT91C_PIOB_PPUSR 	(AT91_REG(0xFFFFF668)) // (PIOB) Pull-up Status Register
 #define AT91C_PIOB_PPUDR 	(AT91_REG(0xFFFFF660)) // (PIOB) Pull-up Disable Register
@@ -224,7 +229,7 @@ extern "C" {
 #define AT91C_PIOB_IDR  	(AT91_REG(0xFFFFF644)) // (PIOB) Interrupt Disable Register
 #define AT91C_PIOB_PDR  	(AT91_REG(0xFFFFF604)) // (PIOB) PIO Disable Register
 
-/* ========== Register definition for PMC peripheral ========== */
+    /* ========== Register definition for PMC peripheral ========== */
 #define AT91C_PMC_SCER		(AT91_REG(0xFFFFFC00)) /* PMC System Clock Enable Register */
 #define AT91C_PMC_SCDR		(AT91_REG(0xFFFFFC04)) /* PMC System Clock Disable Register */
 #define AT91C_PMC_SCSR		(AT91_REG(0xFFFFFC08)) /* PMC System Clock Status Register */
@@ -241,46 +246,81 @@ extern "C" {
 #define AT91C_PMC_SR		(AT91_REG(0xFFFFFC68)) /* PMC Status Register */
 #define AT91C_PMC_IMR		(AT91_REG(0xFFFFFC6C)) /* PMC Interrupt Mask Register */
 
-/******************************************************************************/
-/*               PERIPHERAL ID DEFINITIONS FOR AT91SAM7S64                    */
-/******************************************************************************/
+    /******************************************************************************/
+
+    /*               PERIPHERAL ID DEFINITIONS FOR AT91SAM7S64                    */
+
+    /******************************************************************************/
+
 #define AT91C_ID_FIQ    	0 	/* Advanced Interrupt Controller (FIQ) */
+
 #define AT91C_ID_SYS    	1 	/* System Peripheral */
+
 #define AT91C_ID_PIOA   	2 	/* Parallel IO Controller A */
+
 #define AT91C_ID_PIOB   	3 	/* Parallel IO Controller B */
 #define AT91C_ID_ADC    	4 	/* Analog-to-Digital Converter */
+
 #define AT91C_ID_SPI    	5	/* Serial Peripheral Interface */
+
 #define AT91C_ID_US0    	6	/* USART 0 */
+
 #define AT91C_ID_US1    	7	/* USART 1 */
+
 #define AT91C_ID_SSC    	8	/* Serial Synchronous Controller */
+
 #define AT91C_ID_TWI    	9 	/* Two-Wire Interface */
+
 #define AT91C_ID_PWMC   	10	/* PWM Controller */
+
 #define AT91C_ID_UDP    	11 	/* USB Device Port */
+
 #define AT91C_ID_TC0    	12 	/* Timer Counter 0 */
+
 #define AT91C_ID_TC1    	13 	/* Timer Counter 1 */
+
 #define AT91C_ID_TC2    	14 	/* Timer Counter 2 */
+
 #define AT91C_ID_15			15	/* Reserved */
+
 #define AT91C_ID_16 		16 	/* Reserved */
+
 #define AT91C_ID_17 		17 	/* Reserved */
+
 #define AT91C_ID_18 		18 	/* Reserved */
+
 #define AT91C_ID_19 		19 	/* Reserved */
+
 #define AT91C_ID_20 		20 	/* Reserved */
+
 #define AT91C_ID_21 		21 	/* Reserved */
+
 #define AT91C_ID_22 		22 	/* Reserved */
+
 #define AT91C_ID_23 		23 	/* Reserved */
+
 #define AT91C_ID_24 		24 	/* Reserved */
+
 #define AT91C_ID_25 		25 	/* Reserved */
+
 #define AT91C_ID_26 		26 	/* Reserved */
+
 #define AT91C_ID_27 		27 	/* Reserved */
+
 #define AT91C_ID_28 		28 	/* Reserved */
+
 #define AT91C_ID_29 		29 	/* Reserved */
+
 #define AT91C_ID_IRQ0		30 	/* Advanced Interrupt Controller (IRQ0) */
+
 #define AT91C_ID_IRQ1		31 	/* Advanced Interrupt Controller (IRQ1) */
+
 #define AT91C_ALL_INT		0xC0007FF7	/* ALL VALID INTERRUPTS */
 
-/*****************************/
-/* CPU Mode                  */
-/*****************************/
+
+    /*****************************/
+    /* CPU Mode                  */
+    /*****************************/
 #define USERMODE			0x10
 #define FIQMODE				0x11
 #define IRQMODE				0x12

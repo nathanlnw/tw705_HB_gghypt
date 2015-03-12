@@ -24,12 +24,12 @@
 
 void rt_hw_trap_irq()
 {
-	rt_isr_handler_t hander = (rt_isr_handler_t)AT91C_BASE_AIC->AIC_IVR;
+    rt_isr_handler_t hander = (rt_isr_handler_t)AT91C_BASE_AIC->AIC_IVR;
 
-	hander(AT91C_BASE_AIC->AIC_ISR);
+    hander(AT91C_BASE_AIC->AIC_ISR);
 
-	/* end of interrupt */
-	AT91C_BASE_AIC->AIC_EOICR = 0;
+    /* end of interrupt */
+    AT91C_BASE_AIC->AIC_EOICR = 0;
 }
 
 void rt_hw_trap_fiq()
@@ -37,12 +37,16 @@ void rt_hw_trap_fiq()
     rt_kprintf("fast interrupt request\n");
 }
 
-extern struct rt_thread* rt_current_thread;
+
+extern struct rt_thread *rt_current_thread;
 void rt_hw_trap_abort()
 {
-	rt_kprintf("Abort occured!!! Thread [%s] suspended.\n",rt_current_thread->name);
-	rt_thread_suspend(rt_current_thread);
-	rt_schedule();
+
+    rt_kprintf("Abort occured!!! Thread [%s] suspended.\n", rt_current_thread->name);
+
+    rt_thread_suspend(rt_current_thread);
+
+    rt_schedule();
 
 }
 /*@}*/

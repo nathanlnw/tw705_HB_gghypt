@@ -29,7 +29,7 @@ static rt_isr_handler_t irq_handle_table[JZ47XX_MAX_INTR];
 
 void rt_hw_interrupt_handler(int vector)
 {
-	rt_kprintf("Unhandled interrupt %d occured!!!\n", vector);
+    rt_kprintf("Unhandled interrupt %d occured!!!\n", vector);
 }
 
 /**
@@ -37,18 +37,18 @@ void rt_hw_interrupt_handler(int vector)
  */
 void rt_hw_interrupt_init()
 {
-	rt_int32_t index;
+    rt_int32_t index;
 
-	for (index = 0; index < JZ47XX_MAX_INTR; index ++)
-	{
-		irq_handle_table[index] = (rt_isr_handler_t)rt_hw_interrupt_handler;
-	}
+    for (index = 0; index < JZ47XX_MAX_INTR; index ++)
+    {
+        irq_handle_table[index] = (rt_isr_handler_t)rt_hw_interrupt_handler;
+    }
 
-	/* init interrupt nest, and context in thread sp */
-	rt_interrupt_nest = 0;
-	rt_interrupt_from_thread = 0;
-	rt_interrupt_to_thread = 0;
-	rt_thread_switch_interrupt_flag = 0;
+    /* init interrupt nest, and context in thread sp */
+    rt_interrupt_nest = 0;
+    rt_interrupt_from_thread = 0;
+    rt_interrupt_to_thread = 0;
+    rt_thread_switch_interrupt_flag = 0;
 }
 
 /**
@@ -57,8 +57,8 @@ void rt_hw_interrupt_init()
  */
 void rt_hw_interrupt_mask(int vector)
 {
-	/* mask interrupt */
-	INTC_IMSR = (1 << vector);
+    /* mask interrupt */
+    INTC_IMSR = (1 << vector);
 }
 
 /**
@@ -67,7 +67,7 @@ void rt_hw_interrupt_mask(int vector)
  */
 void rt_hw_interrupt_umask(int vector)
 {
-	INTC_IMCR = (1 << vector);
+    INTC_IMCR = (1 << vector);
 }
 
 /**
@@ -78,39 +78,39 @@ void rt_hw_interrupt_umask(int vector)
  */
 void rt_hw_interrupt_install(int vector, rt_isr_handler_t new_handler, rt_isr_handler_t *old_handler)
 {
-	if (vector >= 0 && vector < JZ47XX_MAX_INTR)
-	{
-		if (old_handler != RT_NULL)
-			*old_handler = irq_handle_table[vector];
-		if (new_handler != RT_NULL)
-			irq_handle_table[vector] = (rt_isr_handler_t)new_handler;
-	}
+    if (vector >= 0 && vector < JZ47XX_MAX_INTR)
+    {
+        if (old_handler != RT_NULL)
+            *old_handler = irq_handle_table[vector];
+        if (new_handler != RT_NULL)
+            irq_handle_table[vector] = (rt_isr_handler_t)new_handler;
+    }
 }
 
 void rt_interrupt_dispatch(void *ptreg)
 {
     int i;
-	rt_isr_handler_t irq_func;
-	static rt_uint32_t pending = 0;
+    rt_isr_handler_t irq_func;
+    static rt_uint32_t pending = 0;
 
     /* the hardware interrupt */
-	pending |= INTC_IPR;
-	if (!pending) return;
+    pending |= INTC_IPR;
+    if (!pending) return;
 
     for (i = JZ47XX_MAX_INTR; i > 0; --i)
     {
-		if ((pending & (1<<i)))
+        if ((pending & (1 << i)))
         {
-			pending &= ~(1<<i);
-			irq_func = irq_handle_table[i];
+            pending &= ~(1 << i);
+            irq_func = irq_handle_table[i];
 
-			/* do interrupt */
-			(*irq_func)(i);
+            /* do interrupt */
+            (*irq_func)(i);
 
-			/* ack interrupt */
-			INTC_IPR = (1 << i);
-		}
-	}
+            /* ack interrupt */
+            INTC_IPR = (1 << i);
+        }
+    }
 }
 
 /*@}*/

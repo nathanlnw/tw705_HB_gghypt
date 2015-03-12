@@ -19,7 +19,7 @@
 extern "C" {
 #endif
 
-int elm_init(void);
+    int elm_init(void);
 
 #ifdef __cplusplus
 }

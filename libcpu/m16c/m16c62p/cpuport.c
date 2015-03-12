@@ -59,10 +59,10 @@ rt_uint8_t *rt_hw_stack_init(void       *tentry,
     *pstk16-- = (rt_uint32_t)texit & 0x0000FFFFL;
 
     /* Simulate ISR entry */
-    *pstk16-- = (flag&0x00FF) |                            /* The lowest byte of the FLAG register    */
-                (((rt_uint32_t)tentry>>8)&0x00000F00) |    /* The highest nibble of the PC register   */
-                ((flag<<4)&0xF000);                        /* The highest nibble of the FLAG register */
-    *pstk16-- = (((rt_uint32_t)tentry)&0x0000FFFF);        /* The lowest bytes of the PC register     */
+    *pstk16-- = (flag & 0x00FF) |                          /* The lowest byte of the FLAG register    */
+                (((rt_uint32_t)tentry >> 8) & 0x00000F00) | /* The highest nibble of the PC register   */
+                ((flag << 4) & 0xF000);                    /* The highest nibble of the FLAG register */
+    *pstk16-- = (((rt_uint32_t)tentry) & 0x0000FFFF);      /* The lowest bytes of the PC register     */
 
     /* Save registers onto stack frame */
     *pstk16-- = (rt_uint16_t)0xFBFB;                       /* FB register                             */

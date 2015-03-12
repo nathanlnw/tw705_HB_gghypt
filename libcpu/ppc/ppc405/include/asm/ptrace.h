@@ -25,22 +25,23 @@
 #else
 #define PPC_REG unsigned long
 #endif
-struct pt_regs {
-	PPC_REG gpr[32];
-	PPC_REG nip;
-	PPC_REG msr;
-	PPC_REG orig_gpr3;	/* Used for restarting system calls */
-	PPC_REG ctr;
-	PPC_REG link;
-	PPC_REG xer;
-	PPC_REG ccr;
-	PPC_REG mq;		/* 601 only (not used at present) */
-				    /* Used on APUS to hold IPL value. */
-	PPC_REG trap;		/* Reason for being here */
-	PPC_REG dar;		/* Fault registers */
-	PPC_REG dsisr;
-	PPC_REG result;		/* Result of a system call */
-}__attribute__((packed)) CELL_STACK_FRAME_t;
+struct pt_regs
+{
+    PPC_REG gpr[32];
+    PPC_REG nip;
+    PPC_REG msr;
+    PPC_REG orig_gpr3;	/* Used for restarting system calls */
+    PPC_REG ctr;
+    PPC_REG link;
+    PPC_REG xer;
+    PPC_REG ccr;
+    PPC_REG mq;		/* 601 only (not used at present) */
+    /* Used on APUS to hold IPL value. */
+    PPC_REG trap;		/* Reason for being here */
+    PPC_REG dar;		/* Fault registers */
+    PPC_REG dsisr;
+    PPC_REG result;		/* Result of a system call */
+} __attribute__((packed)) CELL_STACK_FRAME_t;
 #endif
 
 #define STACK_FRAME_OVERHEAD	16	/* size of minimum stack frame */

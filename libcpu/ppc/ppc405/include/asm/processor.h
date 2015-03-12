@@ -1061,9 +1061,10 @@ n:
 
 #ifndef __ASSEMBLY__
 
-struct cpu_type {
-	char name[15];
-	u32 soc_ver;
+struct cpu_type
+{
+    char name[15];
+    u32 soc_ver;
 };
 
 struct cpu_type *identify_cpu(u32 ver);
@@ -1127,24 +1128,26 @@ extern struct task_struct *last_task_used_altivec;
  */
 #define TASK_UNMAPPED_BASE	(TASK_SIZE / 8 * 3)
 
-typedef struct {
-	unsigned long seg;
+typedef struct
+{
+    unsigned long seg;
 } mm_segment_t;
 
-struct thread_struct {
-	unsigned long	ksp;		/* Kernel stack pointer */
-	unsigned long	wchan;		/* Event task is sleeping on */
-	struct pt_regs	*regs;		/* Pointer to saved register state */
-	mm_segment_t	fs;		/* for get_fs() validation */
-	void		*pgdir;		/* root of page-table tree */
-	signed long	last_syscall;
-	double		fpr[32];	/* Complete floating point set */
-	unsigned long	fpscr_pad;	/* fpr ... fpscr must be contiguous */
-	unsigned long	fpscr;		/* Floating point status */
+struct thread_struct
+{
+    unsigned long	ksp;		/* Kernel stack pointer */
+    unsigned long	wchan;		/* Event task is sleeping on */
+    struct pt_regs	*regs;		/* Pointer to saved register state */
+    mm_segment_t	fs;		/* for get_fs() validation */
+    void		*pgdir;		/* root of page-table tree */
+    signed long	last_syscall;
+    double		fpr[32];	/* Complete floating point set */
+    unsigned long	fpscr_pad;	/* fpr ... fpscr must be contiguous */
+    unsigned long	fpscr;		/* Floating point status */
 #ifdef CONFIG_ALTIVEC
-	vector128	vr[32];		/* Complete AltiVec set */
-	vector128	vscr;		/* AltiVec status */
-	unsigned long	vrsave;
+    vector128	vr[32];		/* Complete AltiVec set */
+    vector128	vscr;		/* AltiVec status */
+    unsigned long	vrsave;
 #endif /* CONFIG_ALTIVEC */
 };
 
@@ -1173,7 +1176,7 @@ struct thread_struct {
  */
 static inline unsigned long thread_saved_pc(struct thread_struct *t)
 {
-	return (t->regs) ? t->regs->nip : 0;
+    return (t->regs) ? t->regs->nip : 0;
 }
 
 #define copy_segments(tsk, mm)		do { } while (0)

@@ -8,9 +8,9 @@
  * Copyright (C) 2009 ARM Limited. All rights reserved.
  *
  * @par
- * ARM Limited (ARM) is supplying this software for use with Cortex-M 
- * processor based microcontrollers.  This file can be freely distributed 
- * within development tools that are supporting such ARM based processors. 
+ * ARM Limited (ARM) is supplying this software for use with Cortex-M
+ * processor based microcontrollers.  This file can be freely distributed
+ * within development tools that are supporting such ARM based processors.
  *
  * @par
  * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
@@ -25,20 +25,20 @@
 
 /* define compiler specific symbols */
 #if defined ( __CC_ARM   )
-  #define __ASM            __asm                                      /*!< asm keyword for ARM Compiler          */
-  #define __INLINE         __inline                                   /*!< inline keyword for ARM Compiler       */
+#define __ASM            __asm                                      /*!< asm keyword for ARM Compiler          */
+#define __INLINE         __inline                                   /*!< inline keyword for ARM Compiler       */
 
 #elif defined ( __ICCARM__ )
-  #define __ASM           __asm                                       /*!< asm keyword for IAR Compiler          */
-  #define __INLINE        inline                                      /*!< inline keyword for IAR Compiler. Only avaiable in High optimization mode! */
+#define __ASM           __asm                                       /*!< asm keyword for IAR Compiler          */
+#define __INLINE        inline                                      /*!< inline keyword for IAR Compiler. Only avaiable in High optimization mode! */
 
 #elif defined   (  __GNUC__  )
-  #define __ASM            __asm                                      /*!< asm keyword for GNU Compiler          */
-  #define __INLINE         inline                                     /*!< inline keyword for GNU Compiler       */
+#define __ASM            __asm                                      /*!< asm keyword for GNU Compiler          */
+#define __INLINE         inline                                     /*!< inline keyword for GNU Compiler       */
 
 #elif defined   (  __TASKING__  )
-  #define __ASM            __asm                                      /*!< asm keyword for TASKING Compiler      */
-  #define __INLINE         inline                                     /*!< inline keyword for TASKING Compiler   */
+#define __ASM            __asm                                      /*!< asm keyword for TASKING Compiler      */
+#define __INLINE         inline                                     /*!< inline keyword for TASKING Compiler   */
 
 #endif
 
@@ -57,8 +57,8 @@
  */
 __ASM uint32_t __get_PSP(void)
 {
-  mrs r0, psp
-  bx lr
+    mrs r0, psp
+    bx lr
 }
 
 /**
@@ -66,13 +66,13 @@ __ASM uint32_t __get_PSP(void)
  *
  * @param  topOfProcStack  Process Stack Pointer
  *
- * Assign the value ProcessStackPointer to the MSP 
+ * Assign the value ProcessStackPointer to the MSP
  * (process stack pointer) Cortex processor register
  */
 __ASM void __set_PSP(uint32_t topOfProcStack)
 {
-  msr psp, r0
-  bx lr
+    msr psp, r0
+    bx lr
 }
 
 /**
@@ -85,8 +85,8 @@ __ASM void __set_PSP(uint32_t topOfProcStack)
  */
 __ASM uint32_t __get_MSP(void)
 {
-  mrs r0, msp
-  bx lr
+    mrs r0, msp
+    bx lr
 }
 
 /**
@@ -94,13 +94,13 @@ __ASM uint32_t __get_MSP(void)
  *
  * @param  topOfMainStack  Main Stack Pointer
  *
- * Assign the value mainStackPointer to the MSP 
+ * Assign the value mainStackPointer to the MSP
  * (main stack pointer) Cortex processor register
  */
 __ASM void __set_MSP(uint32_t mainStackPointer)
 {
-  msr msp, r0
-  bx lr
+    msr msp, r0
+    bx lr
 }
 
 /**
@@ -113,8 +113,8 @@ __ASM void __set_MSP(uint32_t mainStackPointer)
  */
 __ASM uint32_t __REV16(uint16_t value)
 {
-  rev16 r0, r0
-  bx lr
+    rev16 r0, r0
+    bx lr
 }
 
 /**
@@ -127,8 +127,8 @@ __ASM uint32_t __REV16(uint16_t value)
  */
 __ASM int32_t __REVSH(int16_t value)
 {
-  revsh r0, r0
-  bx lr
+    revsh r0, r0
+    bx lr
 }
 
 
@@ -144,8 +144,8 @@ __ASM int32_t __REVSH(int16_t value)
  */
 __ASM uint32_t __get_PRIMASK(void)
 {
-  mrs r0, primask
-  bx lr
+    mrs r0, primask
+    bx lr
 }
 
 /**
@@ -157,21 +157,21 @@ __ASM uint32_t __get_PRIMASK(void)
  */
 __ASM void __set_PRIMASK(uint32_t priMask)
 {
-  msr primask, r0
-  bx lr
+    msr primask, r0
+    bx lr
 }
 
 /**
  * @brief  Return the Control Register value
- * 
+ *
  * @return Control value
  *
  * Return the content of the control register
  */
 __ASM uint32_t __get_CONTROL(void)
 {
-  mrs r0, control
-  bx lr
+    mrs r0, control
+    bx lr
 }
 
 /**
@@ -183,11 +183,11 @@ __ASM uint32_t __get_CONTROL(void)
  */
 __ASM void __set_CONTROL(uint32_t control)
 {
-  msr control, r0
-  bx lr
+    msr control, r0
+    bx lr
 }
 
-#endif /* __ARMCC_VERSION  */ 
+#endif /* __ARMCC_VERSION  */
 
 
 
@@ -204,8 +204,8 @@ __ASM void __set_CONTROL(uint32_t control)
  */
 uint32_t __get_PSP(void)
 {
-  __ASM("mrs r0, psp");
-  __ASM("bx lr");
+    __ASM("mrs r0, psp");
+    __ASM("bx lr");
 }
 
 /**
@@ -213,13 +213,13 @@ uint32_t __get_PSP(void)
  *
  * @param  topOfProcStack  Process Stack Pointer
  *
- * Assign the value ProcessStackPointer to the MSP 
+ * Assign the value ProcessStackPointer to the MSP
  * (process stack pointer) Cortex processor register
  */
 void __set_PSP(uint32_t topOfProcStack)
 {
-  __ASM("msr psp, r0");
-  __ASM("bx lr");
+    __ASM("msr psp, r0");
+    __ASM("bx lr");
 }
 
 /**
@@ -232,8 +232,8 @@ void __set_PSP(uint32_t topOfProcStack)
  */
 uint32_t __get_MSP(void)
 {
-  __ASM("mrs r0, msp");
-  __ASM("bx lr");
+    __ASM("mrs r0, msp");
+    __ASM("bx lr");
 }
 
 /**
@@ -241,13 +241,13 @@ uint32_t __get_MSP(void)
  *
  * @param  topOfMainStack  Main Stack Pointer
  *
- * Assign the value mainStackPointer to the MSP 
+ * Assign the value mainStackPointer to the MSP
  * (main stack pointer) Cortex processor register
  */
 void __set_MSP(uint32_t topOfMainStack)
 {
-  __ASM("msr msp, r0");
-  __ASM("bx lr");
+    __ASM("msr msp, r0");
+    __ASM("bx lr");
 }
 
 /**
@@ -260,8 +260,8 @@ void __set_MSP(uint32_t topOfMainStack)
  */
 uint32_t __REV16(uint16_t value)
 {
-  __ASM("rev16 r0, r0");
-  __ASM("bx lr");
+    __ASM("rev16 r0, r0");
+    __ASM("bx lr");
 }
 
 
@@ -281,12 +281,12 @@ uint32_t __REV16(uint16_t value)
 uint32_t __get_PSP(void) __attribute__( ( naked ) );
 uint32_t __get_PSP(void)
 {
-  uint32_t result=0;
+    uint32_t result = 0;
 
-  __ASM volatile ("MRS %0, psp\n\t" 
-                  "MOV r0, %0 \n\t"
-                  "BX  lr     \n\t"  : "=r" (result) );
-  return(result);
+    __ASM volatile ("MRS %0, psp\n\t"
+                    "MOV r0, %0 \n\t"
+                "BX  lr     \n\t"  : "=r" (result) );
+    return(result);
 }
 
 /**
@@ -294,14 +294,14 @@ uint32_t __get_PSP(void)
  *
  * @param  topOfProcStack  Process Stack Pointer
  *
- * Assign the value ProcessStackPointer to the MSP 
+ * Assign the value ProcessStackPointer to the MSP
  * (process stack pointer) Cortex processor register
  */
 void __set_PSP(uint32_t topOfProcStack) __attribute__( ( naked ) );
 void __set_PSP(uint32_t topOfProcStack)
 {
-  __ASM volatile ("MSR psp, %0\n\t"
-                  "BX  lr     \n\t" : : "r" (topOfProcStack) );
+    __ASM volatile ("MSR psp, %0\n\t"
+                "BX  lr     \n\t" : : "r" (topOfProcStack) );
 }
 
 /**
@@ -315,12 +315,12 @@ void __set_PSP(uint32_t topOfProcStack)
 uint32_t __get_MSP(void) __attribute__( ( naked ) );
 uint32_t __get_MSP(void)
 {
-  uint32_t result=0;
+    uint32_t result = 0;
 
-  __ASM volatile ("MRS %0, msp\n\t" 
-                  "MOV r0, %0 \n\t"
-                  "BX  lr     \n\t"  : "=r" (result) );
-  return(result);
+    __ASM volatile ("MRS %0, msp\n\t"
+                    "MOV r0, %0 \n\t"
+                "BX  lr     \n\t"  : "=r" (result) );
+    return(result);
 }
 
 /**
@@ -328,14 +328,14 @@ uint32_t __get_MSP(void)
  *
  * @param  topOfMainStack  Main Stack Pointer
  *
- * Assign the value mainStackPointer to the MSP 
+ * Assign the value mainStackPointer to the MSP
  * (main stack pointer) Cortex processor register
  */
 void __set_MSP(uint32_t topOfMainStack) __attribute__( ( naked ) );
 void __set_MSP(uint32_t topOfMainStack)
 {
-  __ASM volatile ("MSR msp, %0\n\t"
-                  "BX  lr     \n\t" : : "r" (topOfMainStack) );
+    __ASM volatile ("MSR msp, %0\n\t"
+                "BX  lr     \n\t" : : "r" (topOfMainStack) );
 }
 
 
@@ -348,10 +348,10 @@ void __set_MSP(uint32_t topOfMainStack)
  */
 uint32_t __get_PRIMASK(void)
 {
-  uint32_t result=0;
+    uint32_t result = 0;
 
-  __ASM volatile ("MRS %0, primask" : "=r" (result) );
-  return(result);
+__ASM volatile ("MRS %0, primask" : "=r" (result) );
+    return(result);
 }
 
 /**
@@ -363,22 +363,22 @@ uint32_t __get_PRIMASK(void)
  */
 void __set_PRIMASK(uint32_t priMask)
 {
-  __ASM volatile ("MSR primask, %0" : : "r" (priMask) );
+__ASM volatile ("MSR primask, %0" : : "r" (priMask) );
 }
 
 /**
  * @brief  Return the Control Register value
-* 
+*
 *  @return Control value
  *
  * Return the content of the control register
  */
 uint32_t __get_CONTROL(void)
 {
-  uint32_t result=0;
+    uint32_t result = 0;
 
-  __ASM volatile ("MRS %0, control" : "=r" (result) );
-  return(result);
+__ASM volatile ("MRS %0, control" : "=r" (result) );
+    return(result);
 }
 
 /**
@@ -390,7 +390,7 @@ uint32_t __get_CONTROL(void)
  */
 void __set_CONTROL(uint32_t control)
 {
-  __ASM volatile ("MSR control, %0" : : "r" (control) );
+__ASM volatile ("MSR control, %0" : : "r" (control) );
 }
 
 
@@ -404,10 +404,10 @@ void __set_CONTROL(uint32_t control)
  */
 uint32_t __REV(uint32_t value)
 {
-  uint32_t result=0;
-  
-  __ASM volatile ("rev %0, %1" : "=r" (result) : "r" (value) );
-  return(result);
+    uint32_t result = 0;
+
+__ASM volatile ("rev %0, %1" : "=r" (result) : "r" (value) );
+    return(result);
 }
 
 /**
@@ -420,10 +420,10 @@ uint32_t __REV(uint32_t value)
  */
 uint32_t __REV16(uint16_t value)
 {
-  uint32_t result=0;
-  
-  __ASM volatile ("rev16 %0, %1" : "=r" (result) : "r" (value) );
-  return(result);
+    uint32_t result = 0;
+
+__ASM volatile ("rev16 %0, %1" : "=r" (result) : "r" (value) );
+    return(result);
 }
 
 /**
@@ -436,10 +436,10 @@ uint32_t __REV16(uint16_t value)
  */
 int32_t __REVSH(int16_t value)
 {
-  uint32_t result=0;
-  
-  __ASM volatile ("revsh %0, %1" : "=r" (result) : "r" (value) );
-  return(result);
+    uint32_t result = 0;
+
+__ASM volatile ("revsh %0, %1" : "=r" (result) : "r" (value) );
+    return(result);
 }
 
 

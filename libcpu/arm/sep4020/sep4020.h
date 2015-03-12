@@ -98,7 +98,7 @@
 #define RTC_INT_STS               (RTC_BASE+0X014)        /* 中断状态寄存器 */
 #define RTC_SAMP                  (RTC_BASE+0X018)        /* 采样周期寄存器 */
 #define RTC_WD_CNT                (RTC_BASE+0X01C)        /* Watch-Dog计数值寄存器 */
-#define RTC_WD_SEV                (RTC_BASE+0X020)        /* Watch-Dog服务寄存器 */ 
+#define RTC_WD_SEV                (RTC_BASE+0X020)        /* Watch-Dog服务寄存器 */
 #define RTC_CONFIG_CHECK          (RTC_BASE+0X024)        /* 配置时间确认寄存器 (在配置时间之前先写0xaaaaaaaa) */
 #define RTC_KEY0                  (RTC_BASE+0X02C)        /* 密钥寄存器 */
 
@@ -317,7 +317,7 @@
  *  SD模块
  *  基址: 0x1000B000
  */
- 
+
 #define SDC_CLOCK_CONTROL  		  (SD_BASE+0x00)          /* SDIO时钟控制寄存器 */
 #define SDC_SOFTWARE_RESET 		  (SD_BASE+0X04)          /* SDIO软件复位寄存器 */
 #define SDC_ARGUMENT     		  (SD_BASE+0X08)          /* SDIO命令参数寄存器 */
@@ -642,15 +642,15 @@
 #define MAC_HASH0                 (MAC_BASE+0X048)        /* MAC HASH寄存器 */
 #define MAC_HASH1                 (MAC_BASE+0X04C)        /* MAC HASH寄存器 */
 #define MAC_TXPAUSE               (MAC_BASE+0X050)        /* MAC控制帧寄存器 */
-#define MAC_TX_BD                 (MAC_BASE+0X400)      
-#define MAC_RX_BD                 (MAC_BASE+0X600)      
+#define MAC_TX_BD                 (MAC_BASE+0X400)
+#define MAC_RX_BD                 (MAC_BASE+0X600)
 
 
 /*
  **************************************
  * Error Codes:
  *    IF SUCCESS RETURN 0, ELSE RETURN OTHER ERROR CODE,
- *    parameter error return (-33)/E_PAR, 
+ *    parameter error return (-33)/E_PAR,
  *    hardware error reture (-99)/E_HA
  **************************************
  */
@@ -672,7 +672,7 @@
 #define    E_QOVR        (-73)    /* Queuing or nesting overflow */
 #define    E_DLT         (-81)    /* Object being waited for was deleted */
 #define    E_TMOUT       (-85)    /* Polling failure or timeout exceeded */
-#define    E_RLWAI       (-86)    /* WAIT state was forcibly released */ 
+#define    E_RLWAI       (-86)    /* WAIT state was forcibly released */
 
 #define    E_HA          (-99)    /* HARD WARE ERROR */
 
@@ -684,7 +684,7 @@
  */
 
 #define    CLK_SGPT      (1 << 16)
-#define    CLK_SI2S      (1 << 15) 
+#define    CLK_SI2S      (1 << 15)
 #define    CLK_SSMC      (1 << 14)
 #define    CLK_SMAC      (1 << 13)
 #define    CLK_SUSB      (1 << 12)
@@ -705,8 +705,8 @@
 /*Interrupt Sources*/
 
 
-#define  INTSRC_RTC        31		        
-#define  INTSRC_DMAC       30	                
+#define  INTSRC_RTC        31
+#define  INTSRC_DMAC       30
 #define  INTSRC_EMI        29
 #define  INTSRC_MAC        28
 #define  INTSRC_TIMER1     27
@@ -724,17 +724,17 @@
 #define  INTSRC_USB        15
 #define  INTSRC_SMC0       14
 #define  INTSRC_SMC1       13
-#define  INTSRC_SDIO       12  
-#define  INTSRC_EXINT10    11              
-#define  INTSRC_EXINT9     10              
-#define  INTSRC_EXINT8     9               
-#define  INTSRC_EXINT7     8               
-#define  INTSRC_EXINT6     7               
-#define  INTSRC_EXINT5     6               
-#define  INTSRC_EXINT4     5               
-#define  INTSRC_EXINT3     4               
-#define  INTSRC_EXINT2     3               
-#define  INTSRC_EXINT1     2               
+#define  INTSRC_SDIO       12
+#define  INTSRC_EXINT10    11
+#define  INTSRC_EXINT9     10
+#define  INTSRC_EXINT8     9
+#define  INTSRC_EXINT7     8
+#define  INTSRC_EXINT6     7
+#define  INTSRC_EXINT5     6
+#define  INTSRC_EXINT4     5
+#define  INTSRC_EXINT3     4
+#define  INTSRC_EXINT2     3
+#define  INTSRC_EXINT1     2
 #define  INTSRC_EXINT0     1
 #define  INTSRC_NULL       0
 
@@ -757,7 +757,7 @@
  * 所有程序中用到的Typedef
  **************************************
  */
- 
+
 typedef    char                 S8;        /* signed 8-bit integer */
 typedef    short                S16;       /* signed 16-bit integer */
 typedef    long                 S32;       /* signed 32-bit integer */
@@ -765,9 +765,9 @@ typedef    unsigned char        U8;        /* unsigned 8-bit integer */
 typedef    unsigned short       U16;       /* unsigned 16-bit integer */
 typedef    unsigned long        U32;       /* unsigned 32-bit integer */
 
-typedef    volatile U32 *       RP;
-typedef    volatile U16 *       RP16;
-typedef    volatile U8  *       RP8;
+typedef    volatile U32        *RP;
+typedef    volatile U16        *RP16;
+typedef    volatile U8         *RP8;
 
 typedef    void                 *VP;       /* pointer to an unpredictable data type */
 typedef    void                 (*FP)();   /* program start address */
@@ -775,7 +775,7 @@ typedef    void                 (*FP)();   /* program start address */
 #ifndef    _BOOL_TYPE_
 #define    _BOOL_TYPE_
 typedef    int                  BOOL;	     /* Boolean value.  TRUE (1) or FALSE (0). */
-#endif  
+#endif
 
 typedef    int                  ER;         /* Error code.  A signed integer. */
 
@@ -802,19 +802,19 @@ typedef    int                  ER;         /* Error code.  A signed integer. */
 
 #define RT_DEBUG
 #ifdef RT_DEBUG
-	#define DBOUT(fmt,...) \
+#define DBOUT(fmt,...) \
 	do \
 	{ 	\
 		rt_kprintf("DBOUT:(%s:%i)  ",__FILE__,__LINE__); \
 		rt_kprintf(fmt,##__VA_ARGS__); \
 	}while(0)
 #else
-	#define DBOUT(fmt,...) \
+#define DBOUT(fmt,...) \
 	do{}while(0)
 #endif
 
 #ifdef	RT_DEBUG
-	#define ASSERT(arg) \
+#define ASSERT(arg) \
 	if((arg) == 0) \
 	{		\
 		while(1) \
@@ -823,7 +823,7 @@ typedef    int                  ER;         /* Error code.  A signed integer. */
 		}										 \
 	}
 #else
-	#define ASSERT(arg) \
+#define ASSERT(arg) \
 	do		\
 	{		 \
 	}while(0)
@@ -841,24 +841,24 @@ typedef    int                  ER;         /* Error code.  A signed integer. */
 
 struct rt_hw_register
 {
-	rt_uint32_t r0;
-	rt_uint32_t r1;
-	rt_uint32_t r2;
-	rt_uint32_t r3;
-	rt_uint32_t r4;
-	rt_uint32_t r5;
-	rt_uint32_t r6;
-	rt_uint32_t r7;
-	rt_uint32_t r8;
-	rt_uint32_t r9;
-	rt_uint32_t r10;
-	rt_uint32_t fp;
-	rt_uint32_t ip;
-	rt_uint32_t sp;
-	rt_uint32_t lr;
-	rt_uint32_t pc;
-	rt_uint32_t cpsr;
-	rt_uint32_t ORIG_r0;
+    rt_uint32_t r0;
+    rt_uint32_t r1;
+    rt_uint32_t r2;
+    rt_uint32_t r3;
+    rt_uint32_t r4;
+    rt_uint32_t r5;
+    rt_uint32_t r6;
+    rt_uint32_t r7;
+    rt_uint32_t r8;
+    rt_uint32_t r9;
+    rt_uint32_t r10;
+    rt_uint32_t fp;
+    rt_uint32_t ip;
+    rt_uint32_t sp;
+    rt_uint32_t lr;
+    rt_uint32_t pc;
+    rt_uint32_t cpsr;
+    rt_uint32_t ORIG_r0;
 };
 
 

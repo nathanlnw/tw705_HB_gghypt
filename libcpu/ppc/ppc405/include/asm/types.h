@@ -5,10 +5,10 @@
 #ifndef __ASSEMBLY__
 
 typedef enum bool
-    {
+{
     FALSE = 0,
     TRUE = 1
-    }BOOL;
+} BOOL;
 
 typedef unsigned short umode_t;
 
@@ -26,8 +26,9 @@ __extension__ typedef __signed__ long long __s64;
 __extension__ typedef unsigned long long __u64;
 #endif
 
-typedef struct {
-	__u32 u[4];
+typedef struct
+{
+    __u32 u[4];
 } __attribute__((aligned(16))) vector128;
 
 #ifdef __KERNEL__

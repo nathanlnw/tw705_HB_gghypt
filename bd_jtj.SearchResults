@@ -1,2 +1,1 @@
----- LCD_STATIC_ON Matches (1 in 1 files) ----
-LCD_Driver.h (bsp\stm32f207vc_tw705\app_712\lcd):#define LCD_STATIC_ON      0xA7	/* static drive (power save) */
+---- 1, CLOSED Matches (0 in 0 files) ----

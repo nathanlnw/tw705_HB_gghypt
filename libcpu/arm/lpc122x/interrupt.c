@@ -10,6 +10,7 @@
  * Change Logs:
  * Date           Author       Notes
  * 2010-01-25     Bernard      first version
+
  */
 
 #include <rtthread.h>

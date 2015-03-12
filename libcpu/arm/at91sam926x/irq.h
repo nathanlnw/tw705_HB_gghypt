@@ -11,7 +11,7 @@
  * Date           Author       Notes
  * 2011-01-13     weety      first version
  */
- 
+
 #ifndef __IRQ_H__
 #define __IRQ_H__
 
@@ -19,13 +19,13 @@
 extern "C" {
 #endif
 
-/*
- * IRQ line status.
- *
- * Bits 0-7 are reserved 
- *
- * IRQ types
- */
+    /*
+     * IRQ line status.
+     *
+     * Bits 0-7 are reserved
+     *
+     * IRQ types
+     */
 #define IRQ_TYPE_NONE		0x00000000	/* Default, unspecified type */
 #define IRQ_TYPE_EDGE_RISING	0x00000001	/* Edge rising type */
 #define IRQ_TYPE_EDGE_FALLING	0x00000002	/* Edge falling type */

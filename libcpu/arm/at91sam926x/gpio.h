@@ -114,7 +114,7 @@
 
 rt_inline rt_uint32_t gpio_to_irq(rt_uint32_t gpio)
 {
-	return gpio;
+    return gpio;
 }
 
 #endif

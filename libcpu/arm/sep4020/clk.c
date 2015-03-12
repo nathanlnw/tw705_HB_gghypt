@@ -37,24 +37,24 @@
 
 static void rt_hw_set_system_clock(void)
 {
-	rt_uint8_t pv;
+    rt_uint8_t pv;
 
-	/* pv value*/
-	pv  = SYSCLK/2/CLK_IN;
-	/* go to normal mode*/
-	*(RP)PMU_PMDR = 0x01;
-	/* set the clock */
-	*(RP)PMU_PMCR = 0x4000 | pv;
-	/* trige configurate*/
-	*(RP)PMU_PMCR = 0xc000 | pv;
+    /* pv value*/
+    pv  = SYSCLK / 2 / CLK_IN;
+    /* go to normal mode*/
+    *(RP)PMU_PMDR = 0x01;
+    /* set the clock */
+    *(RP)PMU_PMCR = 0x4000 | pv;
+    /* trige configurate*/
+    *(RP)PMU_PMCR = 0xc000 | pv;
 }
 
 static void rt_hw_set_usb_clock(void)
 {
-	/* set the clock */
-	*(RP)PMU_PUCR = 0x000c;
-	/* trige configurate*/
-	*(RP)PMU_PMCR = 0x800c;
+    /* set the clock */
+    *(RP)PMU_PUCR = 0x000c;
+    /* trige configurate*/
+    *(RP)PMU_PMCR = 0x800c;
 
 }
 
@@ -63,10 +63,10 @@ static void rt_hw_set_usb_clock(void)
  */
 void rt_hw_clock_init(void)
 {
-	/* set system clock */
-	rt_hw_set_system_clock();
-	/* set usb clock */
-	rt_hw_set_usb_clock();
+    /* set system clock */
+    rt_hw_set_system_clock();
+    /* set usb clock */
+    rt_hw_set_usb_clock();
 }
 
 /**
@@ -74,22 +74,22 @@ void rt_hw_clock_init(void)
  */
 rt_uint32_t rt_hw_get_clock(void)
 {
-	rt_uint32_t val;
-	rt_uint8_t pv, pd, npd;
+    rt_uint32_t val;
+    rt_uint8_t pv, pd, npd;
 
-	/* get PMCR value */
-	val =*(RP) PMU_PMCR;
-	/* get NPD */
-	npd = (val >> 14) & 0x01;
-	/* get PD  */
-	pd  = (val >> 10) & 0x0f;
-	/* get PV  */
-	pv  = val & 0x7f;
-	/* caculate the system clock */
-	if(npd)
-		val = 2 * CLK_IN * pv;
-	else
-		val = CLK_IN * pv / (pd + 1);
+    /* get PMCR value */
+    val = *(RP) PMU_PMCR;
+    /* get NPD */
+    npd = (val >> 14) & 0x01;
+    /* get PD  */
+    pd  = (val >> 10) & 0x0f;
+    /* get PV  */
+    pv  = val & 0x7f;
+    /* caculate the system clock */
+    if(npd)
+        val = 2 * CLK_IN * pv;
+    else
+        val = CLK_IN * pv / (pd + 1);
 
     return(val);
 }
@@ -97,16 +97,16 @@ rt_uint32_t rt_hw_get_clock(void)
 /**
  * @brief Enable module clock
  */
- void rt_hw_enable_module_clock(rt_uint8_t module)
- {
+void rt_hw_enable_module_clock(rt_uint8_t module)
+{
 
- }
+}
 
 /**
  * @brief Disable module clock
  */
-  void rt_hw_disable_module_clock(rt_uint8_t module)
- {
+void rt_hw_disable_module_clock(rt_uint8_t module)
+{
 
- }
+}
 

@@ -9,7 +9,7 @@
  *
  * Change Logs:
  * Date           Author       Notes
- * 2011-02-14     Fred         first implementation for 
+ * 2011-02-14     Fred         first implementation for
  */
 
 #include <rtthread.h>
@@ -30,7 +30,7 @@
  * @return stack address
  */
 rt_uint8_t *rt_hw_stack_init(void *tentry, void *parameter,
-    rt_uint8_t *stack_addr, void *texit)
+                             rt_uint8_t *stack_addr, void *texit)
 {
     unsigned long *stk;
     rt_uint32_t msr;
@@ -78,7 +78,7 @@ rt_uint8_t *rt_hw_stack_init(void *tentry, void *parameter,
     *(--stk) = 0x04;            /* r04 */
     *(--stk) = (rt_uint32_t)parameter;  /* r03: parameter and return  */
     *(--stk) = 0x02;            /* r02: toc */
-                                /* r01: sp */
+    /* r01: sp */
     *(--stk) = 0x0;             /* r00 */
 
     /* return task's current stack address */

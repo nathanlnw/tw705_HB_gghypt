@@ -6,8 +6,8 @@
 // define to enable additional debugging functions
 //// #define LCD_DEBUG (1)
 
-#include <rtthread.h> 
-//#include <rtdevice.h>  
+#include <rtthread.h>
+//#include <rtdevice.h>
 #include <rthw.h>
 #include "stm32f2xx.h"
 #include "usart.h"
@@ -19,14 +19,14 @@
 #include  <stdio.h>
 #include  <string.h>
 #include  "App_moduleConfig.h"
-#include  "rtdevice.h "  
+#include  "rtdevice.h "
 
 
 
 
 #include <stdio.h>
 #include <rtthread.h>
-#include "stm32f2xx.h"  
+#include "stm32f2xx.h"
 #include "board.h"
 //#include "ringbuffer.h"
 #include "Device_printer.h"
@@ -59,8 +59,8 @@
 #define LCD_STATIC_ON      0xA7	/* static drive (power save) */
 #define LCD_DISPALL_NORMAL 0xA4 /*0:disp all points  normal --new lcd*/
 #define LCD_DISPALL_ENABLE 0xA5 /*1:disp all points  ON---new lcd*/
-#define LCD_BIAS_1D9       0xA2 /* bias    1/9 bias*/  
-#define LCD_BIAS_1D7       0xA3 /* bias    1/7 bias*/  
+#define LCD_BIAS_1D9       0xA2 /* bias    1/9 bias*/
+#define LCD_BIAS_1D7       0xA3 /* bias    1/7 bias*/
 #define LCD_OUTPUT_NORMAL  0xC0 /* output  scann  direction   0:  normal direction--new lcd*/
 #define LCD_OUTPUT_RVS     0xC8 /* output  scann  direction   1:  reverse direction--new lcd*/
 #define LCD_SET_MODIFY     0xE0	/* start read-modify-write mode */
@@ -75,7 +75,7 @@
 #define SCRN_RIGHT		121
 #define SCRN_BOTTOM		31
 
-/* LCD_Driver is used with reverse direction (ADC_REV). 
+/* LCD_Driver is used with reverse direction (ADC_REV).
    This value is the address of the leftmost column: */
 #define LCD_STARTCOL_REVERSE	19
 
@@ -86,7 +86,7 @@
 /* LCD function prototype list */
 /*    Close  Disp         -- add  by  nathan */
 
-extern u8	cByte;// 关闭背光 
+extern u8	cByte;// 关闭背光
 
 
 
@@ -111,9 +111,9 @@ extern void lcd_circle(const uint8_t xCenter, const uint8_t yCenter, const uint8
 #endif
 extern void lcd_glyph(uint8_t left, uint8_t top, uint8_t width, uint8_t height, uint8_t *glyph_ptr, uint8_t store_width);
 extern void lcd_bitmap(const uint8_t left, const uint8_t top, const struct IMG_DEF *img_ptr, const uint8_t mode);
-extern void lcd_text12(char left,char top ,char *p,char len,const char mode);
-extern void lcd_text12_local(char left,char top ,char *p,char len,const char mode);
-extern void lcd_RstLow(void);  
+extern void lcd_text12(char left, char top , char *p, char len, const char mode);
+extern void lcd_text12_local(char left, char top , char *p, char len, const char mode);
+extern void lcd_RstLow(void);
 
 
 

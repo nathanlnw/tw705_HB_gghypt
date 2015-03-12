@@ -21,12 +21,12 @@ extern "C" {
 
 #include <rtthread.h>
 
-/**
- * @addtogroup S3C24X0
- */
-/*@{*/
+    /**
+     * @addtogroup S3C24X0
+     */
+    /*@{*/
 
-// Memory control 
+    // Memory control
 #define BWSCON    (*(volatile unsigned *)0x48000000) //Bus width & wait status
 #define BANKCON0  (*(volatile unsigned *)0x48000004) //Boot ROM control
 #define BANKCON1  (*(volatile unsigned *)0x48000008) //BANK1 control
@@ -42,10 +42,10 @@ extern "C" {
 #define MRSRB7    (*(volatile unsigned *)0x48000030) //Mode egister set for SDRAM
 
 
-// USB Host
+    // USB Host
 
 
-// INTERRUPT
+    // INTERRUPT
 #define SRCPND     (*(volatile unsigned *)0x4a000000) //Interrupt request status
 #define INTMOD     (*(volatile unsigned *)0x4a000004) //Interrupt mode control
 #define INTMSK     (*(volatile unsigned *)0x4a000008) //Interrupt mask control
@@ -56,7 +56,7 @@ extern "C" {
 #define INTSUBMSK  (*(volatile unsigned *)0x4a00001c) //Interrupt sub mask
 
 
-// DMA
+    // DMA
 #define DISRC0     (*(volatile unsigned *)0x4b000000) //DMA 0 Initial source
 #define DISRCC0    (*(volatile unsigned *)0x4b000004) //DMA 0 Initial source control
 #define DIDST0     (*(volatile unsigned *)0x4b000008) //DMA 0 Initial Destination
@@ -98,7 +98,7 @@ extern "C" {
 #define DMASKTRIG3 (*(volatile unsigned *)0x4b0000e0) //DMA 3 Mask trigger
 
 
-// CLOCK & POWER MANAGEMENT
+    // CLOCK & POWER MANAGEMENT
 #define LOCKTIME   (*(volatile unsigned *)0x4c000000) //PLL lock time counter
 #define MPLLCON    (*(volatile unsigned *)0x4c000004) //MPLL Control
 #define UPLLCON    (*(volatile unsigned *)0x4c000008) //UPLL Control
@@ -108,7 +108,7 @@ extern "C" {
 #define CAMDIVN    (*(volatile unsigned *)0x4c000018)	//USB, CAM Clock divider control
 
 
-// LCD CONTROLLER
+    // LCD CONTROLLER
 #define LCDCON1    (*(volatile unsigned *)0x4d000000) //LCD control 1
 #define LCDCON2    (*(volatile unsigned *)0x4d000004) //LCD control 2
 #define LCDCON3    (*(volatile unsigned *)0x4d000008) //LCD control 3
@@ -129,7 +129,7 @@ extern "C" {
 #define PALETTE     0x4d000400                         //Palette start address
 
 
-// NAND flash
+    // NAND flash
 #define NFCONF     (*(volatile unsigned *)0x4e000000)      //NAND Flash configuration
 #define NFCMD      (*(volatile unsigned *)0x4e000004)            //NADD Flash command
 #define NFADDR     (*(volatile unsigned *)0x4e000008)            //NAND Flash address
@@ -140,7 +140,7 @@ extern "C" {
 #define NFECC1     (*(volatile unsigned *)0x4e000015)
 #define NFECC2     (*(volatile unsigned *)0x4e000016)
 
-// UART
+    // UART
 #define U0BASE     (*(volatile unsigned *)0x50000000) //UART 0 Line control
 #define ULCON0     (*(volatile unsigned *)0x50000000) //UART 0 Line control
 #define UCON0      (*(volatile unsigned *)0x50000004) //UART 0 Control
@@ -207,7 +207,7 @@ extern "C" {
 #endif
 
 
-// PWM TIMER
+    // PWM TIMER
 #define TCFG0  (*(volatile unsigned *)0x51000000) //Timer 0 configuration
 #define TCFG1  (*(volatile unsigned *)0x51000004) //Timer 1 configuration
 #define TCON   (*(volatile unsigned *)0x51000008) //Timer control
@@ -226,14 +226,14 @@ extern "C" {
 #define TCNTB4 (*(volatile unsigned *)0x5100003c) //Timer count buffer 4
 #define TCNTO4 (*(volatile unsigned *)0x51000040) //Timer count observation 4
 
-// Added for 2440
+    // Added for 2440
 #define FLTOUT		(*(volatile unsigned *)0x560000c0)	// Filter output(Read only)
 #define DSC0			(*(volatile unsigned *)0x560000c4)	// Strength control register 0
 #define DSC1			(*(volatile unsigned *)0x560000c8)	// Strength control register 1
 #define MSLCON		(*(volatile unsigned *)0x560000cc)	// Memory sleep control register
 
 
-// USB DEVICE
+    // USB DEVICE
 #ifdef __BIG_ENDIAN
 #define FUNC_ADDR_REG     (*(volatile unsigned char *)0x52000143) //Function address
 #define PWR_REG           (*(volatile unsigned char *)0x52000147) //Power management
@@ -332,20 +332,20 @@ extern "C" {
 #endif   // __BIG_ENDIAN
 
 
-// WATCH DOG TIMER
+    // WATCH DOG TIMER
 #define WTCON   (*(volatile unsigned *)0x53000000) //Watch-dog timer mode
 #define WTDAT   (*(volatile unsigned *)0x53000004) //Watch-dog timer data
 #define WTCNT   (*(volatile unsigned *)0x53000008) //Eatch-dog timer count
 
 
-// IIC
+    // IIC
 #define IICCON  (*(volatile unsigned *)0x54000000) //IIC control
 #define IICSTAT (*(volatile unsigned *)0x54000004) //IIC status
 #define IICADD  (*(volatile unsigned *)0x54000008) //IIC address
 #define IICDS   (*(volatile unsigned *)0x5400000c) //IIC data shift
 
 
-// IIS
+    // IIS
 #define IISCON  (*(volatile unsigned *)0x55000000) //IIS Control
 #define IISMOD  (*(volatile unsigned *)0x55000004) //IIS Mode
 #define IISPSR  (*(volatile unsigned *)0x55000008) //IIS Prescaler
@@ -360,7 +360,7 @@ extern "C" {
 #endif
 
 
-// I/O PORT
+    // I/O PORT
 #define GPACON    (*(volatile unsigned *)0x56000000) //Port A control
 #define GPADAT    (*(volatile unsigned *)0x56000004) //Port A data
 
@@ -414,7 +414,7 @@ extern "C" {
 #define GSTATUS4  (*(volatile unsigned *)0x560000bc) //Saved data0(32-bit) before entering POWER_OFF mode
 
 
-// RTC
+    // RTC
 #ifdef __BIG_ENDIAN
 #define RTCCON    (*(volatile unsigned char *)0x57000043) //RTC control
 #define TICNT     (*(volatile unsigned char *)0x57000047) //Tick time count
@@ -455,14 +455,14 @@ extern "C" {
 #endif  //RTC
 
 
-// ADC
+    // ADC
 #define ADCCON    (*(volatile unsigned *)0x58000000) //ADC control
 #define ADCTSC    (*(volatile unsigned *)0x58000004) //ADC touch screen control
 #define ADCDLY    (*(volatile unsigned *)0x58000008) //ADC start or Interval Delay
 #define ADCDAT0   (*(volatile unsigned *)0x5800000c) //ADC conversion data 0
 #define ADCDAT1   (*(volatile unsigned *)0x58000010) //ADC conversion data 1
 
-// SPI
+    // SPI
 #define SPCON0    (*(volatile unsigned *)0x59000000) //SPI0 control
 #define SPSTA0    (*(volatile unsigned *)0x59000004) //SPI0 status
 #define SPPIN0    (*(volatile unsigned *)0x59000008) //SPI0 pin control
@@ -478,7 +478,7 @@ extern "C" {
 #define SPRDAT1   (*(volatile unsigned *)0x59000034) //SPI1 Rx data
 
 
-// SD Interface
+    // SD Interface
 #define SDICON     (*(volatile unsigned *)0x5a000000) //SDI control
 #define SDIPRE     (*(volatile unsigned *)0x5a000004) //SDI baud ate prescaler
 #define SDICARG    (*(volatile unsigned *)0x5a000008) //SDI command argument
@@ -499,10 +499,10 @@ extern "C" {
 #ifdef __BIG_ENDIAN  /* edited for 2440A */
 #define SDIDAT     (*(volatile unsigned *)0x5a00004c)
 #else  // Little Endian
-#define SDIDAT     (*(volatile unsigned *)0x5a000040)  
+#define SDIDAT     (*(volatile unsigned *)0x5a000040)
 #endif   //SD Interface
 
-// PENDING BIT
+    // PENDING BIT
 #define INTEINT0      (0)
 #define INTEINT1      (1)
 #define INTEINT2      (2)
@@ -527,7 +527,7 @@ extern "C" {
 #define INTSDI        (21)
 #define INTSPI0       (22)
 #define INTUART1      (23)
-//#define INTNOTUSED24  (24)
+    //#define INTNOTUSED24  (24)
 #define INTNIC  (24)
 #define INTUSBD       (25)
 #define INTUSBH       (26)
@@ -564,13 +564,13 @@ extern "C" {
 #define BIT_SUB_RXD0   (0x1<<0)
 
 #define ClearPending(bit) {SRCPND = bit;INTPND = bit;INTPND;}
-//Wait until INTPND is changed for the case that the ISR is very short.
+    //Wait until INTPND is changed for the case that the ISR is very short.
 
 #define INTGLOBAL		32
 
-/*****************************/
-/* CPU Mode                  */
-/*****************************/
+    /*****************************/
+    /* CPU Mode                  */
+    /*****************************/
 #define USERMODE		0x10
 #define FIQMODE			0x11
 #define IRQMODE			0x12
@@ -580,27 +580,27 @@ extern "C" {
 #define MODEMASK		0x1f
 #define NOINT			0xc0
 
-struct rt_hw_register
-{
-	rt_uint32_t r0;
-	rt_uint32_t r1;
-	rt_uint32_t r2;
-	rt_uint32_t r3;
-	rt_uint32_t r4;
-	rt_uint32_t r5;
-	rt_uint32_t r6;
-	rt_uint32_t r7;
-	rt_uint32_t r8;
-	rt_uint32_t r9;
-	rt_uint32_t r10;
-	rt_uint32_t fp;
-	rt_uint32_t ip;
-	rt_uint32_t sp;
-	rt_uint32_t lr;
-	rt_uint32_t pc;
-	rt_uint32_t cpsr;
-	rt_uint32_t ORIG_r0;
-};
+    struct rt_hw_register
+    {
+        rt_uint32_t r0;
+        rt_uint32_t r1;
+        rt_uint32_t r2;
+        rt_uint32_t r3;
+        rt_uint32_t r4;
+        rt_uint32_t r5;
+        rt_uint32_t r6;
+        rt_uint32_t r7;
+        rt_uint32_t r8;
+        rt_uint32_t r9;
+        rt_uint32_t r10;
+        rt_uint32_t fp;
+        rt_uint32_t ip;
+        rt_uint32_t sp;
+        rt_uint32_t lr;
+        rt_uint32_t pc;
+        rt_uint32_t cpsr;
+        rt_uint32_t ORIG_r0;
+    };
 
 #ifdef __cplusplus
 }

@@ -31,8 +31,8 @@ rt_uint32_t rt_thread_switch_interrupt_flag;
 
 rt_isr_handler_t rt_hw_interrupt_handle(rt_uint32_t vector)
 {
-	rt_kprintf("Unhandled interrupt %d occured!!!\n", vector);
-	return RT_NULL;
+    rt_kprintf("Unhandled interrupt %d occured!!!\n", vector);
+    return RT_NULL;
 }
 
 /**
@@ -40,37 +40,37 @@ rt_isr_handler_t rt_hw_interrupt_handle(rt_uint32_t vector)
  */
 void rt_hw_interrupt_init(void)
 {
-	register rt_uint32_t idx;
+    register rt_uint32_t idx;
 
-	/* all clear source pending */
-	SRCPND = 0x0;
+    /* all clear source pending */
+    SRCPND = 0x0;
 
-	/* all clear sub source pending */
-	SUBSRCPND = 0x0;
+    /* all clear sub source pending */
+    SUBSRCPND = 0x0;
 
-	/* all=IRQ mode */
-	INTMOD = 0x0;
+    /* all=IRQ mode */
+    INTMOD = 0x0;
 
-	/* all interrupt disabled include global bit */
-    	INTMSK = BIT_ALLMSK;
+    /* all interrupt disabled include global bit */
+    INTMSK = BIT_ALLMSK;
 
-	/* all sub interrupt disable */
-	INTSUBMSK = BIT_SUB_ALLMSK;
+    /* all sub interrupt disable */
+    INTSUBMSK = BIT_SUB_ALLMSK;
 
-	/* all clear interrupt pending */
-	INTPND = BIT_ALLMSK;
+    /* all clear interrupt pending */
+    INTPND = BIT_ALLMSK;
 
-	/* init exceptions table */
-	for(idx=0; idx < MAX_HANDLERS; idx++)
-	{
-		isr_table[idx] = (rt_isr_handler_t)rt_hw_interrupt_handle;
-	}
+    /* init exceptions table */
+    for(idx = 0; idx < MAX_HANDLERS; idx++)
+    {
+        isr_table[idx] = (rt_isr_handler_t)rt_hw_interrupt_handle;
+    }
 
-	/* init interrupt nest, and context in thread sp */
-	rt_interrupt_nest = 0;
-	rt_interrupt_from_thread = 0;
-	rt_interrupt_to_thread = 0;
-	rt_thread_switch_interrupt_flag = 0;
+    /* init interrupt nest, and context in thread sp */
+    rt_interrupt_nest = 0;
+    rt_interrupt_from_thread = 0;
+    rt_interrupt_to_thread = 0;
+    rt_thread_switch_interrupt_flag = 0;
 }
 
 /**
@@ -79,7 +79,7 @@ void rt_hw_interrupt_init(void)
  */
 void rt_hw_interrupt_mask(int vector)
 {
-	INTMSK |= 1 << vector;
+    INTMSK |= 1 << vector;
 }
 
 /**
@@ -88,15 +88,15 @@ void rt_hw_interrupt_mask(int vector)
  */
 void rt_hw_interrupt_umask(int vector)
 {
-	if (vector == INTNOTUSED6)
-	{
-		rt_kprintf("Interrupt vec %d is not used!\n", vector);
-		// while(1);
-	}
-	else if (vector == INTGLOBAL)
-		INTMSK = 0x0;
-	else
-		INTMSK &= ~(1 << vector);
+    if (vector == INTNOTUSED6)
+    {
+        rt_kprintf("Interrupt vec %d is not used!\n", vector);
+        // while(1);
+    }
+    else if (vector == INTGLOBAL)
+        INTMSK = 0x0;
+    else
+        INTMSK &= ~(1 << vector);
 }
 
 /**
@@ -107,11 +107,11 @@ void rt_hw_interrupt_umask(int vector)
  */
 void rt_hw_interrupt_install(int vector, rt_isr_handler_t new_handler, rt_isr_handler_t *old_handler)
 {
-	if(vector < MAX_HANDLERS)
-	{
-		if (old_handler != RT_NULL) *old_handler = isr_table[vector];
-		if (new_handler != RT_NULL) isr_table[vector] = new_handler;
-	}
+    if(vector < MAX_HANDLERS)
+    {
+        if (old_handler != RT_NULL) *old_handler = isr_table[vector];
+        if (new_handler != RT_NULL) isr_table[vector] = new_handler;
+    }
 }
 
 /*@}*/

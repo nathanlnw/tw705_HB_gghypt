@@ -60,34 +60,34 @@ do {						\
 
 void __icache_invalidate_all(void)
 {
-	unsigned int i;
+    unsigned int i;
 
-	K0_TO_K1();
+    K0_TO_K1();
 
-	asm volatile (".set noreorder\n"
-		      ".set mips32\n\t"
-		      "mtc0\t$0,$28\n\t"
-		      "mtc0\t$0,$29\n"
-		      ".set mips0\n"
-		      ".set reorder\n");
-	for (i=KSEG0;i<KSEG0+CACHE_SIZE;i+=CACHE_LINE_SIZE)
-		cache_op(Index_Store_Tag_I, i);
+    asm volatile (".set noreorder\n"
+                  ".set mips32\n\t"
+                  "mtc0\t$0,$28\n\t"
+                  "mtc0\t$0,$29\n"
+                  ".set mips0\n"
+                  ".set reorder\n");
+    for (i = KSEG0; i < KSEG0 + CACHE_SIZE; i += CACHE_LINE_SIZE)
+        cache_op(Index_Store_Tag_I, i);
 
-	K1_TO_K0();
+    K1_TO_K0();
 
-	INVALIDATE_BTB();
+    INVALIDATE_BTB();
 }
 
 void __dcache_writeback_all(void)
 {
-	unsigned int i;
-	for (i=KSEG0;i<KSEG0+CACHE_SIZE;i+=CACHE_LINE_SIZE)
-		cache_op(Index_Writeback_Inv_D, i);
-	SYNC_WB();
+    unsigned int i;
+    for (i = KSEG0; i < KSEG0 + CACHE_SIZE; i += CACHE_LINE_SIZE)
+        cache_op(Index_Writeback_Inv_D, i);
+    SYNC_WB();
 }
 
 void rt_hw_cache_init(void)
 {
-	__dcache_writeback_all();
-	__icache_invalidate_all();
+    __dcache_writeback_all();
+    __icache_invalidate_all();
 }

@@ -36,35 +36,35 @@ extern rt_uint32_t rt_interrupt_nest;
  * @return stack address
  */
 rt_uint8_t *rt_hw_stack_init(void *tentry, void *parameter,
-	rt_uint8_t *stack_addr, void *texit)
+                             rt_uint8_t *stack_addr, void *texit)
 {
-	unsigned long *stk;
+    unsigned long *stk;
 
-	stk 	 = (unsigned long *)stack_addr;
-	*(stk) 	 = (unsigned long)tentry;		/* entry point */
-	*(--stk) = (unsigned long)texit;		/* lr */
-	*(--stk) = 0;							/* r12 */
-	*(--stk) = 0;							/* r11 */
-	*(--stk) = 0;							/* r10 */
-	*(--stk) = 0;							/* r9 */
-	*(--stk) = 0;							/* r8 */
-	*(--stk) = 0;							/* r7 */
-	*(--stk) = 0;							/* r6 */
-	*(--stk) = 0;							/* r5 */
-	*(--stk) = 0;							/* r4 */
-	*(--stk) = 0;							/* r3 */
-	*(--stk) = 0;							/* r2 */
-	*(--stk) = 0;							/* r1 */
-	*(--stk) = (unsigned long)parameter;	/* r0 : argument */
+    stk 	 = (unsigned long *)stack_addr;
+    *(stk) 	 = (unsigned long)tentry;		/* entry point */
+    *(--stk) = (unsigned long)texit;		/* lr */
+    *(--stk) = 0;							/* r12 */
+    *(--stk) = 0;							/* r11 */
+    *(--stk) = 0;							/* r10 */
+    *(--stk) = 0;							/* r9 */
+    *(--stk) = 0;							/* r8 */
+    *(--stk) = 0;							/* r7 */
+    *(--stk) = 0;							/* r6 */
+    *(--stk) = 0;							/* r5 */
+    *(--stk) = 0;							/* r4 */
+    *(--stk) = 0;							/* r3 */
+    *(--stk) = 0;							/* r2 */
+    *(--stk) = 0;							/* r1 */
+    *(--stk) = (unsigned long)parameter;	/* r0 : argument */
 
-	/* cpsr */
-	if ((rt_uint32_t)tentry & 0x01)
-		*(--stk) = SVCMODE | 0x20;			/* thumb mode */
-	else
-		*(--stk) = SVCMODE;					/* arm mode   */
+    /* cpsr */
+    if ((rt_uint32_t)tentry & 0x01)
+        *(--stk) = SVCMODE | 0x20;			/* thumb mode */
+    else
+        *(--stk) = SVCMODE;					/* arm mode   */
 
-	/* return task's current stack address */
-	return (rt_uint8_t *)stk;
+    /* return task's current stack address */
+    return (rt_uint8_t *)stk;
 }
 
 /* exception and interrupt handler table */
@@ -73,7 +73,7 @@ rt_uint32_t rt_thread_switch_interrupt_flag;
 
 void rt_hw_interrupt_handler(int vector)
 {
-	rt_kprintf("Unhandled interrupt %d occured!!!\n", vector);
+    rt_kprintf("Unhandled interrupt %d occured!!!\n", vector);
 }
 
 /**
@@ -81,29 +81,29 @@ void rt_hw_interrupt_handler(int vector)
  */
 void rt_hw_interrupt_init()
 {
-	rt_base_t index;
-	rt_uint32_t *vect_addr, *vect_ctl;
+    rt_base_t index;
+    rt_uint32_t *vect_addr, *vect_ctl;
 
-	/* initialize VIC*/
-	VICIntEnClr = 0xffffffff;
-	VICVectAddr = 0;
-	/* set all to IRQ */
-	VICIntSelect = 0;
+    /* initialize VIC*/
+    VICIntEnClr = 0xffffffff;
+    VICVectAddr = 0;
+    /* set all to IRQ */
+    VICIntSelect = 0;
 
-	for (index = 0; index < MAX_HANDLERS; index ++)
-	{
-		vect_addr 	= (rt_uint32_t *)(VIC_BASE_ADDR + 0x100 + (index << 2));
-		vect_ctl 	= (rt_uint32_t *)(VIC_BASE_ADDR + 0x200 + (index << 2));
+    for (index = 0; index < MAX_HANDLERS; index ++)
+    {
+        vect_addr 	= (rt_uint32_t *)(VIC_BASE_ADDR + 0x100 + (index << 2));
+        vect_ctl 	= (rt_uint32_t *)(VIC_BASE_ADDR + 0x200 + (index << 2));
 
-		*vect_addr 	= (rt_uint32_t)rt_hw_interrupt_handler;
-		*vect_ctl 	= 0xF;
-	}
+        *vect_addr 	= (rt_uint32_t)rt_hw_interrupt_handler;
+        *vect_ctl 	= 0xF;
+    }
 
-	/* init interrupt nest, and context in thread sp */
-	rt_interrupt_nest = 0;
-	rt_interrupt_from_thread = 0;
-	rt_interrupt_to_thread = 0;
-	rt_thread_switch_interrupt_flag = 0;
+    /* init interrupt nest, and context in thread sp */
+    rt_interrupt_nest = 0;
+    rt_interrupt_from_thread = 0;
+    rt_interrupt_to_thread = 0;
+    rt_thread_switch_interrupt_flag = 0;
 }
 
 /**
@@ -112,7 +112,7 @@ void rt_hw_interrupt_init()
  */
 void rt_hw_interrupt_mask(int vector)
 {
-	VICIntEnClr = (1 << vector);
+    VICIntEnClr = (1 << vector);
 }
 
 /**
@@ -121,7 +121,7 @@ void rt_hw_interrupt_mask(int vector)
  */
 void rt_hw_interrupt_umask(int vector)
 {
-	VICIntEnable = (1 << vector);
+    VICIntEnable = (1 << vector);
 }
 
 /**
@@ -132,18 +132,18 @@ void rt_hw_interrupt_umask(int vector)
  */
 void rt_hw_interrupt_install(int vector, rt_isr_handler_t new_handler, rt_isr_handler_t *old_handler)
 {
-	if(vector >= 0 && vector < MAX_HANDLERS)
-	{
-		/* get VIC address */
-		rt_uint32_t* vect_addr 	= (rt_uint32_t *)(VIC_BASE_ADDR + 0x100 + (vector << 2));
-		rt_uint32_t* vect_ctl 	= (rt_uint32_t *)(VIC_BASE_ADDR + 0x200 + (vector << 2));
+    if(vector >= 0 && vector < MAX_HANDLERS)
+    {
+        /* get VIC address */
+        rt_uint32_t *vect_addr 	= (rt_uint32_t *)(VIC_BASE_ADDR + 0x100 + (vector << 2));
+        rt_uint32_t *vect_ctl 	= (rt_uint32_t *)(VIC_BASE_ADDR + 0x200 + (vector << 2));
 
-		/* assign IRQ slot and enable this slot */
-		*vect_ctl = 0x20 | (vector & 0x1F);
+        /* assign IRQ slot and enable this slot */
+        *vect_ctl = 0x20 | (vector & 0x1F);
 
-		if (old_handler != RT_NULL) *old_handler = (rt_isr_handler_t) *vect_addr;
-		if (new_handler != RT_NULL) *vect_addr = (rt_uint32_t) new_handler;
-	}
+        if (old_handler != RT_NULL) *old_handler = (rt_isr_handler_t) * vect_addr;
+        if (new_handler != RT_NULL) *vect_addr = (rt_uint32_t) new_handler;
+    }
 }
 
 /**
@@ -160,20 +160,20 @@ void rt_hw_cpu_reset()
  */
 void rt_hw_cpu_shutdown()
 {
-	rt_kprintf("shutdown...\n");
+    rt_kprintf("shutdown...\n");
 
-	while (1);
+    while (1);
 }
 
 void rt_hw_trap_irq()
 {
-	rt_isr_handler_t isr_func;
+    rt_isr_handler_t isr_func;
 
-	isr_func = (rt_isr_handler_t) VICVectAddr;
-	isr_func(0);
+    isr_func = (rt_isr_handler_t) VICVectAddr;
+    isr_func(0);
 
-	/* acknowledge Interrupt */
-	// VICVectAddr = 0;
+    /* acknowledge Interrupt */
+    // VICVectAddr = 0;
 }
 
 void rt_hw_trap_fiq()
